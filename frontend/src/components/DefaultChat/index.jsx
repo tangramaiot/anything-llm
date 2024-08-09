@@ -303,31 +303,10 @@ export default function DefaultChatContainer() {
   }, []);
 
   return (
-    <div
-      style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
-      className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-main-gradient w-full h-full overflow-y-scroll border-2 border-outline"
-    >
-      {isMobile && <SidebarMobileHeader />}
-      {fetchedMessages.length === 0
-        ? mockMsgs.map((content, i) => {
-            return <React.Fragment key={i}>{content}</React.Fragment>;
-          })
-        : fetchedMessages.map((fetchedMessage, i) => {
-            return (
-              <React.Fragment key={i}>
-                <ChatBubble
-                  message={
-                    fetchedMessage.user === ""
-                      ? fetchedMessage.response
-                      : fetchedMessage.user
-                  }
-                  type={fetchedMessage.user === "" ? "response" : "user"}
-                  popMsg={popMsg}
-                />
-              </React.Fragment>
-            );
-          })}
-      {showingNewWsModal && <NewWorkspaceModal hideModal={hideNewWsModal} />}
-    </div>
-  );
+      <div
+        style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+        className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] w-screen h-screen border-2 border-outline bg-chat-gradient"
+      >
+      </div>
+  )
 }

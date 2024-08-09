@@ -25,18 +25,19 @@ export default function Sidebar() {
   const { t } = useTranslation();
 
   return (
-    <div>
-      <Link
-        to={paths.home()}
-        className="flex shrink-0 max-w-[55%] items-center justify-start mx-[38px] my-[18px]"
-        aria-label="Home"
+    <div className="flex flex-col">
+      <dev
+        className="flex shrink-0 items-center justify-start mx-[38px] my-[18px]"
       >
         <img
           src={logo}
           alt="Logo"
-          className="rounded max-h-[24px] object-contain"
+          className="rounded max-h-[48px] object-contain"
         />
-      </Link>
+        <span className="text-2xl font-bold text-sidebar-text ml-2">
+          SAI-Assist
+        </span>
+      </dev>
       <div
         ref={sidebarRef}
         className="relative m-[16px] rounded-[16px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-76px)]"
@@ -60,9 +61,6 @@ export default function Sidebar() {
                 </div>
                 <ActiveWorkspaces />
               </div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 pt-4 pb-3 rounded-b-[16px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md z-10">
-              <Footer />
             </div>
           </div>
         </div>

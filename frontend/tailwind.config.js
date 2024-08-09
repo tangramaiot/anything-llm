@@ -24,6 +24,7 @@ export default {
         "black-900": "#141414",
         accent: "#3D4147",
         "sidebar-button": "#31353A",
+        "sidebar-text": "#FFFFFF",
         sidebar: "#25272C",
         "historical-msg-system": "rgba(255, 255, 255, 0.05);",
         "historical-msg-user": "#2C2F35",
@@ -57,7 +58,8 @@ export default {
           "linear-gradient(90deg, #3D4147 0%, #2C2F35 100%)",
         "workspace-item-selected-gradient":
           "linear-gradient(90deg, #5B616A 0%, #3F434B 100%)",
-        "switch-selected": "linear-gradient(146deg, #5B616A 0%, #3F434B 100%)"
+        "switch-selected": "linear-gradient(146deg, #5B616A 0%, #3F434B 100%)",
+        "chat-gradient": "radial-gradient(49% 81% at 50% 148%, #FF00DA25 0%, #073AFF00 100%),radial-gradient(49% 81% at 62% 129%, #FF00DA25 0%, #073AFF00 100%),radial-gradient(49% 81% at 36% 138%, #FF00DA25 0%, #073AFF00 100%)"
       },
       fontFamily: {
         sans: [
