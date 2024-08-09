@@ -16,7 +16,7 @@ import { PfpProvider } from "./PfpContext";
 import { LogoProvider } from "./LogoContext";
 import { FullScreenLoader } from "./components/Preloader";
 
-const Main = lazy(() => import("@/pages/Main"));
+const Main = lazy(() => import("@/pages_new/Main"));
 const InvitePage = lazy(() => import("@/pages/Invite"));
 const WorkspaceChat = lazy(() => import("@/pages/WorkspaceChat"));
 const AdminUsers = lazy(() => import("@/pages/Admin/Users"));
