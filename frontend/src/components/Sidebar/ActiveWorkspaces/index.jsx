@@ -8,6 +8,7 @@ import ManageWorkspace, {
 import paths from "@/utils/paths";
 import { useParams } from "react-router-dom";
 import { GearSix, SquaresFour, UploadSimple } from "@phosphor-icons/react";
+import AgentItem from "@/media/agents/agentitem.png";
 import truncate from "truncate";
 import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
@@ -94,7 +95,7 @@ export default function ActiveWorkspaces() {
                 className={`
               transition-all duration-[200ms]
                 flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-white justify-start items-center
-                hover:bg-workspace-item-selected-gradient hover:font-bold border-2 border-outline
+                hover:bg-workspace-item-selected-gradient hover:font-bold
                 ${
                   isActive
                     ? "bg-workspace-item-selected-gradient font-bold"
@@ -103,10 +104,10 @@ export default function ActiveWorkspaces() {
               >
                 <div className="flex flex-row justify-between w-full">
                   <div className="flex items-center space-x-2">
-                    <SquaresFour
-                      weight={isActive ? "fill" : "regular"}
+                    <img
+                      src={AgentItem}
+                      alt="AgentItem"
                       className="flex-shrink-0"
-                      size={24}
                     />
                     <p
                       className={`text-[14px] leading-loose whitespace-nowrap overflow-hidden ${

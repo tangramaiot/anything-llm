@@ -88,8 +88,8 @@ const TRANSLATIONS = {
   },
 
   "new-workspace": {
-    title: "New Workspace",
-    placeholder: "My Workspace",
+    title: "New Agent",
+    placeholder: "My Agent",
   },
 
   // Workspace Settings menu items

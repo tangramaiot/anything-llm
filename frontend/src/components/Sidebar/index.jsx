@@ -26,8 +26,8 @@ export default function Sidebar() {
 
   return (
     <div className="flex flex-col">
-      <dev
-        className="flex shrink-0 items-center justify-start mx-[38px] my-[18px]"
+      <div
+        className="flex shrink-0 items-center justify-start mx-[38px] mt-[18px]"
       >
         <img
           src={logo}
@@ -37,7 +37,7 @@ export default function Sidebar() {
         <span className="text-2xl font-bold text-sidebar-text ml-2">
           SAI-Assist
         </span>
-      </dev>
+      </div>
       <div
         ref={sidebarRef}
         className="relative m-[16px] rounded-[16px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-76px)]"
@@ -50,7 +50,7 @@ export default function Sidebar() {
                   {(!user || user?.role !== "default") && (
                     <button
                       onClick={showNewWsModal}
-                      className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-2.5 mb-2 bg-white rounded-[8px] text-sidebar justify-center items-center hover:bg-opacity-80 transition-all duration-300"
+                      className="flex flex-grow w-[75%] h-[44px] gap-x-3 py-[12px] px-[20px] mb-2 bg-white rounded-[60px] text-sidebar justify-start items-center hover:bg-opacity-80 transition-all duration-300"
                     >
                       <Plus size={18} weight="bold" />
                       <p className="text-sidebar text-sm font-semibold">
@@ -102,11 +102,11 @@ export function SidebarMobileHeader() {
     <>
       <div
         aria-label="Show sidebar"
-        className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-4 py-2 bg-sidebar text-slate-200 shadow-lg h-16"
+        className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-4 py-2 text-sidebar-text shadow-lg h-16"
       >
         <button
           onClick={() => setShowSidebar(true)}
-          className="rounded-md p-2 flex items-center justify-center text-slate-200"
+          className="rounded-md p-2 flex items-center justify-center text-sidebar-text"
         >
           <List className="h-6 w-6" />
         </button>
@@ -136,7 +136,7 @@ export function SidebarMobileHeader() {
         />
         <div
           ref={sidebarRef}
-          className="relative h-[100vh] fixed top-0 left-0  rounded-r-[26px] bg-sidebar w-[80%] p-[18px] "
+          className="relative h-[100vh] fixed top-0 left-0  rounded-r-[26px] w-[80%] p-[18px] "
         >
           <div className="w-full h-full flex flex-col overflow-x-hidden items-between">
             {/* Header Information */}
@@ -150,7 +150,7 @@ export function SidebarMobileHeader() {
                 />
               </div>
               {(!user || user?.role !== "default") && (
-                <div className="flex gap-x-2 items-center text-slate-500 shink-0">
+                <div className="flex gap-x-2 items-center text-sidebar-text shink-0">
                   <SettingsButton />
                 </div>
               )}
@@ -164,10 +164,10 @@ export function SidebarMobileHeader() {
                     {(!user || user?.role !== "default") && (
                       <button
                         onClick={showNewWsModal}
-                        className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 bg-white rounded-lg text-sidebar justify-center items-center hover:bg-opacity-80 transition-all duration-300"
+                        className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 text-sidebar-text rounded-lg  justify-center items-center hover:bg-opacity-80 transition-all duration-300"
                       >
                         <Plus className="h-5 w-5" />
-                        <p className="text-sidebar text-sm font-semibold">
+                        <p className="text-sidebar-text text-sm font-semibold">
                           {t("new-workspace.title")}
                         </p>
                       </button>

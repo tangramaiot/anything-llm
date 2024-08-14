@@ -94,9 +94,9 @@ export function AdminRoute({ Component }) {
 
   const user = userFromStorage();
   return isAuthd && (user?.role === "admin" || !multiUserMode) ? (
-    <UserMenu>
+    // <UserMenu>
       <Component />
-    </UserMenu>
+    // </UserMenu>
   ) : (
     <Navigate to={paths.home()} />
   );
@@ -115,9 +115,9 @@ export function ManagerRoute({ Component }) {
 
   const user = userFromStorage();
   return isAuthd && (user?.role !== "default" || !multiUserMode) ? (
-    <UserMenu>
+    // <UserMenu>
       <Component />
-    </UserMenu>
+    // </UserMenu>
   ) : (
     <Navigate to={paths.home()} />
   );
@@ -132,9 +132,9 @@ export default function PrivateRoute({ Component }) {
   }
 
   return isAuthd ? (
-    <UserMenu>
+    // <UserMenu>
       <Component />
-    </UserMenu>
+    // </UserMenu>
   ) : (
     <Navigate to={paths.login(true)} />
   );

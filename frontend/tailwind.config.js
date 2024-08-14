@@ -21,14 +21,13 @@ export default {
         "360": "360deg"
       },
       colors: {
-        "black-900": "#141414",
         accent: "#3D4147",
         "sidebar-button": "#31353A",
         "sidebar-text": "#FFFFFF",
-        sidebar: "#25272C",
         "historical-msg-system": "rgba(255, 255, 255, 0.05);",
         "historical-msg-user": "#2C2F35",
         outline: "#4E5153",
+        primary: "#1F1F1F",
         "primary-button": "#46C8FF",
         secondary: "#2C2F36",
         "dark-input": "#18181B",
@@ -37,7 +36,7 @@ export default {
         "dark-text": "#222628",
         description: "#D2D5DB",
         "x-button": "#9CA3AF",
-        darker: "#F4F4F4"
+        darker: "#1F1F1F"
       },
       backgroundImage: {
         "preference-gradient":

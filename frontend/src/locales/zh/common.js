@@ -87,8 +87,8 @@ const TRANSLATIONS = {
   },
 
   "new-workspace": {
-    title: "新工作區",
-    placeholder: "我的工作區",
+    title: "新代理",
+    placeholder: "我的代理",
   },
 
   // Workspace Settings menu items
