@@ -230,11 +230,9 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
 
   return (
     <div
-      style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
-      className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-main-gradient w-full h-full overflow-y-scroll border-2 border-outline"
+      className="transition-all duration-500 flex flex-col flex-grow md:rounded-[16px] w-full h-full"
     >
-      {isMobile && <SidebarMobileHeader />}
-      <div className="flex flex-col h-full w-full md:mt-0 mt-[40px]">
+      <div className="basic-[10%] h-full">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
@@ -242,6 +240,8 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           updateHistory={setChatHistory}
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
+      </div>
+      <div className="basic-[90%] h-full"> 
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}

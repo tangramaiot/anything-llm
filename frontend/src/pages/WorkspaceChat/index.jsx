@@ -46,11 +46,11 @@ function ShowWorkspaceChat() {
 
   return (
     <>
-      <div className="w-screen h-screen overflow-hidden bg-sidebar flex">
-        {!isMobile && <Sidebar />}
+      <div
+        className="transition-all duration-500 relative h-full w-full"
+      >
         <WorkspaceChatContainer loading={loading} workspace={workspace} />
       </div>
-      <FineTuningAlert />
     </>
   );
 }

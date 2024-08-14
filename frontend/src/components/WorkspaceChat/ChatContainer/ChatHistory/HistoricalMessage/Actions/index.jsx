@@ -1,10 +1,8 @@
 import React, { memo, useState } from "react";
 import useCopyText from "@/hooks/useCopyText";
-import { Check, ThumbsUp, ArrowsClockwise, Copy } from "@phosphor-icons/react";
+import { Check, ThumbsUp, ArrowsClockwise, Copy, ThumbsDown } from "@phosphor-icons/react";
 import { Tooltip } from "react-tooltip";
 import Workspace from "@/models/workspace";
-import { EditMessageAction } from "./EditMessage";
-import ActionMenu from "./ActionMenu";
 
 const Actions = ({
   message,
@@ -29,19 +27,7 @@ const Actions = ({
     <div className="flex w-full justify-between items-center">
       <div className="flex justify-start items-center gap-x-[8px]">
         <CopyMessage message={message} />
-        <div className="md:group-hover:opacity-100 transition-all duration-300 md:opacity-0 flex justify-start items-center gap-x-[8px]">
-          <EditMessageAction
-            chatId={chatId}
-            role={role}
-            isEditing={isEditing}
-          />
-          {isLastMessage && !isEditing && (
-            <RegenerateMessage
-              regenerateMessage={regenerateMessage}
-              slug={slug}
-              chatId={chatId}
-            />
-          )}
+        <div className="transition-all duration-300 flex justify-start items-center gap-x-[8px]">
           {chatId && role !== "user" && !isEditing && (
             <FeedbackButton
               isSelected={selectedFeedback === true}
@@ -51,12 +37,13 @@ const Actions = ({
               IconComponent={ThumbsUp}
             />
           )}
-          <ActionMenu
-            chatId={chatId}
-            forkThread={forkThread}
-            isEditing={isEditing}
-            role={role}
-          />
+          {isLastMessage && !isEditing && (
+            <RegenerateMessage
+              regenerateMessage={regenerateMessage}
+              slug={slug}
+              chatId={chatId}
+            />
+          )}
         </div>
       </div>
     </div>

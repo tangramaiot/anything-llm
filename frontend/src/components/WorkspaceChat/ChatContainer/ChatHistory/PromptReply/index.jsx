@@ -13,13 +13,12 @@ const PromptReply = ({
   sources = [],
   closed = true,
 }) => {
-  const assistantBackgroundColor = "bg-historical-msg-system";
   if (!reply && sources.length === 0 && !pending && !error) return null;
 
   if (pending) {
     return (
       <div
-        className={`flex justify-center items-end w-full ${assistantBackgroundColor}`}
+        className={`flex justify-center items-end w-full`}
       >
         <div className="py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col">
           <div className="flex gap-x-5">
@@ -34,7 +33,7 @@ const PromptReply = ({
   if (error) {
     return (
       <div
-        className={`flex justify-center items-end w-full ${assistantBackgroundColor}`}
+        className={`flex justify-center items-end w-full`}
       >
         <div className="py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col">
           <div className="flex gap-x-5">
@@ -55,7 +54,7 @@ const PromptReply = ({
   return (
     <div
       key={uuid}
-      className={`flex justify-center items-end w-full ${assistantBackgroundColor}`}
+      className={`flex justify-center items-end w-full`}
     >
       <div className="py-6 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col">
         <div className="flex gap-x-5">

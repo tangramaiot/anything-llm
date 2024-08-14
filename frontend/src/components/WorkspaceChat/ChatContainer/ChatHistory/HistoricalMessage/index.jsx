@@ -43,10 +43,10 @@ const HistoricalMessage = ({
       <div
         key={uuid}
         className={`flex justify-center items-end w-full ${
-          role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
+          role === "user" ? USER_BACKGROUND_COLOR : "bg-transparent"
         }`}
       >
-        <div className="py-8 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col">
+        <div className="py-5 w-full flex gap-x-5 md:max-w-[80%] flex-col">
           <div className="flex gap-x-5">
             <ProfileImage role={role} workspace={workspace} />
             <div className="p-2 rounded-lg bg-red-50 text-red-500">
@@ -71,53 +71,36 @@ const HistoricalMessage = ({
       onAnimationEnd={onEndAnimation}
       className={`${
         isDeleted ? "animate-remove" : ""
-      } flex justify-center items-end w-full group ${
-        role === "user" ? USER_BACKGROUND_COLOR : AI_BACKGROUND_COLOR
-      }`}
+      } flex justify-center items-end w-full group `}
     >
-      <div className={`py-8 px-4 w-full flex gap-x-5 md:max-w-[80%] flex-col`}>
-        <div className="flex gap-x-5">
-          <div className="flex flex-col items-center">
-            <ProfileImage role={role} workspace={workspace} />
-            <div className="mt-1 -mb-10">
-              <TTSMessage
-                slug={workspace?.slug}
-                chatId={chatId}
-                message={message}
-              />
-            </div>
-          </div>
-          {isEditing ? (
-            <EditMessageForm
-              role={role}
-              chatId={chatId}
-              message={message}
-              adjustTextArea={adjustTextArea}
-              saveChanges={saveEditedMessage}
-            />
-          ) : (
+      <div className={`py-5 w-full flex gap-x-5 md:max-w-[80%] flex-col`}>
+        <div className={`flex gap-x-5 ${ role === "user" && "flex-row-reverse" }`}>
+          { role === "assistant" && <ProfileImage role={role} workspace={workspace} /> }
+          <div className={`w-fit px-3 ${ role === "user" && "user-history-message" } `}>  
             <span
               className={`flex flex-col gap-y-1`}
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(renderMarkdown(message)),
               }}
             />
-          )}
+          </div>
         </div>
-        <div className="flex gap-x-5 ml-14">
-          <Actions
-            message={message}
-            feedbackScore={feedbackScore}
-            chatId={chatId}
-            slug={workspace?.slug}
-            isLastMessage={isLastMessage}
-            regenerateMessage={regenerateMessage}
-            isEditing={isEditing}
-            role={role}
-            forkThread={forkThread}
-          />
-        </div>
-        {role === "assistant" && <Citations sources={sources} />}
+        {role === "assistant" && <>
+          <div className="flex gap-x-5 ml-14">
+            <Actions
+              message={message}
+              feedbackScore={feedbackScore}
+              chatId={chatId}
+              slug={workspace?.slug}
+              isLastMessage={isLastMessage}
+              regenerateMessage={regenerateMessage}
+              isEditing={isEditing}
+              role={role}
+              forkThread={forkThread}
+            />
+          </div>
+          <Citations sources={sources} />
+        </>}
       </div>
     </div>
   );
