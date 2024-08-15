@@ -10,8 +10,6 @@ import AvailableAgentsButton, {
   AvailableAgents,
   useAvailableAgents,
 } from "./AgentMenu";
-import TextSizeButton from "./TextSizeMenu";
-import SpeechToText from "./SpeechToText";
 import { Tooltip } from "react-tooltip";
 
 export const PROMPT_INPUT_EVENT = "set_prompt_input";

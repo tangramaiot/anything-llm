@@ -17,9 +17,16 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const { threadSlug = null } = useParams();
   const [message, setMessage] = useState("");
   const [loadingResponse, setLoadingResponse] = useState(false);
-  const [chatHistory, setChatHistory] = useState(knownHistory);
+  const [chatHistory, setChatHistory] = useState([]);
   const [socketId, setSocketId] = useState(null);
   const [websocket, setWebsocket] = useState(null);
+
+  useEffect(() => {
+    async function setHistory() {
+      setChatHistory(knownHistory);
+    }
+    setHistory();
+  }, [knownHistory]);
 
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
@@ -228,6 +235,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     handleWSS();
   }, [socketId]);
 
+  
   return (
     <div
       className="transition-all duration-500 flex flex-col flex-grow md:rounded-[16px] w-full h-full"

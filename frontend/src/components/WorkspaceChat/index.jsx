@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Workspace from "@/models/workspace";
 import LoadingChat from "./LoadingChat";
 import ChatContainer from "./ChatContainer";
+import FrontContainer from "./FrontContainer";
 import paths from "@/utils/paths";
 import ModalWrapper from "../ModalWrapper";
 import { useParams } from "react-router-dom";
@@ -19,15 +20,14 @@ export default function WorkspaceChat({ loading, workspace }) {
         return false;
       }
 
-      const chatHistory = threadSlug
-        ? await Workspace.threads.chatHistory(workspace.slug, threadSlug)
-        : await Workspace.chatHistory(workspace.slug);
+      const chatHistory = await Workspace.threads.chatHistory(workspace.slug, threadSlug);
 
       setHistory(chatHistory);
       setLoadingHistory(false);
     }
-    getHistory();
-  }, [workspace, loading]);
+
+      getHistory();
+  }, [workspace, loading, threadSlug]);
 
   if (loadingHistory) return <LoadingChat />;
   if (!loading && !loadingHistory && !workspace) {
@@ -62,7 +62,8 @@ export default function WorkspaceChat({ loading, workspace }) {
   }
 
   setEventDelegatorForCodeSnippets();
-  return <ChatContainer workspace={workspace} knownHistory={history} />;
+  if (threadSlug) return <ChatContainer workspace={workspace} knownHistory={history} />;
+  return <FrontContainer />;
 }
 
 // Enables us to safely markdown and sanitize all responses without risk of injection

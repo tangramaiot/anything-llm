@@ -16,8 +16,9 @@ import { PfpProvider } from "./PfpContext";
 import { LogoProvider } from "./LogoContext";
 import { FullScreenLoader } from "./components/Preloader";
 
-const Main = lazy(() => import("@/pages/Main"));
-const WorkspaceChat = lazy(() => import("@/pages/WorkspaceChat"));
+import Main from "@/pages/Main";
+import WorkspaceChat from "@/pages/WorkspaceChat";
+
 const InvitePage = lazy(() => import("@/pages/Invite"));
 const AdminUsers = lazy(() => import("@/pages/Admin/Users"));
 const AdminInvites = lazy(() => import("@/pages/Admin/Invitations"));
@@ -205,14 +206,15 @@ const PageNotFound = lazy(() => import("@/pages/404"));
 
 export default function App() {
   return (
-    <Suspense fallback={<FullScreenLoader />}>
+    // <Suspense fallback={<FullScreenLoader />}>
       <ContextWrapper>
         <LogoProvider>
           <PfpProvider>
             <I18nextProvider i18n={i18n}>
               <Routes>
                 <Route path="/" element={<Main />}>
-                  <Route path="workspace/:slug" element={<WorkspaceChat />} />
+                  <Route path="/workspace/:slug" element={<WorkspaceChat />} />
+                  <Route path="/workspace/:slug/t/:threadSlug" element={<WorkspaceChat />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 {/* <Route path="*" element={<PageNotFound />} /> */}
@@ -222,6 +224,6 @@ export default function App() {
           </PfpProvider>
         </LogoProvider>
       </ContextWrapper>
-    </Suspense>
+    // {/* </Suspense> */}
   );
 }

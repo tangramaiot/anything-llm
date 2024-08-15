@@ -6,7 +6,7 @@ import ManageWorkspace, {
   useManageWorkspaceModal,
 } from "../../Modals/ManageWorkspace";
 import paths from "@/utils/paths";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { GearSix, SquaresFour, UploadSimple } from "@phosphor-icons/react";
 import AgentItem from "@/media/agents/agentitem.png";
 import truncate from "truncate";
@@ -25,6 +25,7 @@ export default function ActiveWorkspaces() {
   const { showing, showModal, hideModal } = useManageWorkspaceModal();
   const { user } = useUser();
   const isInWorkspaceSettings = !!useMatch("/workspace/:slug/settings/:tab");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getWorkspaces() {
@@ -90,7 +91,7 @@ export default function ActiveWorkspaces() {
               className="flex gap-x-2 items-center justify-between"
             >
               <a
-                href={isActive ? null : paths.workspace.chat(workspace.slug)}
+                onClick={isActive ? null : () => navigate(paths.workspace.chat(workspace.slug))}
                 aria-current={isActive ? "page" : ""}
                 className={`
               transition-all duration-[200ms]
@@ -148,35 +149,6 @@ export default function ActiveWorkspaces() {
                           />
                         </button>
                       </div>
-
-                      <Link
-                        type="button"
-                        to={
-                          isInWorkspaceSettings
-                            ? paths.workspace.chat(workspace.slug)
-                            : paths.workspace.settings.generalAppearance(
-                                workspace.slug
-                              )
-                        }
-                        onMouseEnter={() => handleGearMouseEnter(workspace.id)}
-                        onMouseLeave={() => handleGearMouseLeave(workspace.id)}
-                        className="rounded-md flex items-center justify-center text-[#A7A8A9] hover:text-white ml-auto"
-                        aria-label="General appearance settings"
-                      >
-                        <div className="flex hover:bg-[#646768] p-[2px] rounded-[4px]">
-                          <GearSix
-                            color={
-                              isInWorkspaceSettings && workspace.slug === slug
-                                ? "#46C8FF"
-                                : gearHover[workspace.id]
-                                  ? "#FFFFFF"
-                                  : "#A7A8A9"
-                            }
-                            weight="bold"
-                            className="h-[20px] w-[20px]"
-                          />
-                        </div>
-                      </Link>
                     </div>
                   ) : null}
                 </div>

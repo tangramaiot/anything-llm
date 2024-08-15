@@ -9,7 +9,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import truncate from "truncate";
 
 const THREAD_CALLOUT_DETAIL_WIDTH = 26;
@@ -30,6 +30,7 @@ export default function ThreadItem({
   const linkTo = !thread.slug
     ? paths.workspace.chat(slug)
     : paths.workspace.thread(slug, thread.slug);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -85,9 +86,13 @@ export default function ThreadItem({
           </div>
         ) : (
           <a
-            href={
-              window.location.pathname === linkTo || ctrlPressed ? "#" : linkTo
-            }
+            onClick={() => {
+              if (window.location.pathname === linkTo || ctrlPressed) {
+                navigate("#")
+              } else { 
+                navigate(linkTo)
+              }
+            }}
             className="w-full"
             aria-current={isActive ? "page" : ""}
           >

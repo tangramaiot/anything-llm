@@ -4,7 +4,7 @@ import showToast from "@/utils/toast";
 import { Plus, CircleNotch, Trash } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import ThreadItem from "./ThreadItem";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 export const THREAD_RENAME_EVENT = "renameThread";
 
 export default function ThreadContainer({ workspace }) {
@@ -122,13 +122,6 @@ export default function ThreadContainer({ workspace }) {
 
   return (
     <div className="flex flex-col" role="list" aria-label="Threads">
-      <ThreadItem
-        idx={0}
-        activeIdx={activeThreadIdx}
-        isActive={activeThreadIdx === 0}
-        thread={{ slug: null, name: "default" }}
-        hasNext={threads.length > 0}
-      />
       {threads.map((thread, i) => (
         <ThreadItem
           key={thread.slug}

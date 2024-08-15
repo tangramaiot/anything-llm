@@ -42,15 +42,13 @@ function ShowWorkspaceChat() {
       setLoading(false);
     }
     getWorkspace();
-  }, []);
+  }, [slug]);
 
   return (
-    <>
-      <div
-        className="transition-all duration-500 relative h-full w-full"
-      >
-        <WorkspaceChatContainer loading={loading} workspace={workspace} />
-      </div>
-    </>
+    <div
+      className="transition-all duration-500 relative h-full w-full"
+    >
+      <WorkspaceChatContainer loading={loading} workspace={workspace} />
+    </div>
   );
 }
