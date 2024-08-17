@@ -5,6 +5,8 @@ import { Plus, CircleNotch, Trash } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import ThreadItem from "./ThreadItem";
 import { useNavigate, useParams } from "react-router-dom";
+import{ PROMPT_INPUT_EVENT } from "@/components/WorkspaceChat/FrontContainer";
+
 export const THREAD_RENAME_EVENT = "renameThread";
 
 export default function ThreadContainer({ workspace }) {
@@ -12,6 +14,18 @@ export default function ThreadContainer({ workspace }) {
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ctrlPressed, setCtrlPressed] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleNewThread = (event) => {
+      newThread(event?.detail ?? "" );
+    };
+
+    window.addEventListener(PROMPT_INPUT_EVENT, handleNewThread);
+      
+    return () =>
+      window?.removeEventListener(PROMPT_INPUT_EVENT, handleNewThread);
+  }, []);
 
   useEffect(() => {
     const chatHandler = (event) => {
@@ -83,12 +97,6 @@ export default function ThreadContainer({ workspace }) {
     );
   };
 
-  const handleDeleteAll = async () => {
-    const slugs = threads.filter((t) => t.deleted === true).map((t) => t.slug);
-    await Workspace.threads.deleteBulk(workspace.slug, slugs);
-    setThreads((prev) => prev.filter((t) => !t.deleted));
-  };
-
   function removeThread(threadId) {
     setThreads((prev) =>
       prev.map((_t) => {
@@ -102,6 +110,17 @@ export default function ThreadContainer({ workspace }) {
     setTimeout(() => {
       setThreads((prev) => prev.filter((t) => !t.deleted));
     }, 500);
+  }
+
+  async function newThread( preSendPrompt = "" ) {
+    const { thread, error } = await Workspace.threads.new(workspace.slug);
+    if (!!error) {
+      showToast(`Could not create thread - ${error}`, "error", { clear: true });
+      return;
+    }
+
+    setThreads((prev) => [...prev, thread]);
+    navigate(paths.workspace.thread(workspace.slug, thread.slug), { state: { preSendPrompt } });
   }
 
   if (loading) {
@@ -134,82 +153,8 @@ export default function ThreadContainer({ workspace }) {
           onRemove={removeThread}
           thread={thread}
           hasNext={i !== threads.length - 1}
-        />
+        /> 
       ))}
-      <DeleteAllThreadButton
-        ctrlPressed={ctrlPressed}
-        threads={threads}
-        onDelete={handleDeleteAll}
-      />
-      <NewThreadButton workspace={workspace} />
     </div>
-  );
-}
-
-function NewThreadButton({ workspace }) {
-  const [loading, setLoading] = useState(false);
-  const onClick = async () => {
-    setLoading(true);
-    const { thread, error } = await Workspace.threads.new(workspace.slug);
-    if (!!error) {
-      showToast(`Could not create thread - ${error}`, "error", { clear: true });
-      setLoading(false);
-      return;
-    }
-    window.location.replace(
-      paths.workspace.thread(workspace.slug, thread.slug)
-    );
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className="w-full relative flex h-[40px] items-center border-none hover:bg-slate-600/20 rounded-lg"
-    >
-      <div className="flex w-full gap-x-2 items-center pl-4">
-        <div className="bg-zinc-600 p-2 rounded-lg h-[24px] w-[24px] flex items-center justify-center">
-          {loading ? (
-            <CircleNotch
-              weight="bold"
-              size={14}
-              className="shrink-0 animate-spin text-slate-100"
-            />
-          ) : (
-            <Plus weight="bold" size={14} className="shrink-0 text-slate-100" />
-          )}
-        </div>
-
-        {loading ? (
-          <p className="text-left text-slate-100 text-sm">Starting Thread...</p>
-        ) : (
-          <p className="text-left text-slate-100 text-sm">New Thread</p>
-        )}
-      </div>
-    </button>
-  );
-}
-
-function DeleteAllThreadButton({ ctrlPressed, threads, onDelete }) {
-  if (!ctrlPressed || threads.filter((t) => t.deleted).length === 0)
-    return null;
-  return (
-    <button
-      type="button"
-      onClick={onDelete}
-      className="w-full relative flex h-[40px] items-center border-none hover:bg-red-400/20 rounded-lg group"
-    >
-      <div className="flex w-full gap-x-2 items-center pl-4">
-        <div className="bg-zinc-600 p-2 rounded-lg h-[24px] w-[24px] flex items-center justify-center">
-          <Trash
-            weight="bold"
-            size={14}
-            className="shrink-0 text-slate-100 group-hover:text-red-400"
-          />
-        </div>
-        <p className="text-white text-left text-sm group-hover:text-red-400">
-          Delete Selected
-        </p>
-      </div>
-    </button>
   );
 }

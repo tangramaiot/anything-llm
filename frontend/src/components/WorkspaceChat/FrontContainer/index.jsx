@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { PaperPlaneRight } from "@phosphor-icons/react";
 
-export const PROMPT_INPUT_EVENT = "set_prompt_input";
+export const PROMPT_INPUT_EVENT = "front_set_prompt_input";
 
 export default function FrontContainer() {
 
@@ -15,29 +15,15 @@ export default function FrontContainer() {
     setPromptInput(e?.detail ?? "");
   }
 
-  function setMessageEmit(messageContent = "") {
-    setMessage(messageContent);
-    window.dispatchEvent(
-      new CustomEvent(PROMPT_INPUT_EVENT, { detail: messageContent })
-    );
-  }
-
-  useEffect(() => {
-    if (!!window)
-      window.addEventListener(PROMPT_INPUT_EVENT, handlePromptUpdate);
-    return () =>
-      window?.removeEventListener(PROMPT_INPUT_EVENT, handlePromptUpdate);
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!message || message === "") return false;
-    setMessageEmit("");
+    window.dispatchEvent(
+      new CustomEvent(PROMPT_INPUT_EVENT, { detail: promptInput })
+    );
+    handlePromptUpdate("");
   };
 
-  const handleMessageChange = (event) => {
-    setMessage(event.target.value);
-  };
 
   return <div className="flex flex-col flex-grow w-full h-full items-center justify-center">
     <div className="flex flex-col items-center my-7">
@@ -53,7 +39,6 @@ export default function FrontContainer() {
             <textarea
               ref={textareaRef}
               onChange={(e) => {
-                handleMessageChange(e);
                 setPromptInput(e.target.value);
               }}
               required={true}

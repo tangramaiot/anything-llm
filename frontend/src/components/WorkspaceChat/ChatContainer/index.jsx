@@ -5,7 +5,7 @@ import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
 import { isMobile } from "react-device-detect";
 import { SidebarMobileHeader } from "../../Sidebar";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { v4 } from "uuid";
 import handleSocketResponse, {
   websocketURI,
@@ -20,13 +20,36 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const [chatHistory, setChatHistory] = useState([]);
   const [socketId, setSocketId] = useState(null);
   const [websocket, setWebsocket] = useState(null);
-
+  const location = useLocation();
+  const preSendPrompt = location.state?.preSendPrompt;
+  
   useEffect(() => {
     async function setHistory() {
       setChatHistory(knownHistory);
     }
     setHistory();
   }, [knownHistory]);
+
+  useEffect(() => {
+    if ( chatHistory.length != 0 || !preSendPrompt || preSendPrompt === "") return;
+
+    const prevChatHistory = [
+      ...chatHistory,
+      { content: preSendPrompt, role: "user" },
+      {
+        content: "",
+        role: "assistant",
+        pending: true,
+        userMessage: preSendPrompt,
+        animate: true,
+      },
+    ];
+
+    setChatHistory(prevChatHistory);
+    setMessageEmit("");
+    setLoadingResponse(true);
+
+  }, [preSendPrompt]);
 
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
