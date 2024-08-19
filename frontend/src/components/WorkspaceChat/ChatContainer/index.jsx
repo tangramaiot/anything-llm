@@ -30,27 +30,6 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     setHistory();
   }, [knownHistory]);
 
-  useEffect(() => {
-    if ( chatHistory.length != 0 || !preSendPrompt || preSendPrompt === "") return;
-
-    const prevChatHistory = [
-      ...chatHistory,
-      { content: preSendPrompt, role: "user" },
-      {
-        content: "",
-        role: "assistant",
-        pending: true,
-        userMessage: preSendPrompt,
-        animate: true,
-      },
-    ];
-
-    setChatHistory(prevChatHistory);
-    setMessageEmit("");
-    setLoadingResponse(true);
-
-  }, [preSendPrompt]);
-
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -259,11 +238,20 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   }, [socketId]);
 
   
+  useEffect(() => {
+    if ( chatHistory.length > 0 || !preSendPrompt || preSendPrompt === "") return;
+
+    sendCommand(preSendPrompt, true);
+
+  }, [preSendPrompt]);
+
+
+  
   return (
     <div
       className="transition-all duration-500 flex flex-col flex-grow md:rounded-[16px] w-full h-full"
     >
-      <div className="basic-[10%] h-full">
+      <div className="basic-[80%] h-full">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
@@ -272,7 +260,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
       </div>
-      <div className="basic-[90%] h-full"> 
+      <div className="basic-[20%]"> 
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}

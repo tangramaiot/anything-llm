@@ -84,6 +84,20 @@ const TRANSLATIONS = {
     part6: "玩得開心！",
     starOnGithub: "在 GitHub 上加星",
     contact: "聯絡 Mintplex Labs",
+    main: "歡迎使用 SAI-A",
+    sub: "您的最佳人工智能助理",
+    function1: {
+      title: "搜索文件",
+      description: "我可以為您搜尋知識庫裡的任何文件",
+    },
+    function2: {
+      title: "內容摘要",
+      description: "我會針對您特定的文件或內容進行摘要撰寫",
+    },
+    function3: {
+      title: "翻譯",
+      description: "我會將您指定的內容翻譯成您指定的語言",
+    },
   },
 
   "new-workspace": {
@@ -98,6 +112,31 @@ const TRANSLATIONS = {
     vector: "向量資料庫",
     members: "成員",
     agent: "代理配置",
+  },
+
+  // Workspace Menu items
+  "workspace-menu": {
+    "new-chart": "開始新對話",
+    "settings": "詳細設定",
+    "upload-documentation": "上傳知識庫"
+  },
+
+  // Workspace Knownledge Management
+  "workspace-knowledge-management": {
+    menutitle: "知識",
+    sharedKnowledge: "共同知識庫",
+    currentKnowledge: "現有知識庫",
+    table: {
+      column: {
+        name: "名稱",
+        status: "狀態"
+      },
+      noDocumentsFound: "沒有文件"
+    },
+    upload: {
+      action: "點擊或拖曳文件上傳",
+      description: "僅支援文件檔 (.docx、.txt、.pdf)，不支援圖片、XLSX 格式，最大文件大小 5 MB"
+    }
   },
 
   // General Appearance

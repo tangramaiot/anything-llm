@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import * as Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Workspace from "@/models/workspace";
@@ -7,12 +7,13 @@ import ManageWorkspace, {
 } from "../../Modals/ManageWorkspace";
 import paths from "@/utils/paths";
 import { useParams, useNavigate } from "react-router-dom";
-import { GearSix, SquaresFour, UploadSimple } from "@phosphor-icons/react";
+import { GearSix, Database, DotsThree, PencilSimple, Plus } from "@phosphor-icons/react";
 import AgentItem from "@/media/agents/agentitem.png";
 import truncate from "truncate";
 import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
 import { Link, useMatch } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ActiveWorkspaces() {
   const { slug } = useParams();
@@ -26,6 +27,8 @@ export default function ActiveWorkspaces() {
   const { user } = useUser();
   const isInWorkspaceSettings = !!useMatch("/workspace/:slug/settings/:tab");
   const navigate = useNavigate();
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsContainer = useRef(null);
 
   useEffect(() => {
     async function getWorkspaces() {
@@ -41,6 +44,7 @@ export default function ActiveWorkspaces() {
 
   const handleMouseLeave = useCallback((workspaceId) => {
     setHoverStates((prev) => ({ ...prev, [workspaceId]: false }));
+    setShowOptions(false);
   }, []);
   const handleGearMouseEnter = useCallback((workspaceId) => {
     setGearHover((prev) => ({ ...prev, [workspaceId]: true }));
@@ -79,85 +83,82 @@ export default function ActiveWorkspaces() {
         const isActive = workspace.slug === slug;
         const isHovered = hoverStates[workspace.id];
         return (
-          <div
-            className="flex flex-col w-full"
-            onMouseEnter={() => handleMouseEnter(workspace.id)}
-            onMouseLeave={() => handleMouseLeave(workspace.id)}
-            key={workspace.id}
-            role="listitem"
-          >
             <div
+              className="flex flex-col w-full"
+              onMouseEnter={() => handleMouseEnter(workspace.id)}
+              onMouseLeave={() => handleMouseLeave(workspace.id)}
               key={workspace.id}
-              className="flex gap-x-2 items-center justify-between"
+              role="listitem"
             >
-              <a
-                onClick={isActive ? null : () => navigate(paths.workspace.chat(workspace.slug))}
-                aria-current={isActive ? "page" : ""}
-                className={`
-              transition-all duration-[200ms]
-                flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-white justify-start items-center
-                hover:bg-workspace-item-selected-gradient hover:font-bold
-                ${
-                  isActive
-                    ? "bg-workspace-item-selected-gradient font-bold"
-                    : ""
-                }`}
+              <div
+                key={workspace.id}
+                className="flex gap-x-2 items-center justify-between"
               >
-                <div className="flex flex-row justify-between w-full">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src={AgentItem}
-                      alt="AgentItem"
-                      className="flex-shrink-0"
-                    />
-                    <p
-                      className={`text-[14px] leading-loose whitespace-nowrap overflow-hidden ${
-                        isActive ? "text-white " : "text-zinc-200"
-                      }`}
-                    >
-                      {isActive || isHovered
-                        ? truncate(workspace.name, 15)
-                        : truncate(workspace.name, 20)}
-                    </p>
-                  </div>
-                  {(isActive || isHovered || gearHover[workspace.id]) &&
-                  user?.role !== "default" ? (
-                    <div className="flex items-center gap-x-[2px]">
-                      <div
-                        className={`flex hover:bg-[#646768] p-[2px] rounded-[4px] text-[#A7A8A9] hover:text-white ${
-                          uploadHover[workspace.id] ? "bg-[#646768]" : ""
+                <a
+                  onClick={isActive ? null : () => navigate(paths.workspace.chat(workspace.slug))}
+                  aria-current={isActive ? "page" : ""}
+                  className={`
+                transition-all duration-[200ms]
+                  flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-white justify-start items-center
+                  hover:bg-workspace-item-selected-gradient hover:font-bold
+                  ${
+                    isActive
+                      ? "bg-workspace-item-selected-gradient font-bold"
+                      : ""
+                  }`}
+                >
+                  <div className="flex flex-row justify-between w-full">
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={AgentItem}
+                        alt="AgentItem"
+                        className="flex-shrink-0"
+                      />
+                      <p
+                        className={`text-[14px] leading-loose whitespace-nowrap overflow-hidden ${
+                          isActive ? "text-white " : "text-zinc-200"
                         }`}
                       >
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setSelectedWs(workspace);
-                            showModal();
-                          }}
-                          onMouseEnter={() =>
-                            handleUploadMouseEnter(workspace.id)
-                          }
-                          onMouseLeave={() =>
-                            handleUploadMouseLeave(workspace.id)
-                          }
-                          className="rounded-md flex items-center justify-center ml-auto"
-                        >
-                          <UploadSimple
-                            className="h-[20px] w-[20px]"
-                            weight="bold"
-                          />
-                        </button>
-                      </div>
+                        {isActive || isHovered
+                          ? truncate(workspace.name, 15)
+                          : truncate(workspace.name, 20)}
+                      </p>
                     </div>
-                  ) : null}
-                </div>
-              </a>
+                    {(isActive || isHovered || gearHover[workspace.id]) &&
+                    user?.role !== "default" ? (
+                      <div>
+                        <div
+                          className={`flex hover:bg-[#646768] p-[2px] rounded-[4px] text-[#A7A8A9] hover:text-white ${
+                            uploadHover[workspace.id] ? "bg-[#646768]" : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="border-none"
+                            onClick={() => setShowOptions(!showOptions)}
+                            aria-label="Thread options"
+                          >
+                            <DotsThree className="text-slate-300" size={25} />
+                          </button>
+                        </div>
+                        {showOptions && (
+                          <OptionsMenu
+                            containerRef={optionsContainer}
+                            workspace={workspace}
+                            setSelectedWs={setSelectedWs}
+                            showModal={showModal}
+                            close={() => setShowOptions(false)}
+                          />
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                </a>
+              </div>
+              {isActive && (
+                <ThreadContainer workspace={workspace} isActive={isActive} />
+              )}
             </div>
-            {isActive && (
-              <ThreadContainer workspace={workspace} isActive={isActive} />
-            )}
-          </div>
         );
       })}
       {showing && (
@@ -166,6 +167,105 @@ export default function ActiveWorkspaces() {
           providedSlug={selectedWs ? selectedWs.slug : null}
         />
       )}
+    </div>
+  );
+}
+
+function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, close }) {
+  const { t } = useTranslation();
+  const menuRef = useRef(null);
+
+  // Ref menu options
+  const outsideClick = (e) => {
+    if (!menuRef.current) return false;
+    if (
+      !menuRef.current?.contains(e.target) &&
+      !containerRef.current?.contains(e.target)
+    )
+      close();
+    return false;
+  };
+
+  const isEsc = (e) => {
+    if (e.key === "Escape" || e.key === "Esc") close();
+  };
+
+  function cleanupListeners() {
+    window.removeEventListener("click", outsideClick);
+    window.removeEventListener("keyup", isEsc);
+  }
+  // end Ref menu options
+
+  useEffect(() => {
+    function setListeners() {
+      if (!menuRef?.current || !containerRef.current) return false;
+      window.document.addEventListener("click", outsideClick);
+      window.document.addEventListener("keyup", isEsc);
+    }
+
+    setListeners();
+    return cleanupListeners;
+  }, [menuRef.current, containerRef.current]);
+
+  const renameThread = async () => {
+    const name = window
+      .prompt("What would you like to rename this thread to?")
+      ?.trim();
+    if (!name || name.length === 0) {
+      close();
+      return;
+    }
+
+    const { message } = await Workspace.threads.update(
+      workspace.slug,
+      thread.slug,
+      { name }
+    );
+    if (!!message) {
+      showToast(`Thread could not be updated! ${message}`, "error", {
+        clear: true,
+      });
+      close();
+      return;
+    }
+
+    thread.name = name;
+    close();
+  };
+
+  return (
+    <div
+      ref={menuRef}
+      className="absolute w-fit z-[20] right-[10px] bg-zinc-900 rounded-lg p-1"
+    >
+      <button
+        // onClick={renameThread}
+        type="button"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+      >
+        <Plus size={18} />
+        <p className="text-sm">{t("workspace-menu.new-chart")}</p>
+      </button>
+      <button
+        // onClick={renameThread}
+        type="button"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+      >
+        <GearSix size={18} />
+        <p className="text-sm">{t("workspace-menu.settings")}</p>
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setSelectedWs(workspace);
+          showModal();
+        }}
+        type="button"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+      >
+        <Database size={18} />
+        <p className="text-sm">{t("workspace-menu.upload-documentation")}</p>
+      </button>
     </div>
   );
 }

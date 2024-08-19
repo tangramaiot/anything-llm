@@ -90,14 +90,14 @@ export default function PromptInput({
   const watchForAt = debounce(checkForAt, 300);
 
   return (
-    <div className="w-full fixed md:absolute bottom-0 left-0 z-10 md:z-0 flex justify-center items-center">
+    <div className="w-full fixed md:absolute bottom-0 left-0 z-10 md:z-0 flex">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-y-1 rounded-t-lg md:w-3/4 w-full mx-auto max-w-xl"
+        className="flex flex-col w-full mx-10"
       >
         <div className="flex items-center md:mb-4">
-          <div className="w-[600px] bg-gray-50/10 border border-white/10 rounded-2xl flex flex-col px-4 overflow-hidden">
-            <div className="flex items-center w-full">
+          <div className="w-full bg-gray-50/10 border border-white/10 rounded-2xl flex flex-col justify-stretch px-5 overflow-hidden">
+            <div className="flex w-full">
               <textarea
                 ref={textareaRef}
                 onChange={(e) => {
@@ -116,17 +116,17 @@ export default function PromptInput({
                   adjustTextArea(e);
                 }}
                 value={promptInput}
-                className="cursor-text max-h-[50vh] md:max-h-[100px] md:min-h-[40px] mx-2 md:mx-0 py-2 w-full text-[16px] md:text-md text-white bg-transparent placeholder:text-white/60 resize-none active:outline-none focus:outline-none flex-grow"
+                className="cursor-text max-h-[50vh] md:max-h-[100px] my-2 mx-2 md:mx-0 w-full text-[16px] md:text-md text-white bg-transparent placeholder:text-white/60 resize-none active:outline-none focus:outline-none"
                 placeholder={"Send a message"}
               />
               {buttonDisabled ? (
                 <StopGenerationButton />
               ) : (
-                <>
+                <div className="flex flex-col-reverse mx-1 my-2">
                   <button
                     ref={formRef}
                     type="submit"
-                    className="inline-flex items-center justify-around rounded-3xl cursor-pointer text-white/60 hover:text-white group ml-4 bg-gradient-to-b from-[#7F56D9] to-[#B043F2] px-4 py-[10px]"
+                    className="flex items-center justify-around rounded-3xl cursor-pointer text-white/60 hover:text-white bg-gradient-to-b from-[#7F56D9] to-[#B043F2] px-4 py-[10px] w-[100px]"
                     data-tooltip-id="send-prompt"
                     data-tooltip-content="Send prompt message to workspace"
                     aria-label="Send prompt message to workspace"
@@ -140,7 +140,7 @@ export default function PromptInput({
                     delayShow={300}
                     className="tooltip !text-xs z-99"
                   />
-                </>
+                </div>
               )}
             </div>
           </div>

@@ -85,6 +85,20 @@ const TRANSLATIONS = {
     part6: "Have Fun!",
     starOnGithub: "Star on GitHub",
     contact: "Contact Mintplex Labs",
+    main: "Welcome to SAI-A",
+    sub: "Your Best AI Assistant",
+    function1: {
+      title: "Search Documents",
+      description: "We will search for your query in your workspace",
+    },
+    function2: {
+      title: "Summarize Documents",
+      description: "We will summarize your query in your workspace",
+    },
+    function3: {
+      title: "Translate Documents",
+      description: "We will translate your query in your workspace",
+    },
   },
 
   "new-workspace": {
@@ -99,6 +113,12 @@ const TRANSLATIONS = {
     vector: "Vector Database",
     members: "Members",
     agent: "Agent Configuration",
+  },
+
+  "workspace-menu": {
+    "new-chart": "Start New Chart",
+    "settings": "Settings",
+    "upload-documentation": "Upload Documentation",
   },
 
   // General Appearance

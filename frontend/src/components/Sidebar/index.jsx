@@ -136,7 +136,7 @@ export function SidebarMobileHeader() {
         />
         <div
           ref={sidebarRef}
-          className="relative h-[100vh] fixed top-0 left-0  rounded-r-[26px] w-[80%] p-[18px] "
+          className="relative h-[100vh] top-0 left-0  rounded-r-[26px] w-[80%] p-[18px] "
         >
           <div className="w-full h-full flex flex-col overflow-x-hidden items-between">
             {/* Header Information */}
@@ -159,7 +159,7 @@ export function SidebarMobileHeader() {
             {/* Primary Body */}
             <div className="h-full flex flex-col w-full justify-between pt-4 ">
               <div className="h-auto md:sidebar-items">
-                <div className=" flex flex-col gap-y-4 overflow-y-scroll no-scroll pb-[60px]">
+                <div className="flex flex-col gap-y-4 overflow-y-scroll no-scroll pb-[60px]">
                   <div className="flex gap-x-2 items-center justify-between">
                     {(!user || user?.role !== "default") && (
                       <button
@@ -175,9 +175,6 @@ export function SidebarMobileHeader() {
                   </div>
                   <ActiveWorkspaces />
                 </div>
-              </div>
-              <div className="z-99 absolute bottom-0 left-0 right-0 pt-2 pb-6 rounded-br-[26px] bg-sidebar bg-opacity-80 backdrop-filter backdrop-blur-md">
-                <Footer />
               </div>
             </div>
           </div>
