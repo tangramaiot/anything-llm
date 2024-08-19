@@ -155,27 +155,27 @@ function SelectedFeatureComponent({ feature, settings, refresh }) {
   ) : null;
 }
 
+function acceptTos(e) {
+  e.preventDefault();
+
+  window.localStorage.setItem(
+    "anythingllm_tos_experimental_feature_set",
+    "accepted"
+  );
+  showToast(
+    "Experimental Feature set enabled. Reloading the page.",
+    "success"
+  );
+  setTimeout(() => {
+    window.location.reload();
+  }, 2_500);
+  return;
+}
+
 function FeatureVerification({ children }) {
   if (
     !window.localStorage.getItem("anythingllm_tos_experimental_feature_set")
   ) {
-    function acceptTos(e) {
-      e.preventDefault();
-
-      window.localStorage.setItem(
-        "anythingllm_tos_experimental_feature_set",
-        "accepted"
-      );
-      showToast(
-        "Experimental Feature set enabled. Reloading the page.",
-        "success"
-      );
-      setTimeout(() => {
-        window.location.reload();
-      }, 2_500);
-      return;
-    }
-
     return (
       <>
         <ModalWrapper isOpen={true}>
