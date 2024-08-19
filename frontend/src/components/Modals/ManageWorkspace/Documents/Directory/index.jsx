@@ -12,6 +12,7 @@ import { useModal } from "@/hooks/useModal";
 import NewFolderModal from "./NewFolderModal";
 import debounce from "lodash.debounce";
 import { filterFileSearchResults } from "./utils";
+import { useTranslation } from "react-i18next";
 
 function Directory({
   files,
@@ -35,6 +36,7 @@ function Directory({
     openModal: openFolderModal,
     closeModal: closeFolderModal,
   } = useModal();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setAmountSelected(Object.keys(selectedItems).length);
@@ -173,10 +175,10 @@ function Directory({
   const filteredFiles = filterFileSearchResults(files, searchTerm);
   return (
     <div className="px-8 pb-8">
-      <div className="flex flex-col gap-y-6">
-        <div className="flex items-center justify-between w-[560px] px-5 relative">
-          <h3 className="text-white text-base font-bold">My Documents</h3>
-          <div className="relative">
+      <div className="flex flex-col gap-y-2">
+        <div className="flex items-center justify-between w-[560px] relative">
+          <h3 className="text-white text-base font-bold">{t("workspace-knowledge-management.sharedKnowledge")}</h3>
+          {/* <div className="relative">
             <input
               type="search"
               placeholder="Search for document"
@@ -197,15 +199,15 @@ function Directory({
             <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
               New Folder
             </div>
-          </button>
+          </button> */}
         </div>
 
-        <div className="relative w-[560px] h-[310px] bg-zinc-900 rounded-2xl overflow-hidden">
+        <div className="relative w-[560px] h-[210px] bg-zinc-900 rounded-2xl overflow-hidden">
           <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900">
-            <p className="col-span-6">Name</p>
+            <p className="col-span-6">{t("workspace-knowledge-management.table.column.name")}</p>
           </div>
 
-          <div className="overflow-y-auto h-full pt-8">
+          <div className="h-full pt-8">
             {loading ? (
               <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
                 <PreLoader />
@@ -214,27 +216,30 @@ function Directory({
                 </p>
               </div>
             ) : filteredFiles.length > 0 ? (
-              filteredFiles.map(
-                (item, index) =>
-                  item.type === "folder" && (
-                    <FolderRow
-                      key={index}
-                      item={item}
-                      selected={isSelected(
-                        item.id,
-                        item.type === "folder" ? item : null
-                      )}
-                      onRowClick={() => toggleSelection(item)}
-                      toggleSelection={toggleSelection}
-                      isSelected={isSelected}
-                      autoExpanded={index === 0}
-                    />
+              <div className="overflow-y-auto h-full">
+                {filteredFiles.map(
+                  (item, index) =>
+                    item.type === "folder" && (
+                      <FolderRow
+                        key={index}
+                        item={item}
+                        selected={isSelected(
+                          item.id,
+                          item.type === "folder" ? item : null
+                        )}
+                        onRowClick={() => toggleSelection(item)}
+                        toggleSelection={toggleSelection}
+                        isSelected={isSelected}
+                        autoExpanded={index === 0}
+                      />
+                    )
                   )
-              )
+                }
+              </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <p className="text-white text-opacity-40 text-sm font-medium">
-                  No Documents
+                  {t("workspace-knowledge-management.table.noDocumentsFound")}
                 </p>
               </div>
             )}

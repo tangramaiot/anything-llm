@@ -67,7 +67,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
       <div className="backdrop h-full w-full absolute top-0 z-10" />
-      <div className="absolute max-h-full w-fit transition duration-300 z-20 md:overflow-y-auto py-10">
+      <div className="absolute max-h-full w-fit transition duration-300 z-20 py-10">
         <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
           <div className="flex items-start justify-between p-2 rounded-t border-gray-500/50 relative">
             <button
@@ -79,18 +79,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
             </button>
           </div>
 
-          {user?.role !== "default" && (
-            <ModalTabSwitcher
-              selectedTab={selectedTab}
-              setSelectedTab={setSelectedTab}
-            />
-          )}
-
-          {selectedTab === "documents" ? (
-            <DocumentSettings workspace={workspace} systemSettings={settings} />
-          ) : (
-            <DataConnectors workspace={workspace} systemSettings={settings} />
-          )}
+          <DocumentSettings workspace={workspace} systemSettings={settings} />
         </div>
       </div>
     </div>
@@ -99,34 +88,6 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
 
 export default memo(ManageWorkspace);
 
-const ModalTabSwitcher = ({ selectedTab, setSelectedTab }) => {
-  return (
-    <div className="w-full flex justify-center z-10 relative">
-      <div className="gap-x-2 flex justify-center -mt-[68px] mb-10 bg-sidebar-button p-1 rounded-xl shadow border-2 border-slate-300/10 w-fit">
-        <button
-          onClick={() => setSelectedTab("documents")}
-          className={`px-4 py-2 rounded-[8px] font-semibold text-white hover:bg-switch-selected hover:bg-opacity-60 ${
-            selectedTab === "documents"
-              ? "bg-switch-selected shadow-md font-bold"
-              : "bg-sidebar-button text-white/20 font-medium hover:text-white"
-          }`}
-        >
-          Documents
-        </button>
-        <button
-          onClick={() => setSelectedTab("dataConnectors")}
-          className={`px-4 py-2 rounded-[8px] font-semibold text-white hover:bg-switch-selected hover:bg-opacity-60 ${
-            selectedTab === "dataConnectors"
-              ? "bg-switch-selected shadow-md font-bold"
-              : "bg-sidebar-button text-white/20 font-medium hover:text-white"
-          }`}
-        >
-          Data Connectors
-        </button>
-      </div>
-    </div>
-  );
-};
 export function useManageWorkspaceModal() {
   const { user } = useUser();
   const [showing, setShowing] = useState(false);

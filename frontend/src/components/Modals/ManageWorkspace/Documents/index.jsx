@@ -191,26 +191,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex upload-modal -mt-6 z-10 relative">
-      <Directory
-        files={availableDocs}
-        setFiles={setAvailableDocs}
-        loading={loading}
-        loadingMessage={loadingMessage}
-        setLoading={setLoading}
-        workspace={workspace}
-        fetchKeys={fetchKeys}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        updateWorkspace={updateWorkspace}
-        highlightWorkspace={highlightWorkspace}
-        setHighlightWorkspace={setHighlightWorkspace}
-        moveToWorkspace={moveSelectedItemsToWorkspace}
-        setLoadingMessage={setLoadingMessage}
-      />
-      <div className="upload-modal-arrow">
-        <ArrowsDownUp className="text-white text-base font-bold rotate-90 w-11 h-11" />
-      </div>
+    <div className="flex flex-col items-center -mt-6 z-10 relative ">
       <WorkspaceDirectory
         workspace={workspace}
         files={workspaceDocs}
@@ -225,6 +206,23 @@ export default function DocumentSettings({ workspace, systemSettings }) {
         embeddingCosts={embeddingsCost}
         movedItems={movedItems}
       />
+      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 my-4" />
+      <Directory
+      files={availableDocs}
+      setFiles={setAvailableDocs}
+      loading={loading}
+      loadingMessage={loadingMessage}
+      setLoading={setLoading}
+      workspace={workspace}
+      fetchKeys={fetchKeys}
+      selectedItems={selectedItems}
+      setSelectedItems={setSelectedItems}
+      updateWorkspace={updateWorkspace}
+      highlightWorkspace={highlightWorkspace}
+      setHighlightWorkspace={setHighlightWorkspace}
+      moveToWorkspace={moveSelectedItemsToWorkspace}
+      setLoadingMessage={setLoadingMessage}
+    />
     </div>
   );
 }

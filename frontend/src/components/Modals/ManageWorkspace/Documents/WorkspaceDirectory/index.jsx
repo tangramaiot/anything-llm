@@ -7,6 +7,7 @@ import { Eye, PushPin } from "@phosphor-icons/react";
 import { SEEN_DOC_PIN_ALERT, SEEN_WATCH_ALERT } from "@/utils/constants";
 import paths from "@/utils/paths";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function WorkspaceDirectory({
   workspace,
@@ -22,6 +23,8 @@ function WorkspaceDirectory({
   embeddingCosts,
   movedItems,
 }) {
+  const { t } = useTranslation();
+
   if (loading) {
     return (
       <div className="px-8">
@@ -30,7 +33,7 @@ function WorkspaceDirectory({
             {workspace.name}
           </h3>
         </div>
-        <div className="relative w-[560px] h-[445px] bg-zinc-900 rounded-2xl mt-5">
+        <div className="relative w-[560px] h-[210px] bg-zinc-900 rounded-2xl mt-5">
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8">
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
@@ -55,19 +58,19 @@ function WorkspaceDirectory({
           </h3>
         </div>
         <div
-          className={`relative w-[560px] h-[445px] bg-zinc-900 rounded-2xl mt-5 overflow-y-auto border-4 ${
+          className={`relative w-[560px] h-[210px] bg-zinc-900 rounded-2xl mt-5 border-4 ${
             highlightWorkspace ? "border-cyan-300/80" : "border-transparent"
           }`}
         >
           <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900 sticky top-0 z-10">
-            <p className="col-span-5">Name</p>
+            <p className="col-span-5">{t("workspace-knowledge-management.table.column.name")}</p>
             <p className="col-span-2" />
           </div>
           <div className="w-full h-full flex flex-col z-0">
             {Object.values(files.items).some(
               (folder) => folder.items.length > 0
             ) || movedItems.length > 0 ? (
-              <>
+              <div className="overflow-y-auto h-full">
                 {files.items.map((folder) =>
                   folder.items.map((item, index) => (
                     <WorkspaceFileRow
@@ -83,11 +86,11 @@ function WorkspaceDirectory({
                     />
                   ))
                 )}
-              </>
+              </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <p className="text-white text-opacity-40 text-sm font-medium">
-                  No Documents
+                <p className="text-white text-opacity-40 text-xm font-medium">
+                  {t("workspace-knowledge-management.table.noDocumentsFound")}
                 </p>
               </div>
             )}
