@@ -191,7 +191,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex flex-col items-center -mt-6 z-10 relative ">
+    <div className="flex flex-col items-center z-10">
       <WorkspaceDirectory
         workspace={workspace}
         files={workspaceDocs}
@@ -206,7 +206,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
         embeddingCosts={embeddingsCost}
         movedItems={movedItems}
       />
-      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 my-4" />
+      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 " />
       <Directory
       files={availableDocs}
       setFiles={setAvailableDocs}

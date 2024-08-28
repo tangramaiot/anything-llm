@@ -69,7 +69,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
       <div className="backdrop h-full w-full absolute top-0 z-10" />
       <div className="absolute max-h-full w-fit transition duration-300 z-20 py-10">
         <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
-          <div className="flex items-start justify-between p-2 rounded-t border-gray-500/50 relative">
+          <div className="absolute rounded-t border-gray-500/50 right-0">
             <button
               onClick={hideModal}
               type="button"
@@ -78,8 +78,9 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
               <X className="text-gray-300 text-lg" />
             </button>
           </div>
-
-          <DocumentSettings workspace={workspace} systemSettings={settings} />
+          <div className="mt-4">
+            <DocumentSettings workspace={workspace} systemSettings={settings} />
+          </div>
         </div>
       </div>
     </div>
