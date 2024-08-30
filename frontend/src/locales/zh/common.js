@@ -43,6 +43,8 @@ const TRANSLATIONS = {
 
   // Page Definitions
   login: {
+    account: "帳戶",
+    password: "密碼",
     "multi-user": {
       welcome: "歡迎！",
       "placeholder-username": "請輸入用戶名",
@@ -107,7 +109,7 @@ const TRANSLATIONS = {
 
   // Workspace Settings menu items
   "workspaces—settings": {
-    general: "通用設定",
+    general: "一般設定",
     chat: "聊天設定",
     vector: "向量資料庫",
     members: "成員",
@@ -157,7 +159,7 @@ const TRANSLATIONS = {
       body: "AnythingLLM 的好處",
     },
     pfp: {
-      title: "助理頭像",
+      title: "頭像",
       description: "為此工作區自訂助手的個人資料圖像。",
       image: "工作區圖像",
       remove: "移除工作區圖像",
@@ -171,6 +173,9 @@ const TRANSLATIONS = {
       "confirm-end":
         "工作區。這將刪除向量資料庫中的所有向量嵌入。\n\n原始源文件將保持不變。此操作是不可逆轉的。",
     },
+    cancel: "取消",
+    save: "儲存",
+    saving: "儲存中...",
   },
 
   // Chat Settings

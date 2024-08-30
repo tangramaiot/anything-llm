@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import SAIA from "./media/logo/saia_logo.png";
-import DefaultLoginLogo from "./media/illustrations/login-logo.svg";
+import DefaultLoginLogo from "./media/illustrations/login-logo.png";
 import System from "./models/system";
 
 export const LogoContext = createContext();

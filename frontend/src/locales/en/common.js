@@ -42,6 +42,8 @@ const TRANSLATIONS = {
 
   // Page Definitions
   login: {
+    account: "Account",
+    password: "Password",
     "multi-user": {
       welcome: "Welcome to",
       "placeholder-username": "Username",
@@ -156,6 +158,9 @@ const TRANSLATIONS = {
       "confirm-end":
         "workspace. This will remove all vector embeddings in your vector database.\n\nThe original source files will remain untouched. This action is irreversible.",
     },
+    cancel: "Cancel",
+    save: "Save",
+    saving: "Saving...",
   },
 
   // Chat Settings
