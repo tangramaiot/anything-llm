@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo, createContext } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Workspace from "@/models/workspace";
@@ -12,6 +12,7 @@ import {
   Robot,
   User,
   Wrench,
+  X,
 } from "@phosphor-icons/react";
 import paths from "@/utils/paths";
 import { Link } from "react-router-dom";
@@ -24,118 +25,110 @@ import WorkspaceAgentConfiguration from "./AgentConfig";
 import useUser from "@/hooks/useUser";
 import { useTranslation } from "react-i18next";
 
-const TABS = {
-  "general-appearance": GeneralAppearance,
-  "chat-settings": ChatSettings,
-  "vector-database": VectorDatabase,
-  members: Members,
-  "agent-config": WorkspaceAgentConfiguration,
-};
-
-export default function WorkspaceSettings() {
-  const { loading, requiresAuth, mode } = usePasswordModal();
-
-  if (loading) return <FullScreenLoader />;
-  if (requiresAuth !== false) {
-    return <>{requiresAuth !== null && <PasswordModal mode={mode} />}</>;
-  }
-
-  return <ShowWorkspaceChat />;
-}
-
-function ShowWorkspaceChat() {
-  const { t } = useTranslation();
-  const { slug, tab } = useParams();
+const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
   const { user } = useUser();
-  const [workspace, setWorkspace] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState(null);
+  const [tabContent, setTabContent] = useState(null);
+  const { t } = useTranslation();
 
+  const TABS = {
+    "general": <GeneralAppearance slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
+    "vector": <VectorDatabase slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
+  };
+  
   useEffect(() => {
-    async function getWorkspace() {
-      if (!slug) return;
-      const _workspace = await Workspace.bySlug(slug);
-      if (!_workspace) {
-        setLoading(false);
-        return;
-      }
-
-      const suggestedMessages = await Workspace.getSuggestedMessages(slug);
-      setWorkspace({
-        ..._workspace,
-        suggestedMessages,
-      });
-      setLoading(false);
+    async function defaultTab() {
+      setTabContent(TABS["general"]);
+      setTitle(t("workspaces—settings.general"));
     }
-    getWorkspace();
-  }, [slug, tab]);
+    defaultTab();
+  }, [])
 
-  if (loading) return <FullScreenLoader />;
-
-  const TabContent = TABS[tab];
   return (
-    <div className="w-screen h-screen overflow-hidden bg-sidebar flex">
-      {!isMobile && <Sidebar />}
-      <div
-        style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
-        className="transition-all duration-500 relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-main-gradient w-full h-full overflow-y-scroll border-2 border-outline"
-      >
-        <div className="flex gap-x-10 pt-6 pb-4 ml-16 mr-8 border-b-2 border-white border-opacity-10">
-          <Link
-            to={paths.workspace.chat(slug)}
-            className="absolute top-2 left-2 md:top-4 md:left-4 transition-all duration-300 p-2 rounded-full text-white bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border z-10"
+    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
+      <div className="backdrop h-full w-full absolute top-0 z-10" />
+      <div className="absolute w-[60%] transition duration-300 z-20">
+        <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
+          <div
+            className="flex transition-all duration-500 relative md:rounded-[16px] bg-main-gradient w-full h-full py-2"
           >
-            <ArrowUUpLeft className="h-5 w-5" weight="fill" />
-          </Link>
-          <TabItem
-            title={t("workspaces—settings.general")}
-            icon={<Wrench className="h-6 w-6" />}
-            to={paths.workspace.settings.generalAppearance(slug)}
-          />
-          <TabItem
-            title={t("workspaces—settings.chat")}
-            icon={<ChatText className="h-6 w-6" />}
-            to={paths.workspace.settings.chatSettings(slug)}
-          />
-          <TabItem
-            title={t("workspaces—settings.vector")}
-            icon={<Database className="h-6 w-6" />}
-            to={paths.workspace.settings.vectorDatabase(slug)}
-          />
-          <TabItem
-            title={t("workspaces—settings.members")}
-            icon={<User className="h-6 w-6" />}
-            to={paths.workspace.settings.members(slug)}
-            visible={["admin", "manager"].includes(user?.role)}
-          />
-          <TabItem
-            title={t("workspaces—settings.agent")}
-            icon={<Robot className="h-6 w-6" />}
-            to={paths.workspace.settings.agentConfig(slug)}
-          />
-        </div>
-        <div className="px-16 py-6">
-          <TabContent slug={slug} workspace={workspace} />
+            <button
+              onClick={hideSettings}
+              type="button"
+              className="absolute right-2 z-50 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
+            >
+              <X className="text-gray-300 text-lg" />
+            </button>
+
+            <div className="flex flex-col w-full px-4 py-4 gap-y-4">
+
+              <div className="flex justify-center text-lm text-white/60">
+                {title}
+              </div>
+
+              <div className="border border-slate-300/30"></div>
+
+              <div className="flex">
+                <div className="flex flex-col flex-1 w-1/5 gap-y-4">
+                  <TabItem
+                    index="general"
+                    icon={<Wrench className="h-6 w-6" />}
+                    setTitle={setTitle}
+                    setTabContent={() => setTabContent(TABS["general"])}
+                  />
+                  <TabItem
+                    index="vector"
+                    icon={<Database className="h-6 w-6" />}
+                    setTitle={setTitle}
+                    setTabContent={() => setTabContent(TABS["vector"])}
+                  />
+                </div>
+                <div className="flex-2 w-4/5">
+                  {tabContent}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function TabItem({ title, icon, to, visible = true }) {
-  if (!visible) return null;
+function TabItem({ index, icon, setTitle, setTabContent }) {
+  const { t } = useTranslation();
   return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        `${
-          isActive
-            ? "text-sky-400 pb-4 border-b-[4px] -mb-[19px] border-sky-400"
-            : "text-white/60 hover:text-sky-400"
-        } ` + " flex gap-x-2 items-center font-medium"
-      }
-    >
-      {icon}
-      <div>{title}</div>
-    </NavLink>
+    <>
+      <button
+        onClick={() => {
+          setTitle(t("workspaces—settings."+index));
+          setTabContent();
+          }
+        }
+        type="button"
+        className="flex gap-x-2 items-center font-medium text-white/60 hover:text-sky-400"
+      >
+        {icon}
+        <div>{t("workspaces—settings."+index)}</div>
+      </button>
+    </>
   );
+}
+export default memo(WorkspaceSettings);
+
+export function useWorkspaceSettings() {
+  const { user } = useUser();
+  const [showing_settings, setShowingSettings] = useState(false);
+
+  const showSettings = () => {
+    if (user?.role !== "default") {
+      setShowingSettings(true);
+    }
+  };
+
+  const hideSettings = () => {
+    setShowingSettings(false);
+  };
+
+  return { showing_settings, showSettings, hideSettings };
 }

@@ -50,17 +50,17 @@ export default function ChatSettings({ workspace }) {
         ref={formEl}
         onSubmit={handleUpdate}
         id="chat-settings-form"
-        className="w-1/2 flex flex-col gap-y-6"
+        className="flex flex-col gap-y-6"
       >
-        <WorkspaceLLMSelection
+        {/* <WorkspaceLLMSelection
           settings={settings}
           workspace={workspace}
           setHasChanges={setHasChanges}
-        />
-        <ChatModeSelection
+        /> */}
+        {/* <ChatModeSelection
           workspace={workspace}
           setHasChanges={setHasChanges}
-        />
+        /> */}
         <ChatHistorySettings
           workspace={workspace}
           setHasChanges={setHasChanges}

@@ -5,6 +5,9 @@ import Workspace from "@/models/workspace";
 import ManageWorkspace, {
   useManageWorkspaceModal,
 } from "../../Modals/ManageWorkspace";
+import WorkspaceSettings, {
+  useWorkspaceSettings,
+} from "../../../pages/WorkspaceSettings";
 import paths from "@/utils/paths";
 import { useParams, useNavigate } from "react-router-dom";
 import { GearSix, Database, DotsThree, PencilSimple, Plus } from "@phosphor-icons/react";
@@ -24,6 +27,7 @@ export default function ActiveWorkspaces() {
   const [gearHover, setGearHover] = useState({});
   const [uploadHover, setUploadHover] = useState({});
   const { showing, showModal, hideModal } = useManageWorkspaceModal();
+  const { showing_settings, showSettings, hideSettings } = useWorkspaceSettings();
   const { user } = useUser();
   const isInWorkspaceSettings = !!useMatch("/workspace/:slug/settings/:tab");
   const navigate = useNavigate();
@@ -147,6 +151,7 @@ export default function ActiveWorkspaces() {
                             workspace={workspace}
                             setSelectedWs={setSelectedWs}
                             showModal={showModal}
+                            showSettings={showSettings}
                             close={() => setShowOptions(false)}
                           />
                         )}
@@ -167,11 +172,18 @@ export default function ActiveWorkspaces() {
           providedSlug={selectedWs ? selectedWs.slug : null}
         />
       )}
+      {showing_settings && (
+        <WorkspaceSettings
+          hideSettings={hideSettings}
+          slug={slug}
+          workspace={workspaces.filter(workspace => workspace.slug === slug)[0]}
+        />
+      )}
     </div>
   );
 }
 
-function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, close }) {
+function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSettings, close }) {
   const { t } = useTranslation();
   const menuRef = useRef(null);
 
@@ -247,7 +259,10 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, close 
         <p className="text-sm">{t("workspace-menu.new-chart")}</p>
       </button>
       <button
-        // onClick={renameThread}
+        onClick={(e) => {
+          e.preventDefault();
+          showSettings();
+        }}
         type="button"
         className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
       >

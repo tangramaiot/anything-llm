@@ -46,16 +46,13 @@ export default function WorkspacePfp({ workspace, slug }) {
   };
 
   return (
-    <div className="mt-6">
+    <div>
       <div className="flex flex-col">
         <label className="block input-label">{t("general.pfp.title")}</label>
-        <p className="text-white text-opacity-60 text-xs font-medium py-1.5">
-          {t("general.pfp.description")}
-        </p>
       </div>
       <div className="flex flex-col md:flex-row items-center gap-8">
         <div className="flex flex-col items-center">
-          <label className="w-36 h-36 flex flex-col items-center justify-center bg-zinc-900/50 transition-all duration-300 rounded-full mt-8 border-2 border-dashed border-white border-opacity-60 cursor-pointer hover:opacity-60">
+          <label className="w-28 h-28 flex flex-col items-center justify-center bg-zinc-900/50 transition-all duration-300 rounded-full mt-8 border-2 border-dashed border-white border-opacity-60 cursor-pointer hover:opacity-60">
             <input
               id="workspace-pfp-upload"
               type="file"
@@ -67,17 +64,11 @@ export default function WorkspacePfp({ workspace, slug }) {
               <img
                 src={pfp}
                 alt="User profile picture"
-                className="w-36 h-36 rounded-full object-cover bg-white"
+                className="w-28 h-28 rounded-full object-cover bg-white"
               />
             ) : (
               <div className="flex flex-col items-center justify-center p-3">
                 <Plus className="w-8 h-8 text-white/80 m-2" />
-                <span className="text-white text-opacity-80 text-xs font-semibold">
-                  {t("general.pfp.image")}
-                </span>
-                <span className="text-white text-opacity-60 text-xs">
-                  800 x 800
-                </span>
               </div>
             )}
           </label>

@@ -4,7 +4,6 @@ import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
 import { isMobile } from "react-device-detect";
-import { SidebarMobileHeader } from "../../Sidebar";
 import { useParams, useLocation } from "react-router-dom";
 import { v4 } from "uuid";
 import handleSocketResponse, {
@@ -24,11 +23,15 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   const preSendPrompt = location.state?.preSendPrompt;
   
   useEffect(() => {
-    async function setHistory() {
+    if ( chatHistory.length == 0 && ( !!preSendPrompt ) ) {
+      sendCommand(preSendPrompt, true);
+      return
+    }
+    
+    if (knownHistory.length > 0) {
       setChatHistory(knownHistory);
     }
-    setHistory();
-  }, [knownHistory]);
+  }, [knownHistory, preSendPrompt]);
 
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
@@ -236,22 +239,12 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     }
     handleWSS();
   }, [socketId]);
-
-  
-  useEffect(() => {
-    if ( chatHistory.length > 0 || !preSendPrompt || preSendPrompt === "") return;
-
-    sendCommand(preSendPrompt, true);
-
-  }, [preSendPrompt]);
-
-
   
   return (
     <div
-      className="transition-all duration-500 flex flex-col flex-grow md:rounded-[16px] w-full h-full"
+      className="transition-all duration-500 flex flex-col md:rounded-[16px] w-full h-full"
     >
-      <div className="basic-[80%] h-full">
+      <div className="h-full mt-14">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
@@ -260,7 +253,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
       </div>
-      <div className="basic-[20%]"> 
+      <div > 
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}
