@@ -46,19 +46,6 @@ export default function Sidebar() {
           <div className="flex-grow flex flex-col min-w-[235px]">
             <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
               <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
-                <div className="flex gap-x-2 items-center justify-between">
-                  {(!user || user?.role !== "default") && (
-                    <button
-                      onClick={showNewWsModal}
-                      className="flex flex-grow w-[75%] h-[44px] gap-x-3 py-[12px] px-[20px] mb-2 bg-white rounded-[60px] text-sidebar justify-start items-center hover:bg-opacity-80 transition-all duration-300"
-                    >
-                      <Plus size={18} weight="bold" />
-                      <p className="text-sidebar text-sm font-semibold">
-                        {t("new-workspace.title")}
-                      </p>
-                    </button>
-                  )}
-                </div>
                 <ActiveWorkspaces />
               </div>
             </div>
