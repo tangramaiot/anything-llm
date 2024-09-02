@@ -24,6 +24,11 @@ const { workspaceThreadEndpoints } = require("./endpoints/workspaceThreads");
 const { documentEndpoints } = require("./endpoints/document");
 const { agentWebsocket } = require("./endpoints/agentWebsocket");
 const { experimentalEndpoints } = require("./endpoints/experimental");
+const { updateENV } = require("./utils/helpers/updateENV");
+const { ROLES } = require("./utils/middleware/multiUserProtected");
+const { SystemSettings } = require("./models/systemSettings");
+const { User } = require("./models/user");
+const { log } = require("console");
 const app = express();
 const apiRouter = express.Router();
 const FILE_LIMIT = "3GB";
@@ -43,6 +48,35 @@ if (!!process.env.ENABLE_HTTPS) {
 } else {
   require("@mintplex-labs/express-ws").default(app); // load WebSockets in non-SSL mode.
 }
+
+// CREATE ADMIN USER
+if (!!process.env.ADMIN && !!process.env.ADMIN_PWD) {
+  async function createAdmin() {
+    const multiUserMode = await SystemSettings.isMultiUserMode();
+    log(`Multi-user mode: ${multiUserMode} - ${process.env.ADMIN} - ${process.env.ADMIN_PWD}`);
+    if (!multiUserMode) {
+      await User.create({
+        username: process.env.ADMIN,
+        password: process.env.ADMIN_PWD,
+        role: ROLES.admin,
+      });
+      await SystemSettings._updateSettings({
+        multi_user_mode: true,
+        limit_user_messages: false,
+        message_limit: 25,
+      });
+
+      await updateENV(
+        {
+          JWTSecret: process.env.JWT_SECRET || v4(),
+        },
+        true
+      );
+    }
+  }
+  createAdmin();
+}
+
 
 app.use("/api", apiRouter);
 systemEndpoints(apiRouter);
