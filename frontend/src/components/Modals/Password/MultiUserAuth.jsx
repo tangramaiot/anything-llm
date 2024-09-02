@@ -285,7 +285,7 @@ export default function MultiUserAuth() {
           <div className="flex items-start justify-between pt-11 pb-9 rounded-t">
             <div className="flex items-center flex-col gap-y-4">
               <div className="flex gap-x-1">
-                <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent">
+                <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r text-white bg-clip-text text-transparent">
                   {"Login"}
                 </p>
               </div>
