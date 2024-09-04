@@ -1,10 +1,10 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+// import Header from "../components/Header";
+// import Footer from "../components/Footer";
 
 export default function Contact() {
   return (
     <div className="text-black">
-      <Header />
+      {/* <Header /> */}
       <div className="flex flex-col justify-center mx-auto mt-52 text-center max-w-2x1">
         <h1 className="text-3xl font-bold tracking-tight text-black md:text-5xl">
           404 – Unavailable
@@ -18,7 +18,7 @@ export default function Contact() {
         </a>
       </div>
       <div className="mt-64"></div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
