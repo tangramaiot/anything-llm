@@ -17,6 +17,7 @@ import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
 import { Link, useMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { PROMPT_INPUT_EVENT } from "../../WorkspaceChat/FrontContainer";
 
 export default function ActiveWorkspaces() {
   const { slug } = useParams();
@@ -160,9 +161,11 @@ export default function ActiveWorkspaces() {
                   </div>
                 </a>
               </div>
-              {isActive && (
-                <ThreadContainer workspace={workspace} isActive={isActive} />
-              )}
+              <div className="py-1">
+                {isActive && (
+                  <ThreadContainer workspace={workspace} isActive={isActive} />
+                )}
+              </div>
             </div>
         );
       })}
@@ -251,7 +254,12 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
       className="absolute w-fit z-[20] right-[10px] bg-white rounded-lg p-1"
     >
       <button
-        // onClick={renameThread}
+        onClick={() => {
+          window.dispatchEvent(
+            new CustomEvent(PROMPT_INPUT_EVENT, { detail: "" })
+          );
+          close();
+        }}
         type="button"
         className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
       >
