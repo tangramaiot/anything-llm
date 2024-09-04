@@ -248,12 +248,12 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
   return (
     <div
       ref={menuRef}
-      className="absolute w-fit z-[20] right-[10px] bg-zinc-900 rounded-lg p-1"
+      className="absolute w-fit z-[20] right-[10px] bg-white rounded-lg p-1"
     >
       <button
         // onClick={renameThread}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
       >
         <Plus size={18} />
         <p className="text-sm">{t("workspace-menu.new-chart")}</p>
@@ -264,7 +264,7 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           showSettings();
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
       >
         <GearSix size={18} />
         <p className="text-sm">{t("workspace-menu.settings")}</p>
@@ -276,7 +276,7 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           showModal();
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-slate-300"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
       >
         <Database size={18} />
         <p className="text-sm">{t("workspace-menu.upload-documentation")}</p>

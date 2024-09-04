@@ -20,9 +20,9 @@ export default function Main() {
   return (
     <div className="w-screen h-screen overflow-hidden bg-primary flex">
       {!isMobile && <Sidebar />} 
-      {/* <div className="absolute top-3 right-4 md:top-9 md:right-10 w-fit h-fit z-99">
+      <div className="absolute top-3 md:top-6 md:right-10 w-full h-fit z-99">
         <FunctionalMenu />
-      </div> */}
+      </div>
       <div className="transition-all duration-500 md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] w-screen border-2 border-outline bg-chat-gradient">
         <Outlet />
       </div>

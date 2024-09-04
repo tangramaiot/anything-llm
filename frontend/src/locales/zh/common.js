@@ -67,6 +67,8 @@ const TRANSLATIONS = {
     },
   },
 
+  logout: "登出",
+
   welcomeMessage: {
     part1:
       "歡迎使用 AnythingLLM，這是由 Mintplex Labs 開發的開源 AI 工具，可以將任何東西轉換為您可以查詢和聊天的訓練有素的聊天機器人。AnythingLLM 是一款 BYOK（自帶密鑰）軟體，因此除了您想使用的服務外，此軟體不收取訂閱費、費用或其他費用。",
