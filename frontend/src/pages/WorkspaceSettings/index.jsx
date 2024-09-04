@@ -33,6 +33,7 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
 
   const TABS = {
     "general": <GeneralAppearance slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
+    "chat": <ChatSettings slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
     "vector": <VectorDatabase slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
   };
   
@@ -75,6 +76,12 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
                     icon={<Wrench className="h-6 w-6" />}
                     setTitle={setTitle}
                     setTabContent={() => setTabContent(TABS["general"])}
+                  />
+                  <TabItem
+                    index="chat"
+                    icon={<ChatText className="h-6 w-6" />}
+                    setTitle={setTitle}
+                    setTabContent={() => setTabContent(TABS["chat"])}
                   />
                   <TabItem
                     index="vector"

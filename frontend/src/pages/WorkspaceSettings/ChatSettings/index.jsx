@@ -9,11 +9,13 @@ import ChatTemperatureSettings from "./ChatTemperatureSettings";
 import ChatModeSelection from "./ChatModeSelection";
 import WorkspaceLLMSelection from "./WorkspaceLLMSelection";
 import ChatQueryRefusalResponse from "./ChatQueryRefusalResponse";
+import { useTranslation } from "react-i18next";
 
-export default function ChatSettings({ workspace }) {
+export default function ChatSettings({ workspace, hideSettings }) {
   const [settings, setSettings] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
+  const { t } = useTranslation();
 
   const formEl = useRef(null);
   useEffect(() => {
@@ -69,24 +71,34 @@ export default function ChatSettings({ workspace }) {
           workspace={workspace}
           setHasChanges={setHasChanges}
         />
-        <ChatQueryRefusalResponse
+        {/* <ChatQueryRefusalResponse
           workspace={workspace}
           setHasChanges={setHasChanges}
-        />
+        /> */}
         <ChatTemperatureSettings
           settings={settings}
           workspace={workspace}
           setHasChanges={setHasChanges}
         />
-        {hasChanges && (
-          <button
-            type="submit"
-            form="chat-settings-form"
-            className="w-fit transition-all duration-300 border border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
-          >
-            {saving ? "Updating..." : "Update workspace"}
-          </button>
-        )}
+        <div className="border border-slate-300/30"></div>
+        <div className="flex justify-end">
+          <div className="flex gap-x-2">
+            <button
+              type="button"
+              onClick={hideSettings}
+              className="transition-all w-fit duration-300 px-5 py-2 rounded-3xl text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+            >
+              {t("general.cancel")}
+            </button>
+            <button
+              disabled={!hasChanges}
+              type="submit"
+              className="transition-all w-fit duration-300 px-5 py-2 rounded-3xl text-white text-sm items-center flex gap-x-2  hover:text-slate-800 bg-gradient-to-b from-[#7F56D9] to-[#B043F2]"
+            >
+              {saving ? t("general.saving") : t("general.save")}
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
