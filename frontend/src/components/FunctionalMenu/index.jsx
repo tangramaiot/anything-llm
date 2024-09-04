@@ -7,6 +7,7 @@ import { userFromStorage } from "@/utils/request";
 import paths from "@/utils/paths";
 import { AUTH_TIMESTAMP, AUTH_TOKEN, AUTH_USER } from "@/utils/constants";
 import { useTranslation } from "react-i18next";
+import Users from "../../pages/Admin/Users";
 
 export default function FunctionalMenu() {
     
@@ -15,6 +16,7 @@ export default function FunctionalMenu() {
     const menuRef = useRef();
     const buttonRef = useRef();
     const [showMenu, setShowMenu] = useState(false);
+    const [showUsers, setShowUsers] = useState(false);
     const {t} = useTranslation();
     
     const handleOpenAccountModal = () => {
@@ -66,24 +68,18 @@ export default function FunctionalMenu() {
               className="rounded-lg absolute top-14 right-12 justify-end bg-sidebar flex items-center-justify-center bg-white"
             >
               <div className="flex flex-col gap-2 p-2">
-                <button
-                    onClick={() => {
-                    }}
-                    type="button"
-                    className="text-black hover:bg-slate-500/20 hover:text-purple-500 text-left py-1.5 rounded-md flex gap-2"
-                  >
-                    <UsersThree className="w-6 h-6" weight="bold" />
-                    {t('settings.users')}
-                </button>
-                <button
-                    onClick={() => {
-                    }}
-                    type="button"
-                    className="text-black hover:bg-slate-500/20 hover:text-purple-500 text-left py-1.5 rounded-md flex gap-2"
-                  >
-                    <Database className="w-6 h-6" weight="bold" />
-                    {t('workspace-knowledge-management.sharedKnowledge')}
-                </button>
+                { user?.role !== "default" && (
+                  <button
+                      onClick={() => {
+                        setShowUsers(!showUsers);
+                      }}
+                      type="button"
+                      className="text-black hover:bg-slate-500/20 hover:text-purple-500 text-left py-1.5 rounded-md flex gap-2"
+                    >
+                      <UsersThree className="w-6 h-6" weight="bold" />
+                      {t('settings.users')}
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     window.localStorage.removeItem(AUTH_USER);
@@ -100,6 +96,9 @@ export default function FunctionalMenu() {
               </div>
             </div>
           )}
+        {showUsers && user?.role !== "default" && (
+          <Users closeUsers={() => setShowUsers(false)}/>
+        )}
         </div>
     );
 }

@@ -91,13 +91,15 @@ export default function UserRow({ currUser, user }) {
           )}
         </td>
       </tr>
-      <ModalWrapper isOpen={isOpen}>
-        <EditUserModal
-          currentUser={currUser}
-          user={user}
-          closeModal={closeModal}
-        />
-      </ModalWrapper>
+      {isOpen && (
+        <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
+          <EditUserModal
+            currentUser={currUser}
+            user={user}
+            closeModal={closeModal}
+          />
+        </div>
+      )}
     </>
   );
 }
