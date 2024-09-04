@@ -191,38 +191,42 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex flex-col items-center z-10">
-      <WorkspaceDirectory
-        workspace={workspace}
-        files={workspaceDocs}
-        highlightWorkspace={highlightWorkspace}
+    <div className="flex items-center z-10 h-full py-8">
+      <div className="flex flex-col gap-y-2 h-full justify-stretch items-stretch">
+        <Directory
+        files={availableDocs}
+        setFiles={setAvailableDocs}
         loading={loading}
         loadingMessage={loadingMessage}
-        setLoadingMessage={setLoadingMessage}
         setLoading={setLoading}
+        workspace={workspace}
         fetchKeys={fetchKeys}
-        hasChanges={hasChanges}
-        saveChanges={updateWorkspace}
-        embeddingCosts={embeddingsCost}
-        movedItems={movedItems}
-      />
-      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 " />
-      <Directory
-      files={availableDocs}
-      setFiles={setAvailableDocs}
-      loading={loading}
-      loadingMessage={loadingMessage}
-      setLoading={setLoading}
-      workspace={workspace}
-      fetchKeys={fetchKeys}
-      selectedItems={selectedItems}
-      setSelectedItems={setSelectedItems}
-      updateWorkspace={updateWorkspace}
-      highlightWorkspace={highlightWorkspace}
-      setHighlightWorkspace={setHighlightWorkspace}
-      moveToWorkspace={moveSelectedItemsToWorkspace}
-      setLoadingMessage={setLoadingMessage}
-    />
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        updateWorkspace={updateWorkspace}
+        highlightWorkspace={highlightWorkspace}
+        setHighlightWorkspace={setHighlightWorkspace}
+        moveToWorkspace={moveSelectedItemsToWorkspace}
+        setLoadingMessage={setLoadingMessage}
+        />
+      </div>
+      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 rotate-90" />
+      <div className="flex flex-col gap-y-2 h-full justify-stretch items-stretch">
+        <WorkspaceDirectory
+          workspace={workspace}
+          files={workspaceDocs}
+          highlightWorkspace={highlightWorkspace}
+          loading={loading}
+          loadingMessage={loadingMessage}
+          setLoadingMessage={setLoadingMessage}
+          setLoading={setLoading}
+          fetchKeys={fetchKeys}
+          hasChanges={hasChanges}
+          saveChanges={updateWorkspace}
+          embeddingCosts={embeddingsCost}
+          movedItems={movedItems}
+        />
+      </div>
     </div>
   );
 }

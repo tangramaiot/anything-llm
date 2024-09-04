@@ -56,7 +56,7 @@ function WorkspaceDirectory({
           {workspace.name}
         </h3>
         <div
-          className={`relative w-[560px] h-[390px] bg-zinc-900 rounded-2xl mt-1 border-4 ${
+          className={`relative w-[560px] h-[620px] bg-zinc-900 rounded-2xl mt-1 border-4 ${
             highlightWorkspace ? "border-cyan-300/80" : "border-transparent"
           }`}
         >
@@ -67,7 +67,7 @@ function WorkspaceDirectory({
             {Object.values(files.items).some(
               (folder) => folder.items.length > 0
             ) || movedItems.length > 0 ? (
-              <div className="mx-1 my-1 max-h-[340px] overflow-y-auto">
+              <div className="mx-1 my-1 max-h-[560px] overflow-y-auto">
                 {files.items.map((folder) =>
                   folder.items.map((item, index) => (
                     <WorkspaceFileRow

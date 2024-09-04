@@ -67,9 +67,9 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
       <div className="backdrop h-full w-full absolute top-0 z-10" />
-      <div className="absolute max-h-full w-fit transition duration-300 z-20 py-10">
-        <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
-          <div className="absolute rounded-t border-gray-500/50 right-0">
+      <div className="absolute h-full w-fit transition duration-300 z-20 py-10">
+        <div className="relative bg-main-gradient rounded-[12px] max-h-[80vh] shadow border-2 border-slate-300/10 h-full my-10">
+          <div className="absolute rounded-t border-gray-500/50 right-0 h-full">
             <button
               onClick={hideModal}
               type="button"
@@ -78,9 +78,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
               <X className="text-gray-300 text-lg" />
             </button>
           </div>
-          <div className="mt-4">
-            <DocumentSettings workspace={workspace} systemSettings={settings} />
-          </div>
+          <DocumentSettings workspace={workspace} systemSettings={settings} />
         </div>
       </div>
     </div>
