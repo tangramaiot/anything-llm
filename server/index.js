@@ -28,6 +28,7 @@ const { updateENV } = require("./utils/helpers/updateENV");
 const { ROLES } = require("./utils/middleware/multiUserProtected");
 const { SystemSettings } = require("./models/systemSettings");
 const { User } = require("./models/user");
+const { Workspace } = require("./models/workspace");
 const { log } = require("console");
 const app = express();
 const apiRouter = express.Router();
@@ -53,7 +54,6 @@ if (!!process.env.ENABLE_HTTPS) {
 if (!!process.env.ADMIN && !!process.env.ADMIN_PWD) {
   async function createAdmin() {
     const multiUserMode = await SystemSettings.isMultiUserMode();
-    log(`Multi-user mode: ${multiUserMode} - ${process.env.ADMIN} - ${process.env.ADMIN_PWD}`);
     if (!multiUserMode) {
       await User.create({
         username: process.env.ADMIN,
@@ -72,11 +72,14 @@ if (!!process.env.ADMIN && !!process.env.ADMIN_PWD) {
         },
         true
       );
+
+      // CREATE DEFAULT WORKSPACE
+      await Workspace.new("內部公司助理");
+      await Workspace.new("外部客服");
     }
   }
   createAdmin();
 }
-
 
 app.use("/api", apiRouter);
 systemEndpoints(apiRouter);
