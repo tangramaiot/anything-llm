@@ -29,7 +29,7 @@ export default function Members({ workspace }) {
       setLoading(false);
     }
     fetchData();
-  }, [workspace]);
+  }, [workspace, isOpen]);
 
   if (loading) {
     return (
@@ -46,46 +46,52 @@ export default function Members({ workspace }) {
   }
 
   return (
-    <div className="flex justify-between -mt-3">
-      <table className="w-full max-w-[700px] text-sm text-left rounded-lg">
-        <thead className="text-white text-opacity-80 text-xs leading-[18px] font-bold uppercase border-white border-b border-opacity-60">
-          <tr>
-            <th scope="col" className="px-6 py-3 rounded-tl-lg">
-              Username
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Role
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Date Added
-            </th>
-            <th scope="col" className="px-6 py-3 rounded-tr-lg">
-              {" "}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {workspaceUsers.length > 0 ? (
-            workspaceUsers.map((user, index) => (
-              <WorkspaceMemberRow key={index} user={user} />
-            ))
-          ) : (
+    <div className="flex">
+      <div className="flex w-5/6">
+        <table className="w-full text-sm text-left rounded-lg">
+          <thead className="text-white text-opacity-80 text-xs leading-[18px] font-bold uppercase border-white border-b border-opacity-60">
             <tr>
-              <td className="text-center py-4 text-white/80" colSpan="4">
-                No workspace members
-              </td>
+              <th scope="col" className="px-6 py-3 rounded-tl-lg">
+                Username
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Role
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Date Added
+              </th>
+              <th scope="col" className="px-6 py-3 rounded-tr-lg">
+                {" "}
+              </th>
             </tr>
-          )}
-        </tbody>
-      </table>
-      <CTAButton onClick={openModal}>Manage Users</CTAButton>
-      <ModalWrapper isOpen={isOpen}>
-        <AddMemberModal
-          closeModal={closeModal}
-          users={users}
-          workspace={adminWorkspace}
-        />
-      </ModalWrapper>
+          </thead>
+          <tbody>
+            {workspaceUsers.length > 0 ? (
+              workspaceUsers.map((user, index) => (
+                <WorkspaceMemberRow key={index} user={user} />
+              ))
+            ) : (
+              <tr>
+                <td className="text-center py-4 text-white/80" colSpan="4">
+                  No workspace members
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex w-1/6">
+        <CTAButton onClick={openModal}>Manage Users</CTAButton>
+        { isOpen && (
+          <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
+            <AddMemberModal
+              closeModal={closeModal}
+              users={users}
+              workspace={adminWorkspace}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

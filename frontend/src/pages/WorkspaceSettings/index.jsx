@@ -35,6 +35,7 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
     "general": <GeneralAppearance slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
     "chat": <ChatSettings slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
     "vector": <VectorDatabase slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
+    "members": <Members slug={slug} workspace={workspace} hideSettings={hideSettings}/>,
   };
   
   useEffect(() => {
@@ -88,6 +89,12 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
                     icon={<Database className="h-6 w-6" />}
                     setTitle={setTitle}
                     setTabContent={() => setTabContent(TABS["vector"])}
+                  />
+                  <TabItem
+                    index="members"
+                    icon={<User className="h-6 w-6" />}
+                    setTitle={setTitle}
+                    setTabContent={() => setTabContent(TABS["members"])}
                   />
                 </div>
                 <div className="flex-2 w-4/5">

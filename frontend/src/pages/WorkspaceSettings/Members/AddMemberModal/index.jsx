@@ -15,9 +15,7 @@ export default function AddMemberModal({ closeModal, workspace, users }) {
     );
     if (success) {
       showToast("Users updated successfully.", "success");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      closeModal();
     }
     showToast(error, "error");
   };
