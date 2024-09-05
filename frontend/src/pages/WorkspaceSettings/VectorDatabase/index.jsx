@@ -1,7 +1,7 @@
 import Workspace from "@/models/workspace";
 import showToast from "@/utils/toast";
 import { castToType } from "@/utils/types";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import VectorDBIdentifier from "./VectorDBIdentifier";
 import MaxContextSnippets from "./MaxContextSnippets";
 import DocumentSimilarityThreshold from "./DocumentSimilarityThreshold";
@@ -9,11 +9,20 @@ import ResetDatabase from "./ResetDatabase";
 import VectorCount from "./VectorCount";
 import { useTranslation } from "react-i18next";
 
-export default function VectorDatabase({ workspace, hideSettings }) {
+export default function VectorDatabase({ slug, hideSettings }) {
+  const [workspace, setWorkspace] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
   const formEl = useRef(null);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    async function fetchWorkspace() {
+      const workspace = await Workspace.bySlug(slug);
+      setWorkspace(workspace);
+    }
+    fetchWorkspace();
+  }, [slug]);
 
   const handleUpdate = async (e) => {
     setSaving(true);

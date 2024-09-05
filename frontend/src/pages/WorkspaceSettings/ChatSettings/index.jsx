@@ -11,7 +11,8 @@ import WorkspaceLLMSelection from "./WorkspaceLLMSelection";
 import ChatQueryRefusalResponse from "./ChatQueryRefusalResponse";
 import { useTranslation } from "react-i18next";
 
-export default function ChatSettings({ workspace, hideSettings }) {
+export default function ChatSettings({ slug, hideSettings }) {
+  const [workspace, setWorkspace] = useState(null);
   const [settings, setSettings] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -25,6 +26,14 @@ export default function ChatSettings({ workspace, hideSettings }) {
     }
     fetchSettings();
   }, []);
+
+  useEffect(() => {
+    async function fetchWorkspace() {
+      const workspace = await Workspace.bySlug(slug);
+      setWorkspace(workspace);
+    }
+    fetchWorkspace();
+  }, [slug]);
 
   const handleUpdate = async (e) => {
     setSaving(true);

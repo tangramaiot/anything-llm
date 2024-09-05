@@ -3,7 +3,6 @@ import { castToType } from "@/utils/types";
 import showToast from "@/utils/toast";
 import { useEffect, useRef, useState } from "react";
 import WorkspaceName from "./WorkspaceName";
-import ChatTemperatureSettings from "./ChatTemperatureSettings";
 import DeleteWorkspace from "./DeleteWorkspace";
 import WorkspacePfp from "./WorkspacePfp";
 import { useTranslation } from "react-i18next";
@@ -55,10 +54,6 @@ export default function GeneralInfo({ slug, hideSettings }) {
           <WorkspacePfp workspace={workspace} slug={slug} />
           <WorkspaceName
             key={workspace.slug}
-            workspace={workspace}
-            setHasChanges={setHasChanges}
-          />
-          <ChatTemperatureSettings
             workspace={workspace}
             setHasChanges={setHasChanges}
           />
