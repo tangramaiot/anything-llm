@@ -35,7 +35,7 @@ export default function Sidebar() {
           className="rounded max-h-[48px] object-contain"
         />
         <span className="text-2xl font-bold text-sidebar-text ml-2">
-          SAI-Assist
+          賽亞 (SAI-A)
         </span>
       </div>
       <div
