@@ -123,6 +123,22 @@ const TRANSLATIONS = {
     "upload-documentation": "Upload Documentation",
   },
 
+  "workspace-knowledge-management": {
+    menutitle: "Knowledge",
+    sharedKnowledge: "shared knowledge",
+    table: {
+      column: {
+        name: "name",
+        status: "status"
+      },
+      noDocumentsFound: "no documents found"
+    },
+    upload: {
+      action: "click or drag and drop",
+      description: "only support .docx, .txt, .pdf, max size 5MB"
+    }
+  },
+
   // General Appearance
   general: {
     vector: {
