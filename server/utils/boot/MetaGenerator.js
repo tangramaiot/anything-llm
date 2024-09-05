@@ -45,21 +45,21 @@ class MetaGenerator {
       {
         tag: "title",
         props: null,
-        content: "SAI Assist",
+        content: "賽亞 (SAI-A)",
       },
 
       {
         tag: "meta",
         props: {
           name: "title",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
       {
         tag: "meta",
         props: {
           description: "title",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
 
@@ -73,14 +73,14 @@ class MetaGenerator {
         tag: "meta",
         props: {
           property: "og:title",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
       {
         tag: "meta",
         props: {
           property: "og:description",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
       {
@@ -105,14 +105,14 @@ class MetaGenerator {
         tag: "meta",
         props: {
           property: "twitter:title",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
       {
         tag: "meta",
         props: {
           property: "twitter:description",
-          content: "SAI Assist",
+          content: "賽亞 (SAI-A)",
         },
       },
       {
@@ -191,7 +191,7 @@ class MetaGenerator {
           props: null,
           content:
             customTitle ??
-            "SAI Assist",
+            "賽亞 (SAI-A)",
         },
       ];
     }
