@@ -3,6 +3,7 @@ const { DocumentManager } = require("../DocumentManager");
 const { WorkspaceChats } = require("../../models/workspaceChats");
 const { getVectorDbClass, getLLMProvider } = require("../helpers");
 const { writeResponseChunk } = require("../helpers/chat/responses");
+const { EventLogs } = require("../../models/eventLogs");
 const { grepAgents } = require("./agents");
 const {
   grepCommand,
@@ -142,6 +143,14 @@ async function streamChatWithWorkspace(
           message: null,
         };
 
+  
+  await EventLogs.logEvent(
+    "vector_search",
+    vectorSearchResults.sources,
+    user?.id
+  );
+    
+
   // Failed similarity search if it was run at all and failed.
   if (!!vectorSearchResults.message) {
     writeResponseChunk(response, {
@@ -232,6 +241,13 @@ async function streamChatWithWorkspace(
       close: true,
       error: false,
     });
+    
+    await EventLogs.logEvent(
+      "llm_regular_completion",
+      messages,
+      user?.id
+    );
+
   } else {
     const stream = await LLMConnector.streamGetChatCompletion(messages, {
       temperature: workspace?.openAiTemp ?? LLMConnector.defaultTemp,
@@ -240,6 +256,11 @@ async function streamChatWithWorkspace(
       uuid,
       sources,
     });
+    await EventLogs.logEvent(
+      "llm_stream_completion",
+      messages,
+      user?.id
+    );
   }
 
   if (completeText?.length > 0) {
