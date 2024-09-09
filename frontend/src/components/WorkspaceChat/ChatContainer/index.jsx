@@ -28,10 +28,16 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
       return
     }
     
-    if (knownHistory.length > 0) {
+    if (knownHistory.length > 0 ) {
       setChatHistory(knownHistory);
     }
   }, [knownHistory, preSendPrompt]);
+
+  useEffect(() => {
+    if (threadSlug) {
+      setChatHistory([]);
+    }
+  }, [threadSlug]);
 
   // Maintain state of message from whatever is in PromptInput
   const handleMessageChange = (event) => {
