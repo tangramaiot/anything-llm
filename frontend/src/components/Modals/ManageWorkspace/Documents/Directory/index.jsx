@@ -176,13 +176,34 @@ function Directory({
   return (
     <div className="px-8 pb-8 w-full h-full">
       <div className="flex flex-col gap-y-2">
+        <div className="flex items-center gap-x-4">
           <h3 className="text-white text-base font-bold">{t("workspace-knowledge-management.sharedKnowledge")}</h3>
-
+          <MagnifyingGlass
+            size={14}
+            className="text-white"
+            weight="bold"
+          />
+          <input
+            type="search"
+            placeholder="Search for document"
+            onChange={handleSearch}
+            className="search-input bg-zinc-900 text-white placeholder-white/40 text-sm rounded-lg pl-2 pr-2.5 py-2 w-[250px] h-[32px]"
+          />
+          <button
+            className="flex items-center gap-x-2 cursor-pointer py-[7px] -mr-[14px] rounded-lg hover:bg-[#222628]/60 z-20 relative"
+            onClick={openFolderModal}
+          >
+            <Plus size={18} weight="bold" color="#D3D4D4" />
+            <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
+              New Folder
+            </div>
+          </button>
+        </div>
         <div className="relative w-[560px] h-[500px] max-h-[500px] bg-zinc-900 rounded-2xl overflow-hidden">
           <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900">
-            <p className="col-span-6">{t("workspace-knowledge-management.table.column.name")}</p>
+          <p className="col-span-6">{t("workspace-knowledge-management.table.column.name")}</p>
           </div>
-
+          
           <div className="h-full pt-8">
             {loading ? (
               <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
