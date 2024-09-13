@@ -105,8 +105,8 @@ const TRANSLATIONS = {
   },
 
   "new-workspace": {
-    title: "新代理",
-    placeholder: "我的代理",
+    title: "新建知識代理",
+    placeholder: "我的知識對話代理",
   },
 
   // Workspace Settings menu items

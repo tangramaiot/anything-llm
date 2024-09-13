@@ -104,8 +104,8 @@ const TRANSLATIONS = {
   },
 
   "new-workspace": {
-    title: "New Agent",
-    placeholder: "My Agent",
+    title: "New Knowledge Agent",
+    placeholder: "My Knowledge Agent",
   },
 
   // Workspace Settings menu items
