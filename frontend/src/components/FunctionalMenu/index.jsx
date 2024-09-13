@@ -40,7 +40,7 @@ export default function FunctionalMenu() {
       }
       return () => document.removeEventListener("mousedown", handleClose);
     }, [showMenu]);
-    
+        
     return (
         <div className="flex w-full h-auto mx-2 justify-end gap-2">
           <div>
@@ -53,14 +53,8 @@ export default function FunctionalMenu() {
                 <List className="w-6 h-6" weight="bold" />
             </button>
           </div>
-          <div>
-            <button
-                ref={buttonRef}
-                type="button"
-                className="transition-all duration-300 w-[48px] h-[48px] text-base font-semibold rounded-full flex items-center bg-sidebar-button justify-center text-white p-2 border-transparent border"
-            >
-                <UserDisplay />
-            </button>
+          <div className="transition-all duration-300 w-[48px] h-[48px] text-base font-semibold rounded-full flex items-center justify-center text-white p-2 border-transparent border bg-gray-500/30">
+            <UserDisplay />
           </div>
           {showMenu && (
             <div
