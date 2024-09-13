@@ -122,7 +122,15 @@ const TRANSLATIONS = {
   "workspace-menu": {
     "new-chart": "開始新對話",
     "settings": "詳細設定",
-    "upload-documentation": "上傳知識庫"
+    "upload-documentation": "上傳知識庫",
+    "delete": "刪除知識代理",
+  },
+
+  "delete-workspace": {
+    title: "請注意 !!!",
+    description: "確定要刪除此知識代理嗎？",
+    confirm: "確定",
+    cancel: "取消",
   },
 
   // Workspace Knownledge Management

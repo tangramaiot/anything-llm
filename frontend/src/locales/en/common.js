@@ -121,6 +121,14 @@ const TRANSLATIONS = {
     "new-chart": "Start New Chart",
     "settings": "Settings",
     "upload-documentation": "Upload Documentation",
+    "delete": "Delete Knowledge Agent",
+  },
+  
+  "delete-workspace": {
+    title: "Warning !!!",
+    description: "Are you sure you want to delete this agent?",
+    confirm: "Delete",
+    cancel: "cancel",
   },
 
   "workspace-knowledge-management": {

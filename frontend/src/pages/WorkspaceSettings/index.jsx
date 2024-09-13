@@ -1,32 +1,20 @@
 import React, { useEffect, useState, memo, createContext } from "react";
-import { useParams } from "react-router-dom";
-import Sidebar from "@/components/Sidebar";
-import Workspace from "@/models/workspace";
-import PasswordModal, { usePasswordModal } from "@/components/Modals/Password";
-import { isMobile } from "react-device-detect";
-import { FullScreenLoader } from "@/components/Preloader";
 import {
-  ArrowUUpLeft,
   ChatText,
   Database,
-  Robot,
   User,
   Wrench,
   X,
+  Trash,
 } from "@phosphor-icons/react";
-import paths from "@/utils/paths";
-import { Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import GeneralAppearance from "./GeneralAppearance";
 import ChatSettings from "./ChatSettings";
 import VectorDatabase from "./VectorDatabase";
 import Members from "./Members";
-import WorkspaceAgentConfiguration from "./AgentConfig";
 import useUser from "@/hooks/useUser";
 import { useTranslation } from "react-i18next";
 
 const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
-  const { user } = useUser();
   const [title, setTitle] = useState(null);
   const [tabContent, setTabContent] = useState(null);
   const { t } = useTranslation();

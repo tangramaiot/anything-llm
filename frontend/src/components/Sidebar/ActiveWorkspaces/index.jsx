@@ -10,14 +10,14 @@ import WorkspaceSettings, {
 } from "../../../pages/WorkspaceSettings";
 import paths from "@/utils/paths";
 import { useParams, useNavigate } from "react-router-dom";
-import { GearSix, Database, DotsThree, PencilSimple, Plus } from "@phosphor-icons/react";
+import { GearSix, Database, DotsThree, Trash, Plus, X, Check } from "@phosphor-icons/react";
 import AgentItem from "@/media/agents/agentitem.png";
 import truncate from "truncate";
 import useUser from "@/hooks/useUser";
 import ThreadContainer from "./ThreadContainer";
-import { Link, useMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PROMPT_INPUT_EVENT } from "../../WorkspaceChat/FrontContainer";
+import showToast from "@/utils/toast";
 
 export default function ActiveWorkspaces() {
   const { slug } = useParams();
@@ -28,12 +28,13 @@ export default function ActiveWorkspaces() {
   const [gearHover, setGearHover] = useState({});
   const [uploadHover, setUploadHover] = useState({});
   const { showing, showModal, hideModal } = useManageWorkspaceModal();
-  const { showing_settings, showSettings, hideSettings } = useWorkspaceSettings();
+  const { showingSettings, showSettings, hideSettings } = useWorkspaceSettings();
+  const [ showingDelete, showDelete] = useState(false);
   const { user } = useUser();
-  const isInWorkspaceSettings = !!useMatch("/workspace/:slug/settings/:tab");
   const navigate = useNavigate();
   const [showOptions, setShowOptions] = useState(false);
   const optionsContainer = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function getWorkspaces() {
@@ -42,7 +43,16 @@ export default function ActiveWorkspaces() {
       setWorkspaces(workspaces);
     }
     getWorkspaces();
+
+    // 在 component mount 時添加事件監聽
+    window.addEventListener("addWorkspace", getWorkspaces);
+
+    // 在 component unmount 時移除事件監聽，避免內存洩漏
+    return () => {
+      window.removeEventListener("addWorkspace", getWorkspaces);
+    };
   }, []);
+
   const handleMouseEnter = useCallback((workspaceId) => {
     setHoverStates((prev) => ({ ...prev, [workspaceId]: true }));
   }, []);
@@ -81,6 +91,18 @@ export default function ActiveWorkspaces() {
       </>
     );
   }
+
+  const deleteWorkspace = async () => {
+    const success = await Workspace.delete(slug);
+    showDelete(false);
+    if (!success) {
+      showToast("Workspace could not be deleted!", "error", { clear: true });
+      return;
+    }
+    const workspaces = await Workspace.all();
+    setLoading(false);
+    setWorkspaces(workspaces);
+  };
 
   return (
     <div role="list" aria-label="Workspaces" className="flex flex-col gap-y-2">
@@ -153,6 +175,7 @@ export default function ActiveWorkspaces() {
                             setSelectedWs={setSelectedWs}
                             showModal={showModal}
                             showSettings={showSettings}
+                            showDelete={showDelete}
                             close={() => setShowOptions(false)}
                           />
                         )}
@@ -175,18 +198,58 @@ export default function ActiveWorkspaces() {
           providedSlug={selectedWs ? selectedWs.slug : null}
         />
       )}
-      {showing_settings && (
+      {showingSettings && (
         <WorkspaceSettings
           hideSettings={hideSettings}
           slug={slug}
           workspace={workspaces.filter(workspace => workspace.slug === slug)[0]}
         />
       )}
+      {showingDelete && (
+        <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
+          <div className="backdrop h-full w-full absolute top-0 z-10" />
+          <div className="absolute transition duration-300 z-20">
+            <div className="relative bg-white rounded-lg w-[400px]">
+              <div
+                className="flex flex-col transition-all duration-500 relative py-5 px-5 gap-10"
+              >
+                <div className="flex flex-col gap-5">
+                  <p className="text-black text-lg flex justify-center font-extrabold">{t("delete-workspace.title")}</p>
+                  <p className="text-black text-lg flex justify-center font-medium">{t("delete-workspace.description")}</p>
+                </div>
+                <div className="flex justify-center gap-3">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      showDelete(false);
+                    }}
+                    type="button"
+                    className="rounded-md flex items-center justify-center p-2 bg-white border border-purple-600 text-purple-600 hover:text-purple-600/50 w-32 gap-2"
+                    >
+                    <X size={18} />
+                    <p className="text-xs">
+                    {t("delete-workspace.cancel")}</p>
+                  </button>
+                  <button
+                    onClick={deleteWorkspace}
+                    type="button"
+                    className="rounded-md flex items-center justify-center p-2 gap-2 bg-purple-600/40 hover:bg-purple-500 text-white w-32"
+                  >
+                    <Check size={18} />
+                    <p className="text-xs">
+                    {t("delete-workspace.confirm")}</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSettings, close }) {
+function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSettings, showDelete, close }) {
   const { t } = useTranslation();
   const menuRef = useRef(null);
 
@@ -288,6 +351,17 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
       >
         <Database size={18} />
         <p className="text-sm">{t("workspace-menu.upload-documentation")}</p>
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          showDelete(true);
+        }}
+        type="button"
+        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
+      >
+        <Trash size={18} />
+        <p className="text-sm">{t("workspace-menu.delete")}</p>
       </button>
     </div>
   );

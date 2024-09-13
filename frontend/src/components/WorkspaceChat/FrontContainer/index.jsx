@@ -43,44 +43,6 @@ export default function FrontContainer() {
       <span className="text-3xl font-bold text-white my-2"> {t("welcomeMessage.main")}  </span>
       <span className="text-lg text-white my-2"> {t("welcomeMessage.sub")} </span>
     </div>
-    <div className="flex items-center justify-center mt-20 px-4 ">
-      <button
-        ref={formRef}
-        type="submit"
-        className="flex flex-col items-center justify-around border border-white rounded-xl cursor-pointer text-white/60 hover:bg-gray-200/10 w-[234px] h-[126px] px-4 py-3 mx-6"
-        data-tooltip-id="send-prompt"
-        data-tooltip-content="Send prompt message to workspace"
-        aria-label="Send prompt message to workspace"
-      >
-        <MagnifyingGlass className="w-6 h-6 mb-2" weight="bold" />
-        <span className="text-lg text-white"> {t("welcomeMessage.function1.title")} </span>
-        <span className="text-sm text-white"> {t("welcomeMessage.function1.description")} </span>
-      </button>
-      <button
-        ref={formRef}
-        type="submit"
-        className="flex flex-col items-center justify-around border border-white rounded-xl cursor-pointer text-white/60 hover:bg-gray-200/10 w-[234px] h-[126px] px-4 py-3 mx-6"
-        data-tooltip-id="send-prompt"
-        data-tooltip-content="Send prompt message to workspace"
-        aria-label="Send prompt message to workspace"
-      >
-        <PencilSimpleLine className="w-6 h-6 mb-2" weight="bold" />
-        <span className="text-lg text-white"> {t("welcomeMessage.function2.title")} </span>
-        <span className="text-sm text-white "> {t("welcomeMessage.function2.description")} </span>
-      </button>
-      <button
-        ref={formRef}
-        type="submit"
-        className="flex flex-col items-center justify-around border border-white rounded-xl cursor-pointer text-white/60 hover:bg-gray-200/10 w-[234px] h-[126px] px-4 py-3 mx-6"
-        data-tooltip-id="send-prompt"
-        data-tooltip-content="Send prompt message to workspace"
-        aria-label="Send prompt message to workspace"
-      >
-        <Translate className="w-6 h-6 mb-2" weight="bold" />
-        <span className="text-lg text-white"> {t("welcomeMessage.function3.title")} </span>
-        <span className="text-sm text-white"> {t("welcomeMessage.function3.description")} </span>
-      </button>
-    </div>
     <div className="w-full fixed md:absolute bottom-0 left-0 z-10 md:z-0 flex">
       <form
         onSubmit={handleSubmit}
