@@ -469,6 +469,16 @@ const KEY_MAPPING = {
     envKey: "TTS_ELEVEN_LABS_VOICE_MODEL",
     checks: [],
   },
+
+  // ADMIN USER
+  ADMIN: {
+    envKey: "ADMIN",
+    checks: [],
+  },
+  ADMIN_PASSWORD: {
+    envKey: "ADMIN_PWD",
+    checks: [],
+  },
 };
 
 function isNotEmpty(input = "") {
