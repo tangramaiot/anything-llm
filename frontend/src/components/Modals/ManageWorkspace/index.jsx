@@ -89,7 +89,7 @@ export default memo(ManageWorkspace);
 
 export function useManageWorkspaceModal() {
   const { user } = useUser();
-  const [showing, setShowing] = useState(false);
+  const [showingModal, setShowing] = useState(false);
 
   const showModal = () => {
     if (user?.role !== "default") {
@@ -101,5 +101,5 @@ export function useManageWorkspaceModal() {
     setShowing(false);
   };
 
-  return { showing, showModal, hideModal };
+  return { showingModal, showModal, hideModal };
 }

@@ -27,7 +27,7 @@ export default function ActiveWorkspaces() {
   const [hoverStates, setHoverStates] = useState({});
   const [gearHover, setGearHover] = useState({});
   const [uploadHover, setUploadHover] = useState({});
-  const { showing, showModal, hideModal } = useManageWorkspaceModal();
+  const { showingModal, showModal, hideModal } = useManageWorkspaceModal();
   const { showingSettings, showSettings, hideSettings } = useWorkspaceSettings();
   const [ showingDelete, showDelete] = useState(false);
   const { user } = useUser();
@@ -192,7 +192,7 @@ export default function ActiveWorkspaces() {
             </div>
         );
       })}
-      {showing && (
+      {showingModal && (
         <ManageWorkspace
           hideModal={hideModal}
           providedSlug={selectedWs ? selectedWs.slug : null}
@@ -342,6 +342,7 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
       </button>
       <button
         onClick={(e) => {
+          console.log("delete workspace");
           e.preventDefault();
           setSelectedWs(workspace);
           showModal();

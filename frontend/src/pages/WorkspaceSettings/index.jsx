@@ -120,7 +120,7 @@ export default memo(WorkspaceSettings);
 
 export function useWorkspaceSettings() {
   const { user } = useUser();
-  const [showing_settings, setShowingSettings] = useState(false);
+  const [showingSettings, setShowingSettings] = useState(false);
 
   const showSettings = () => {
     if (user?.role !== "default") {
@@ -132,5 +132,5 @@ export function useWorkspaceSettings() {
     setShowingSettings(false);
   };
 
-  return { showing_settings, showSettings, hideSettings };
+  return { showingSettings, showSettings, hideSettings };
 }
