@@ -45,42 +45,35 @@ class MetaGenerator {
       {
         tag: "title",
         props: null,
-        content: "賽亞 (SAI-A)",
+        content: "賽亞 (SAI-A) standard",
       },
 
       {
         tag: "meta",
         props: {
           name: "title",
-          content: "賽亞 (SAI-A)",
+          content: "賽亞 (SAI-A) standard",
         },
       },
       {
         tag: "meta",
         props: {
           description: "title",
-          content: "賽亞 (SAI-A)",
+          content: "賽亞 (SAI-A) standard",
         },
-      },
-
-      // <!-- Facebook -->
-      { tag: "meta", props: { property: "og:type", content: "website" } },
-      {
-        tag: "meta",
-        props: { property: "og:url", content: "https://anythingllm.com" },
       },
       {
         tag: "meta",
         props: {
           property: "og:title",
-          content: "賽亞 (SAI-A)",
+          content: "賽亞 (SAI-A) standard",
         },
       },
       {
         tag: "meta",
         props: {
           property: "og:description",
-          content: "賽亞 (SAI-A)",
+          content: "賽亞 (SAI-A) standard",
         },
       },
       {
@@ -88,39 +81,7 @@ class MetaGenerator {
         props: {
           property: "og:image",
           content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
-        },
-      },
-
-      // <!-- Twitter -->
-      {
-        tag: "meta",
-        props: { property: "twitter:card", content: "summary_large_image" },
-      },
-      {
-        tag: "meta",
-        props: { property: "twitter:url", content: "https://anythingllm.com" },
-      },
-      {
-        tag: "meta",
-        props: {
-          property: "twitter:title",
-          content: "賽亞 (SAI-A)",
-        },
-      },
-      {
-        tag: "meta",
-        props: {
-          property: "twitter:description",
-          content: "賽亞 (SAI-A)",
-        },
-      },
-      {
-        tag: "meta",
-        props: {
-          property: "twitter:image",
-          content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
+            "https://www.netigate.com/images/logo_t.png",
         },
       },
 
