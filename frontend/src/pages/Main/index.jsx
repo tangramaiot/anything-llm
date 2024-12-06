@@ -5,7 +5,6 @@ import PasswordModal, { usePasswordModal } from "@/components/Modals/Password";
 import { isMobile } from "react-device-detect";
 import { FullScreenLoader } from "@/components/Preloader";
 import FunctionalMenu from "@/components/FunctionalMenu";
-import { FineTuningAlert } from "../FineTuning/Banner";
 import { Routes, Route, Outlet } from "react-router-dom";
 const WorkspaceChat = lazy(() => import("@/pages/WorkspaceChat"));
 
@@ -26,7 +25,6 @@ export default function Main() {
       <div className="transition-all duration-500 md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] w-screen border-2 border-outline bg-chat-gradient">
         <Outlet />
       </div>
-      <FineTuningAlert />
     </div>
   );
 }
