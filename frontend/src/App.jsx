@@ -67,146 +67,8 @@ const LiveDocumentSyncManage = lazy(
 const FineTuningWalkthrough = lazy(() => import("@/pages/FineTuning"));
 const PageNotFound = lazy(() => import("@/pages/404"));
 
-// export default function App() {
-//   return (
-//     <Suspense fallback={<FullScreenLoader />}>
-//       <ContextWrapper>
-//         <LogoProvider>
-//           <PfpProvider>
-//             <I18nextProvider i18n={i18n}>
-//               <Routes>
-//                 <Route path="/" element={<PrivateRoute Component={Main} />} />
-//                 <Route path="/login" element={<Login />} />
-//                 <Route
-//                   path="/workspace/:slug/settings/:tab"
-//                   element={<ManagerRoute Component={WorkspaceSettings} />}
-//                 />
-//                 <Route
-//                   path="/workspace/:slug"
-//                   element={<PrivateRoute Component={WorkspaceChat} />}
-//                 />
-//                 <Route
-//                   path="/workspace/:slug/t/:threadSlug"
-//                   element={<PrivateRoute Component={WorkspaceChat} />}
-//                 />
-//                 <Route path="/accept-invite/:code" element={<InvitePage />} />
-
-//                 {/* Admin */}
-//                 <Route
-//                   path="/settings/llm-preference"
-//                   element={<AdminRoute Component={GeneralLLMPreference} />}
-//                 />
-//                 <Route
-//                   path="/settings/transcription-preference"
-//                   element={
-//                     <AdminRoute Component={GeneralTranscriptionPreference} />
-//                   }
-//                 />
-//                 <Route
-//                   path="/settings/audio-preference"
-//                   element={<AdminRoute Component={GeneralAudioPreference} />}
-//                 />
-//                 <Route
-//                   path="/settings/embedding-preference"
-//                   element={
-//                     <AdminRoute Component={GeneralEmbeddingPreference} />
-//                   }
-//                 />
-//                 <Route
-//                   path="/settings/text-splitter-preference"
-//                   element={
-//                     <AdminRoute Component={EmbeddingTextSplitterPreference} />
-//                   }
-//                 />
-//                 <Route
-//                   path="/settings/vector-database"
-//                   element={<AdminRoute Component={GeneralVectorDatabase} />}
-//                 />
-//                 <Route
-//                   path="/settings/agents"
-//                   element={<AdminRoute Component={AdminAgents} />}
-//                 />
-//                 <Route
-//                   path="/settings/event-logs"
-//                   element={<AdminRoute Component={AdminLogs} />}
-//                 />
-//                 <Route
-//                   path="/settings/embed-config"
-//                   element={<AdminRoute Component={EmbedConfigSetup} />}
-//                 />
-//                 <Route
-//                   path="/settings/embed-chats"
-//                   element={<AdminRoute Component={EmbedChats} />}
-//                 />
-//                 {/* Manager */}
-//                 <Route
-//                   path="/settings/security"
-//                   element={<ManagerRoute Component={GeneralSecurity} />}
-//                 />
-//                 <Route
-//                   path="/settings/privacy"
-//                   element={<AdminRoute Component={PrivacyAndData} />}
-//                 />
-//                 <Route
-//                   path="/settings/appearance"
-//                   element={<ManagerRoute Component={GeneralAppearance} />}
-//                 />
-//                 <Route
-//                   path="/settings/beta-features"
-//                   element={<AdminRoute Component={ExperimentalFeatures} />}
-//                 />
-//                 <Route
-//                   path="/settings/api-keys"
-//                   element={<AdminRoute Component={GeneralApiKeys} />}
-//                 />
-//                 <Route
-//                   path="/settings/workspace-chats"
-//                   element={<ManagerRoute Component={GeneralChats} />}
-//                 />
-//                 <Route
-//                   path="/settings/system-preferences"
-//                   element={<ManagerRoute Component={AdminSystem} />}
-//                 />
-//                 <Route
-//                   path="/settings/invites"
-//                   element={<ManagerRoute Component={AdminInvites} />}
-//                 />
-//                 <Route
-//                   path="/settings/users"
-//                   element={<ManagerRoute Component={AdminUsers} />}
-//                 />
-//                 <Route
-//                   path="/settings/workspaces"
-//                   element={<ManagerRoute Component={AdminWorkspaces} />}
-//                 />
-//                 {/* Onboarding Flow */}
-//                 <Route path="/onboarding" element={<OnboardingFlow />} />
-//                 <Route path="/onboarding/:step" element={<OnboardingFlow />} />
-
-//                 {/* Experimental feature pages  */}
-//                 {/* Live Document Sync feature */}
-//                 <Route
-//                   path="/settings/beta-features/live-document-sync/manage"
-//                   element={<AdminRoute Component={LiveDocumentSyncManage} />}
-//                 />
-
-//                 <Route
-//                   path="/fine-tuning"
-//                   element={<AdminRoute Component={FineTuningWalkthrough} />}
-//                 />
-//               </Routes>
-//               <ToastContainer />
-//             </I18nextProvider>
-//           </PfpProvider>
-//         </LogoProvider>
-//       </ContextWrapper>
-//     </Suspense>
-//   );
-// }
-
 export default function App() {
   return (
-    // <Suspense fallback={<FullScreenLoader />}>
       <ContextWrapper>
         <LogoProvider>
           <PfpProvider>
@@ -217,13 +79,11 @@ export default function App() {
                   <Route path="/workspace/:slug/t/:threadSlug" element={<WorkspaceChat />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
-                {/* <Route path="*" element={<PageNotFound />} /> */}
               </Routes>
               <ToastContainer />
             </I18nextProvider>
           </PfpProvider>
         </LogoProvider>
       </ContextWrapper>
-    // {/* </Suspense> */}
   );
 }

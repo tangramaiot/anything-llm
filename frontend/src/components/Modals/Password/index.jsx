@@ -13,24 +13,41 @@ import illustration from "@/media/illustrations/login-illustration.png";
 export default function PasswordModal({ mode = "single" }) {
   const { loginLogo } = useLogo();
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-[#25272C] flex flex-col md:flex-row items-center justify-center bg-chat-gradient">
-      <div className="hidden md:flex md:flex-col md:w-2/5 md:h-full md:items-start md:justify-center gap-14">
-        <p className="text-white text-4xl font-bold">Your best assistant , SAI-A .</p> 
-        <img
-          className="w-full h-full z-50 max-h-[520px] max-w-[536px]"
-          src={illustration}
-          alt="login illustration"
-        />
-      </div>
-      <div className="flex flex-col h-full max-h-[720px] z-50 pt-10 rounded-2xl border-2 border-purple-500/50">
-        <div className="w-full flex px-[48px]">
-          <img
-            src={loginLogo}
-            alt="Logo"
-            className="max-h-[65px]"
-          />
+    <div className="fixed  bg-[#25272C] top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] h-full bg-theme-bg-primary flex flex-col md:flex-row items-center justify-center">
+      <div 
+        className="min-h-screen flex flex-col md:flex-row items-center justify-center p-4 bg-chat-gradient">
+        {/* Left section - Hidden on mobile, visible on md and up */}
+        <div className="hidden md:flex md:flex-col md:w-1/2 md:max-w-2xl md:px-8 md:space-y-8">
+          <h1 className="text-white text-2xl lg:text-4xl font-bold">
+            Your best assistant, SAI-A.
+          </h1>
+          <div className="relative w-full aspect-square max-w-xl">
+            <img
+              src={illustration}
+              alt="login illustration"
+              className="w-full h-auto object-contain"
+            />
+          </div>
         </div>
-        {mode === "single" ? <SingleUserAuth /> : <MultiUserAuth />}
+
+        {/* Right section - Login Form */}
+        <div className="w-full md:w-1/2 max-w-lg">
+          <div className="bg-transparent rounded-2xl border-2 border-purple-500/50 p-6 md:p-8">
+            {/* Logo */}
+            <div className="flex justify-center mb-8">
+              <img
+                src={loginLogo}
+                alt="Logo"
+                className="h-12 md:h-16 w-auto"
+              />
+            </div>
+
+            {/* Auth Component */}
+            <div className="space-y-6">
+              {mode === "single" ? <SingleUserAuth /> : <MultiUserAuth />}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
