@@ -17,47 +17,60 @@ export default function AdminUsers( { closeUsers }) {
 
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center">
-      <div className="backdrop h-full w-full absolute top-0" />
-      <div className="absolute h-[60%] transition duration-300 ">
-        <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
-          <div className="absolute right-0 mx-1 my-1">
-            <button
-              onClick={closeUsers}
-              type="button"
-              className="transition-all duration-300 text-gray-400 bg-transparent hover:border-white/60 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
-              data-modal-hide="staticModal"
-            >
-              <X className="text-gray-300 text-lg" />
-            </button>
-          </div>
-          <div className="flex flex-col w-full h-full md:pl-6 md:pr-6 md:py-6 py-16">
-            <div className="w-full flex flex-col gap-y-1 pb-6 border-white border-b-2 border-opacity-10">
-              <div className="items-center flex gap-x-4">
-                <p className="text-lg leading-6 font-bold text-white">Users</p>
+      
+      <div
+        style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+        className="relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-theme-bg-secondary w-full h-full overflow-y-scroll p-4 md:p-0"
+      >
+          <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
+            <div className="absolute right-0 mx-1 my-1">
+              <button
+                onClick={closeUsers}
+                type="button"
+                className="transition-all duration-300 text-gray-400 bg-transparent hover:border-white/60 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
+                data-modal-hide="staticModal"
+              >
+                <X className="text-gray-300 text-lg" />
+              </button>
+            </div>
+            <div className="flex flex-col w-full px-1 md:pl-6 md:pr-[50px] md:py-6 py-16">
+              <div className="w-full flex flex-col gap-y-1 pb-6 border-white/10 border-b-2">
+                <div className="items-center flex gap-x-4">
+                  <p className="text-lg leading-6 font-bold text-theme-text-primary">
+                    Users
+                  </p>
+                </div>
+                <p className="text-xs leading-[18px] font-base text-theme-text-secondary">
+                  These are all the accounts which have an account on this instance.
+                  Removing an account will instantly remove their access to this
+                  instance.
+                </p>
               </div>
-              <p className="text-xs leading-[18px] font-base text-white text-opacity-60">
-                These are all the accounts which have an account on this instance.
-                Removing an account will instantly remove their access to this
-                instance.
-              </p>
+              <div className="w-full justify-end flex">
+                <CTAButton
+                  onClick={openModal}
+                  className="mt-3 mr-0 mb-4 md:-mb-6 z-10"
+                >
+                  <UserPlus className="h-4 w-4" weight="bold" /> Add user
+                </CTAButton>
+              </div>
+              <div className="overflow-x-auto">
+                <UsersContainer />
+              </div>
             </div>
-            <div className="w-full justify-end flex">
-              <CTAButton onClick={openModal} className="mt-3 mr-0">
-                <UserPlus className="h-4 w-4" weight="bold" /> Add user
-              </CTAButton>
-            </div>
-            <UsersContainer />
+            <ModalWrapper isOpen={isOpen}>
+              <NewUserModal closeModal={closeModal} />
+            </ModalWrapper>
           </div>
-          {isOpen && (
-            <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
-              <NewUserModal
-                closeModal={closeModal}
-              />
-            </div>
-          )}
+            {isOpen && (
+              <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-99">
+                <NewUserModal
+                  closeModal={closeModal}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
   );
 }
 
