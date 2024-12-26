@@ -3,7 +3,7 @@ import { X } from "@phosphor-icons/react";
 import Admin from "@/models/admin";
 import { RoleHintDisplay } from "../..";
 
-export default function EditUserModal({ currentUser, user, closeModal }) {
+export default function EditUserModal({ currentUser, user, closeModal, onUserDeleted }) {
   const [role, setRole] = useState(user.role);
   const [error, setError] = useState(null);
 
@@ -17,7 +17,7 @@ export default function EditUserModal({ currentUser, user, closeModal }) {
       data[key] = value;
     }
     const { success, error } = await Admin.updateUser(user.id, data);
-    if (success) window.location.reload();
+    if (success) closeModal();
     setError(error);
   };
 

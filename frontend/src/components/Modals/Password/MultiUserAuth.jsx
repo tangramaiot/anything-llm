@@ -280,62 +280,70 @@ export default function MultiUserAuth() {
     return <ResetPasswordForm onSubmit={handleResetSubmit} />;
   return (
     <>
-      <form onSubmit={handleLogin}>
-        <div className="flex flex-col justify-center items-center relative bg-transparent">
-          <div className="flex items-start justify-between pt-11 pb-9 rounded-t">
-            <div className="flex items-center flex-col gap-y-4">
-              <div className="flex gap-x-1">
-                <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r text-white bg-clip-text text-transparent">
-                  {"Login"}
-                </p>
-              </div>
+      <form onSubmit={handleLogin} className="w-full max-w-md mx-auto">
+        <div className="flex flex-col justify-center items-center bg-transparent">
+          {/* Header */}
+          <div className="w-full flex justify-center py-8 md:py-6">
+            <div className="flex flex-col items-center gap-4">
+              <h1 className="text-4xl md:text-2xl font-bold text-white">
+                Login
+              </h1>
             </div>
           </div>
-          <div className="w-full px-4 md:px-12">
-            <div className="w-full flex flex-col gap-y-4">
-              <div className="w-screen md:w-full md:px-0 px-6">
-                <p className="text-white text-base">
-                  {t("login.account")} <span className="text-red-400">*</span>
-                </p>
-                <input
-                  name="username"
-                  type="text"
-                  placeholder={t("login.multi-user.placeholder-username")}
-                  className="text-black placeholder-gray-300 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  required={true}
-                  autoComplete="off"
-                />
-              </div>
-              <div className="w-screen md:w-full md:px-0 px-6">
-                <p className="text-white text-base">
-                  {t("login.password")} <span className="text-red-400">*</span>
-                </p>
-                <input
-                  name="password"
-                  type="password"
-                  placeholder={t("login.multi-user.placeholder-password")}
-                  className="text-black placeholder-gray-300 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  required={true}
-                  autoComplete="off"
-                />
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="text-white text-base flex gap-x-1 hover:text-primary-button hover:underline"
-                    onClick={handleResetPassword}
-                  >
-                    {t("login.multi-user.forgot-pass")}?
-                  </button>
-                </div>
-              </div>
-              {error && <p className="text-red-400 text-base">Error: {error}</p>}
+
+          {/* Form Fields */}
+          <div className="w-full px-4 md:px-8 space-y-4">
+            {/* Username Field */}
+            <div className="w-full">
+              <label className="block text-white text-base mb-2">
+                {t("login.account")} <span className="text-red-400">*</span>
+              </label>
+              <input
+                name="username"
+                type="text"
+                placeholder={t("login.multi-user.placeholder-username")}
+                className="w-full h-12 md:h-9 px-3 rounded-md text-sm text-black placeholder-gray-300"
+                required
+                autoComplete="off"
+              />
             </div>
+
+            {/* Password Field */}
+            <div className="w-full">
+              <label className="block text-white text-base mb-2">
+                {t("login.password")} <span className="text-red-400">*</span>
+              </label>
+              <input
+                name="password"
+                type="password"
+                placeholder={t("login.multi-user.placeholder-password")}
+                className="w-full h-12 md:h-9 px-3 rounded-md text-sm text-black placeholder-gray-300"
+                required
+                autoComplete="off"
+              />
+              <div className="flex justify-end mt-2">
+                <button
+                  type="button"
+                  className="text-white text-base hover:text-primary-button hover:underline"
+                  onClick={handleResetPassword}
+                >
+                  {t("login.multi-user.forgot-pass")}?
+                </button>
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <p className="text-red-400 text-base text-center">{error}</p>
+            )}
           </div>
-          <div className="flex items-center md:p-12 px-10 mt-12 md:mt-12 space-x-2 border-gray-600 w-full flex-col gap-y-8">
+
+          {/* Submit Button */}
+          <div className="w-full px-4 md:px-8 mt-8 md:mt-6">
             <button
               disabled={loading}
               type="submit"
-              className="md:text-white text-dark-text text-base font-bold focus:ring-4 focus:outline-1 rounded-md md:h-[34px] h-[48px] focus:z-10 w-full bg-purple-700 hover:bg-purple-500"
+              className="w-full h-12 md:h-9 bg-purple-700 hover:bg-purple-500 text-white md:text-white text-base font-bold rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading
                 ? t("login.multi-user.validating")
@@ -345,13 +353,15 @@ export default function MultiUserAuth() {
         </div>
       </form>
 
-      <ModalWrapper isOpen={isRecoveryCodeModalOpen} noPortal={true}>
-        <RecoveryCodeModal
-          recoveryCodes={recoveryCodes}
-          onDownloadComplete={handleDownloadComplete}
-          onClose={closeRecoveryCodeModal}
-        />
-      </ModalWrapper>
+      {isRecoveryCodeModalOpen && (
+        <ModalWrapper noPortal>
+          <RecoveryCodeModal
+            recoveryCodes={recoveryCodes}
+            onDownloadComplete={handleDownloadComplete}
+            onClose={closeRecoveryCodeModal}
+          />
+        </ModalWrapper>
+      )}
     </>
   );
 }

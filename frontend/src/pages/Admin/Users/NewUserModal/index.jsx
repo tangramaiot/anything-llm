@@ -4,7 +4,7 @@ import Admin from "@/models/admin";
 import { userFromStorage } from "@/utils/request";
 import { RoleHintDisplay } from "..";
 
-export default function NewUserModal({ closeModal }) {
+export default function NewUserModal({ closeModal, onSubmit }) {
   const [error, setError] = useState(null);
   const [role, setRole] = useState("default");
   const handleCreate = async (e) => {
@@ -14,7 +14,8 @@ export default function NewUserModal({ closeModal }) {
     const form = new FormData(e.target);
     for (var [key, value] of form.entries()) data[key] = value;
     const { user, error } = await Admin.newUser(data);
-    if (!!user) window.location.reload();
+    closeModal();
+    onSubmit();
     setError(error);
   };
 

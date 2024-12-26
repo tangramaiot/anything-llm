@@ -4,7 +4,7 @@ import Admin from "@/models/admin";
 import EditUserModal from "./EditUserModal";
 import showToast from "@/utils/toast";
 import { useModal } from "@/hooks/useModal";
-import ModalWrapper from "@/components/ModalWrapper";
+import { createPortal } from 'react-dom';
 
 const ModMap = {
   admin: ["admin", "manager", "default"],
@@ -12,11 +12,12 @@ const ModMap = {
   default: [],
 };
 
-export default function UserRow({ currUser, user }) {
+export default function UserRow({ currUser, user, onUserDeleted }) {
   const rowRef = useRef(null);
   const canModify = ModMap[currUser?.role || "default"].includes(user.role);
   const [suspended, setSuspended] = useState(user.suspended === 1);
   const { isOpen, openModal, closeModal } = useModal();
+
   const handleSuspend = async () => {
     if (
       !window.confirm(
@@ -38,6 +39,7 @@ export default function UserRow({ currUser, user }) {
       setSuspended(!suspended);
     }
   };
+
   const handleDelete = async () => {
     if (
       !window.confirm(
@@ -45,12 +47,15 @@ export default function UserRow({ currUser, user }) {
       )
     )
       return false;
+
     const { success, error } = await Admin.deleteUser(user.id);
-    if (!success) showToast(error, "error", { clear: true });
-    if (success) {
-      rowRef?.current?.remove();
-      showToast("User deleted from system.", "success", { clear: true });
+    if (!success) {
+      showToast(error, "error", { clear: true });
+      return;
     }
+    
+    showToast("User deleted from system.", "success", { clear: true });
+    onUserDeleted?.(user.id);
   };
 
   return (
@@ -91,15 +96,18 @@ export default function UserRow({ currUser, user }) {
           )}
         </td>
       </tr>
-      {isOpen && (
-        <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
-          <EditUserModal
-            currentUser={currUser}
-            user={user}
-            closeModal={closeModal}
-          />
-        </div>
-      )}
+      {isOpen && 
+        createPortal(
+          <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-99">
+            <EditUserModal
+              currentUser={currUser}
+              user={user}
+              closeModal={closeModal}
+            />
+          </div>,
+          document.body
+        )
+      }
     </>
   );
 }

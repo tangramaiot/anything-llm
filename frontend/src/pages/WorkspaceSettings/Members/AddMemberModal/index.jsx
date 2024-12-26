@@ -58,15 +58,15 @@ export default function AddMemberModal({ closeModal, workspace, users }) {
     .filter((user) => user.role !== "manager");
 
   return (
-    <div className="relative w-full max-w-[550px] max-h-full">
+    <div className="relative w-full max-w-full md:max-w-[550px] max-h-full p-2 md:p-0">
       <div className="relative bg-main-gradient rounded-xl shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
-        <div className="flex items-start justify-between p-4 border-b rounded-t border-gray-500/50">
-          <div className="flex items-center gap-x-4">
+        <div className="flex flex-col sm:flex-row items-start justify-between p-3 md:p-4 border-b rounded-t border-gray-500/50">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-y-3 sm:gap-y-0 gap-x-4 w-full sm:w-auto">
             <h3 className="text-base font-semibold text-white">Users</h3>
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <input
                 onChange={handleSearch}
-                className="w-[400px] h-[34px] bg-[#030712] rounded-[100px] text-white placeholder:text-white/50 text-sm px-10 pl-10"
+                className="w-full sm:w-[250px] md:w-[400px] h-[34px] bg-[#030712] rounded-[100px] text-white placeholder:text-white/50 text-sm px-10 pl-10"
                 placeholder="Search for a user"
               />
               <MagnifyingGlass
@@ -86,13 +86,13 @@ export default function AddMemberModal({ closeModal, workspace, users }) {
           </button>
         </div>
         <form onSubmit={handleUpdate}>
-          <div className="py-[17px] px-[20px]">
-            <table className="gap-y-[8px] flex flex-col max-h-[385px] overflow-y-auto no-scroll">
+          <div className="py-3 md:py-[17px] px-3 md:px-[20px]">
+            <table className="gap-y-[8px] flex flex-col max-h-[300px] sm:max-h-[385px] overflow-y-auto no-scroll w-full">
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => (
                   <tr
                     key={user.id}
-                    className="flex items-center gap-x-2 cursor-pointer"
+                    className="flex items-center gap-x-2 cursor-pointer p-1 hover:bg-white/5 rounded"
                     onClick={() => handleUserSelect(user.id)}
                   >
                     <div
@@ -105,24 +105,24 @@ export default function AddMemberModal({ closeModal, workspace, users }) {
                         <div className="w-2 h-2 bg-white rounded-[2px]" />
                       )}
                     </div>
-                    <p className="text-white text-sm font-medium">
+                    <p className="text-white text-sm font-medium truncate">
                       {user.username}
                     </p>
                   </tr>
                 ))
               ) : (
-                <p className="text-white text-opacity-60 text-sm font-medium ">
+                <p className="text-white text-opacity-60 text-sm font-medium">
                   No users found
                 </p>
               )}
             </table>
           </div>
-          <div className="flex w-full justify-between items-center p-3 space-x-2 border-t rounded-b border-gray-500/50">
+          <div className="flex flex-col sm:flex-row w-full justify-between items-start sm:items-center p-3 space-y-3 sm:space-y-0 sm:space-x-2 border-t rounded-b border-gray-500/50">
             <div className="flex items-center gap-x-2">
               <button
                 type="button"
                 onClick={handleSelectAll}
-                className="flex items-center gap-x-2 ml-2"
+                className="flex items-center gap-x-2"
               >
                 <div
                   className="shrink-0 w-3 h-3 rounded border-[1px] border-white flex justify-center items-center cursor-pointer"
@@ -150,7 +150,7 @@ export default function AddMemberModal({ closeModal, workspace, users }) {
             </div>
             <button
               type="submit"
-              className="transition-all duration-300 text-xs px-2 py-1 font-semibold rounded-lg bg-primary-button hover:bg-secondary border-2 border-transparent hover:border-primary-button hover:text-white h-[32px] w-[68px] -mr-8 whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.25)]"
+              className="transition-all duration-300 text-xs px-4 py-1 font-semibold rounded-lg bg-primary-button hover:bg-secondary border-2 border-transparent hover:border-primary-button hover:text-white h-[32px] w-auto sm:w-[68px] whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.25)]"
             >
               Save
             </button>

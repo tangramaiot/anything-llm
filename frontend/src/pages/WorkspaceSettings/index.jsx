@@ -13,6 +13,7 @@ import VectorDatabase from "./VectorDatabase";
 import Members from "./Members";
 import useUser from "@/hooks/useUser";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 
 const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
   const [title, setTitle] = useState(null);
@@ -35,59 +36,64 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
   }, [])
 
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
-      <div className="backdrop h-full w-full absolute top-0 z-10" />
-      <div className="absolute w-[60%] transition duration-300 z-20">
-        <div className="relative bg-main-gradient rounded-[12px] shadow border-2 border-slate-300/10">
-          <div
-            className="flex transition-all duration-500 relative md:rounded-[16px] bg-main-gradient w-full h-full py-2"
-          >
-            <button
-              onClick={hideSettings}
-              type="button"
-              className="absolute right-2 z-50 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
-            >
-              <X className="text-gray-300 text-lg" />
-            </button>
-
-            <div className="flex flex-col w-full px-4 py-4 gap-y-4">
-
-              <div className="flex justify-center text-lm text-white/60">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      {/* Backdrop - full screen on all devices */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      
+      {/* Modal container with responsive width */}
+      <div className="relative w-full mx-4 md:w-4/5 lg:w-3/5 xl:w-1/2 max-h-[90vh] transition duration-300 z-20">
+        <div className="relative bg-main-gradient rounded-lg md:rounded-xl border border-slate-300/10 shadow-xl overflow-hidden">
+          
+          {/* Modal content */}
+          <div className="flex flex-col w-full h-full">
+            {/* Header with close button */}
+            <div className="flex items-center justify-between p-4">
+              <div className="flex-1 text-center text-white/60">
                 {title}
               </div>
+              <button
+                onClick={hideSettings}
+                className="p-1.5 rounded-lg hover:bg-menu-item-selected-gradient border border-transparent hover:border-slate-100/50 transition-colors"
+              >
+                <X className="text-gray-300 w-5 h-5" />
+              </button>
+            </div>
 
-              <div className="border border-slate-300/30"></div>
+            <div className="border-t border-slate-300/30" />
 
-              <div className="flex">
-                <div className="flex flex-col flex-1 w-1/5 gap-y-4">
-                  <TabItem
-                    index="general"
-                    icon={<Wrench className="h-6 w-6" />}
-                    setTitle={setTitle}
-                    setTabContent={() => setTabContent(TABS["general"])}
-                  />
-                  <TabItem
-                    index="chat"
-                    icon={<ChatText className="h-6 w-6" />}
-                    setTitle={setTitle}
-                    setTabContent={() => setTabContent(TABS["chat"])}
-                  />
-                  <TabItem
-                    index="vector"
-                    icon={<Database className="h-6 w-6" />}
-                    setTitle={setTitle}
-                    setTabContent={() => setTabContent(TABS["vector"])}
-                  />
-                  <TabItem
-                    index="members"
-                    icon={<User className="h-6 w-6" />}
-                    setTitle={setTitle}
-                    setTabContent={() => setTabContent(TABS["members"])}
-                  />
-                </div>
-                <div className="flex-2 w-4/5">
-                  {tabContent}
-                </div>
+            {/* Main content area */}
+            <div className="flex flex-col md:flex-row p-4 gap-4 overflow-auto">
+              {/* Sidebar - vertical on mobile, horizontal on desktop */}
+              <div className="flex md:flex-col gap-4 md:w-1/5">
+                <TabItem
+                  index="general"
+                  icon={<Wrench className="w-5 h-5 md:w-6 md:h-6" />}
+                  setTitle={setTitle}
+                  setTabContent={() => setTabContent(TABS["general"])}
+                />
+                <TabItem
+                  index="chat"
+                  icon={<ChatText className="w-5 h-5 md:w-6 md:h-6" />}
+                  setTitle={setTitle}
+                  setTabContent={() => setTabContent(TABS["chat"])}
+                />
+                <TabItem
+                  index="vector"
+                  icon={<Database className="w-5 h-5 md:w-6 md:h-6" />}
+                  setTitle={setTitle}
+                  setTabContent={() => setTabContent(TABS["vector"])}
+                />
+                <TabItem
+                  index="members"
+                  icon={<User className="w-5 h-5 md:w-6 md:h-6" />}
+                  setTitle={setTitle}
+                  setTabContent={() => setTabContent(TABS["members"])}
+                />
+              </div>
+
+              {/* Content area */}
+              <div className="flex-1 md:w-4/5">
+                {tabContent}
               </div>
             </div>
           </div>
@@ -105,13 +111,12 @@ function TabItem({ index, icon, setTitle, setTabContent }) {
         onClick={() => {
           setTitle(t("workspaces—settings."+index));
           setTabContent();
-          }
-        }
+        }}
         type="button"
-        className="flex gap-x-2 items-center font-medium text-white/60 hover:text-sky-400"
+        className="flex gap-x-1 sm:gap-x-2 items-center font-medium text-sm sm:text-base text-white/60 hover:text-sky-400 p-1 sm:p-2"
       >
-        {icon}
-        <div>{t("workspaces—settings."+index)}</div>
+        <span className="w-4 h-4 sm:w-5 sm:h-5">{icon}</span>
+        <div className="truncate">{t("workspaces—settings."+index)}</div>
       </button>
     </>
   );

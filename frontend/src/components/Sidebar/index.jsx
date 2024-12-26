@@ -83,6 +83,21 @@ export function SidebarMobileHeader() {
   const { user } = useUser();
   const { t } = useTranslation();
 
+  // 監聽側邊欄事件
+  useEffect(() => {
+    const handleSidebarToggle = (event) => {
+      setShowSidebar(event.detail.isVisible);
+    };
+
+    // 添加事件監聽器
+    window.addEventListener("toggleSidebar", handleSidebarToggle);
+
+    // 清理事件監聽器
+    return () => {
+      window.removeEventListener("toggleSidebar", handleSidebarToggle);
+    };
+  }, []);
+
   useEffect(() => {
     // Darkens the rest of the screen
     // when sidebar is open.
@@ -102,7 +117,7 @@ export function SidebarMobileHeader() {
     <>
       <div
         aria-label="Show sidebar"
-        className="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-4 py-2 text-sidebar-text shadow-lg h-16"
+        className="fixed top-0 left-0 right-0 flex px-4 py-2 text-sidebar-text shadow-lg h-16"
       >
         <button
           onClick={() => setShowSidebar(true)}
@@ -110,13 +125,16 @@ export function SidebarMobileHeader() {
         >
           <List className="h-6 w-6" />
         </button>
-        <div className="flex items-center justify-center flex-grow">
+        <div className="flex items-center justify-center">
           <img
             src={logo}
             alt="Logo"
             className="block mx-auto h-6 w-auto"
             style={{ maxHeight: "40px", objectFit: "contain" }}
           />
+          <span className="text-2xl font-bold text-sidebar-text ml-2">
+            賽亞 (SAI-A)
+          </span>
         </div>
         <div className="w-12"></div>
       </div>
@@ -136,43 +154,26 @@ export function SidebarMobileHeader() {
         />
         <div
           ref={sidebarRef}
-          className="relative h-[100vh] top-0 left-0  rounded-r-[26px] w-[80%] p-[18px] "
+          className="relative h-[100vh] top-0 left-0 bg-neutral-800 rounded-r-[26px] w-[80%] p-[18px] "
         >
-          <div className="w-full h-full flex flex-col overflow-x-hidden items-between">
-            {/* Header Information */}
-            <div className="flex w-full items-center justify-between gap-x-4">
-              <div className="flex shrink-1 w-fit items-center justify-start">
-                <img
-                  src={logo}
-                  alt="Logo"
-                  className="rounded w-full max-h-[40px]"
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-              {(!user || user?.role !== "default") && (
-                <div className="flex gap-x-2 items-center text-sidebar-text shink-0">
-                  <SettingsButton />
-                </div>
-              )}
-            </div>
-
             {/* Primary Body */}
-            <div className="h-full flex flex-col w-full justify-between pt-4 ">
-              <div className="h-auto md:sidebar-items">
-                <div className="flex flex-col gap-y-4 overflow-y-scroll no-scroll pb-[60px]">
+            <div className="flex flex-col h-full overflow-x-hidden">
+            <div className="flex-grow flex flex-col min-w-[235px]">
+              <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
+                <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
                   <div className="flex gap-x-2 items-center justify-between">
-                    {(!user || user?.role !== "default") && (
-                      <button
-                        onClick={showNewWsModal}
-                        className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 text-sidebar-text rounded-lg  justify-center items-center hover:bg-opacity-80 transition-all duration-300"
-                      >
-                        <Plus className="h-5 w-5" />
-                        <p className="text-sidebar-text text-sm font-semibold">
-                          {t("new-workspace.title")}
-                        </p>
-                      </button>
-                    )}
-                  </div>
+                      {(!user || user?.role !== "default") && (
+                        <button
+                          onClick={showNewWsModal}
+                          className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 text-sidebar-text rounded-lg  justify-center items-center hover:bg-purple-600 bg-purple-500/50 transition-all duration-300"
+                        >
+                          <Plus className="h-5 w-5" />
+                          <p className="text-sidebar-text text-sm font-semibold">
+                            {t("new-workspace.title")}
+                          </p>
+                        </button>
+                      )}
+                    </div>
                   <ActiveWorkspaces />
                 </div>
               </div>
