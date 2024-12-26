@@ -52,6 +52,12 @@ export default function ThreadItem({
     }
   };
 
+  const triggerSidebarToggle = (isVisible) => {
+    const event = new CustomEvent("toggleSidebar", {
+      detail: { isVisible }
+    });
+    window.dispatchEvent(event);
+  };
 
   return (
     <div
@@ -99,6 +105,7 @@ export default function ThreadItem({
               } else { 
                 navigate(linkTo)
               }
+              triggerSidebarToggle(false);
             }}
             className="w-full"
             aria-current={isActive ? "page" : ""}

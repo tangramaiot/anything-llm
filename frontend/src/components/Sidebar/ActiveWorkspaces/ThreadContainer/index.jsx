@@ -111,6 +111,7 @@ export default function ThreadContainer({ workspace }) {
       setThreads((prev) => prev.filter((t) => !t.deleted));
     }, 500);
   }
+  
 
   async function newThread( preSendPrompt = "" ) {
     const { thread, error } = await Workspace.threads.new(workspace.slug);
@@ -118,9 +119,17 @@ export default function ThreadContainer({ workspace }) {
       showToast(`Could not create thread - ${error}`, "error", { clear: true });
       return;
     }
+    
+    const triggerSidebarToggle = (isVisible) => {
+      const event = new CustomEvent("toggleSidebar", {
+        detail: { isVisible }
+      });
+      window.dispatchEvent(event);
+    };
 
     setThreads((prev) => [...prev, thread]);
     navigate(paths.workspace.thread(workspace.slug, thread.slug), { state: { preSendPrompt } });
+    triggerSidebarToggle(false);
   }
 
   if (loading) {

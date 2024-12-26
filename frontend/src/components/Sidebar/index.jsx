@@ -83,6 +83,21 @@ export function SidebarMobileHeader() {
   const { user } = useUser();
   const { t } = useTranslation();
 
+  // 監聽側邊欄事件
+  useEffect(() => {
+    const handleSidebarToggle = (event) => {
+      setShowSidebar(event.detail.isVisible);
+    };
+
+    // 添加事件監聽器
+    window.addEventListener("toggleSidebar", handleSidebarToggle);
+
+    // 清理事件監聽器
+    return () => {
+      window.removeEventListener("toggleSidebar", handleSidebarToggle);
+    };
+  }, []);
+
   useEffect(() => {
     // Darkens the rest of the screen
     // when sidebar is open.
