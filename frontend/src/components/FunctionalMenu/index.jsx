@@ -61,7 +61,7 @@ export default function FunctionalMenu() {
         {showMenu && (
           <div
             ref={menuRef}
-            className="rounded-lg absolute top-12 sm:top-14 right-8 sm:right-12 justify-end bg-sidebar flex items-center justify-center bg-white shadow-lg"
+            className="rounded-lg absolute top-12 sm:top-14 right-8 sm:right-12 justify-end bg-sidebar flex items-center bg-white shadow-lg"
           >
             <div className="flex flex-col gap-1 sm:gap-2 p-1.5 sm:p-2 min-w-[160px] sm:min-w-[200px]">
               {user?.role !== "default" && (
