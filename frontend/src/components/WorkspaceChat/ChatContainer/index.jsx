@@ -250,7 +250,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     <div
       className="transition-all duration-500 flex flex-col md:rounded-[16px] w-full h-full"
     >
-      <div className="h-full mt-14">
+      <div className="flex-1 overflow-y-auto mt-14 mb-14">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
@@ -259,7 +259,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
       </div>
-      <div > 
+      <div className="flex-shrink-0"> 
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}

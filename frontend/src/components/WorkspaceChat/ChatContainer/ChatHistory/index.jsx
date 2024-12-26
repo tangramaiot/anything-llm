@@ -10,6 +10,7 @@ import Chartable from "./Chartable";
 import Workspace from "@/models/workspace";
 import { useParams } from "react-router-dom";
 import paths from "@/utils/paths";
+import Appearance from "@/models/appearance";
 
 export default function ChatHistory({
   history = [],
@@ -22,8 +23,12 @@ export default function ChatHistory({
   const { threadSlug = null } = useParams();
   const { showing, showModal, hideModal } = useManageWorkspaceModal();
   const [isAtBottom, setIsAtBottom] = useState(true);
-  const chatHistoryRef = useRef(null);
   const [textSize, setTextSize] = useState("normal");
+  const chatHistoryRef = useRef(null);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  const isStreaming = history[history.length - 1]?.animate;
+  const { showScrollbar } = Appearance.getSettings();
+  const lastScrollTopRef = useRef(0);
 
   const getTextSizeClass = (size) => {
     switch (size) {
@@ -53,37 +58,54 @@ export default function ChatHistory({
       window.removeEventListener("textSizeChange", handleTextSizeChange);
     };
   }, []);
-
+  
   useEffect(() => {
-    if (isAtBottom) scrollToBottom();
-  }, [history]);
+    const shouldAutoScroll = 
+    (!isUserScrolling && isAtBottom) || // 用戶沒有手動滾動且在底部
+    isStreaming || // 正在串流回應
+    history[history.length - 1]?.pending; // 新訊息正在等待中
 
-  const handleScroll = () => {
-    const diff =
-      chatHistoryRef.current.scrollHeight -
-      chatHistoryRef.current.scrollTop -
-      chatHistoryRef.current.clientHeight;
-    // Fuzzy margin for what qualifies as "bottom". Stronger than straight comparison since that may change over time.
-    const isBottom = diff <= 10;
+    if (shouldAutoScroll) {
+      // 使用 requestAnimationFrame 確保在 DOM 更新後滾動
+      requestAnimationFrame(() => {
+        scrollToBottom(false);
+      });
+    }
+  }, [history, isAtBottom, isStreaming, isUserScrolling]);
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    const isBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 2;
+
+    // Detect if this is a user-initiated scroll
+    if (Math.abs(scrollTop - lastScrollTopRef.current) > 5) {
+      setIsUserScrolling(!isBottom);
+    }
+
     setIsAtBottom(isBottom);
+    lastScrollTopRef.current = scrollTop;
   };
 
   const debouncedScroll = debounce(handleScroll, 100);
+
   useEffect(() => {
-    function watchScrollEvent() {
-      if (!chatHistoryRef.current) return null;
-      const chatHistoryElement = chatHistoryRef.current;
-      if (!chatHistoryElement) return null;
+    const chatHistoryElement = chatHistoryRef.current;
+    if (chatHistoryElement) {
       chatHistoryElement.addEventListener("scroll", debouncedScroll);
+      return () =>
+        chatHistoryElement.removeEventListener("scroll", debouncedScroll);
     }
-    watchScrollEvent();
   }, []);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (smooth = false) => {
     if (chatHistoryRef.current) {
       chatHistoryRef.current.scrollTo({
         top: chatHistoryRef.current.scrollHeight,
-        behavior: "smooth",
+
+        // Smooth is on when user clicks the button but disabled during auto scroll
+        // We must disable this during auto scroll because it causes issues with
+        // detecting when we are at the bottom of the chat.
+        ...(smooth ? { behavior: "smooth" } : {}),
       });
     }
   };
@@ -165,9 +187,12 @@ export default function ChatHistory({
 
   return (
     <div
-      className={`markdown text-white/80 font-light ${textSize} md:h-[75%] pb-[100px] md:pb-20 md:mx-0 flex flex-col w-full justify-start overflow-y-scroll no-scroll`}
+      className={`markdown text-white/80 light:text-theme-text-primary font-light ${textSize} h-full pt-6 md:pt-0 md:pb-20 md:mx-0 overflow-y-scroll flex flex-col justify-start ${
+        showScrollbar ? "show-scrollbar" : "no-scroll"
+      }`}
       id="chat-history"
       ref={chatHistoryRef}
+      onScroll={handleScroll}
     >
       {history.map((props, index) => {
         const isLastBotReply =
@@ -219,14 +244,16 @@ export default function ChatHistory({
         <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
       )}
       {!isAtBottom && (
-        <div className="fixed bottom-[150px] w-full cursor-pointer animate-pulse">
-          <div className="flex items-center">
-            <div className="p-1 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 hover:text-white">
-              <ArrowDown
-                weight="bold"
-                className="text-white/60 w-5 h-5"
-                onClick={scrollToBottom}
-              />
+        <div className="fixed bottom-20 right-5 md:right-20 z-50 cursor-pointer animate-pulse">
+          <div className="flex flex-col items-center">
+            <div
+              className="p-1 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 hover:text-white"
+              onClick={() => {
+                scrollToBottom(true);
+                setIsUserScrolling(false);
+              }}
+            >
+              <ArrowDown weight="bold" className="text-white/60 w-5 h-5" />
             </div>
           </div>
         </div>
