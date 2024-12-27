@@ -14,8 +14,8 @@ export default function CTAButton({
         py-1 sm:py-1.5 md:py-2
         font-semibold
         rounded-lg
-        bg-primary-button 
-        hover:bg-secondary 
+        bg-purple-600 
+        hover:bg-purple-800
         hover:text-white 
         min-h-[30px] sm:min-h-[32px] md:min-h-[34px]
         whitespace-nowrap
