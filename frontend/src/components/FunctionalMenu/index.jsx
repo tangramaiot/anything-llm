@@ -42,17 +42,17 @@ export default function FunctionalMenu() {
     }, [showMenu]);
         
     return (
-      <div className="flex w-full h-auto justify-end gap-1 sm:gap-2 px-1 sm:px-2 relative">
-        <div>
-          <button
-            ref={buttonRef}
-            onClick={() => setShowMenu(!showMenu)}
-            type="button"
-            className="transition-all duration-300 w-10 h-10 sm:w-12 sm:h-12 text-sm sm:text-base font-semibold rounded-full flex items-center bg-sidebar-button hover:bg-menu-item-selected-gradient justify-center text-white p-1.5 sm:p-2 hover:border-slate-100 hover:border-opacity-50 border-transparent border"
-          >
-            <List className="w-5 h-5 sm:w-6 sm:h-6" weight="bold" />
-          </button>
-        </div>
+      <div className="fixed top-0 right-0 flex px-4 py-2 text-sidebar-text shadow-lg h-16 items-center">
+        
+        <button
+          ref={buttonRef}
+          onClick={() => setShowMenu(!showMenu)}
+          type="button"
+          className="transition-all duration-300 w-10 h-10 sm:w-12 sm:h-12 text-sm sm:text-base font-semibold rounded-full flex items-center bg-sidebar-button hover:bg-menu-item-selected-gradient justify-center text-white p-1.5 sm:p-2 hover:border-slate-100 hover:border-opacity-50 border-transparent border"
+        >
+          <List className="w-5 h-5 sm:w-6 sm:h-6" weight="bold" />
+        </button>
+      
         
         <div className="transition-all duration-300 w-10 h-10 sm:w-12 sm:h-12 text-sm sm:text-base font-semibold rounded-full flex items-center justify-center text-white p-1.5 sm:p-2 border-transparent border bg-gray-500/30">
           <UserDisplay />

@@ -117,7 +117,7 @@ export function SidebarMobileHeader() {
     <>
       <div
         aria-label="Show sidebar"
-        className="fixed top-0 left-0 right-0 flex px-4 py-2 text-sidebar-text shadow-lg h-16"
+        className="fixed top-0 left-0 right-0 flex px-4 py-2 text-sidebar-text shadow-lg h-16 bg-neutral-800"
       >
         <button
           onClick={() => setShowSidebar(true)}

@@ -20,7 +20,7 @@ export default function Main() {
     <div className="w-screen h-screen overflow-hidden bg-primary flex">
       {!isMobile && <Sidebar />} 
       <div className="absolute top-3 md:top-6 md:right-10 w-full z-99">
-        <div className="relative flex items-center justify-between px-4">
+        <div className="relative flex items-center justify-between px-4 ">
           {isMobile && 
           <div className="flex-grow flex justify-start">
             <SidebarMobileHeader />
@@ -31,9 +31,7 @@ export default function Main() {
           </div>
         </div>
       </div>
-      <div className="transition-all duration-500 md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] w-screen border-2 border-outline bg-chat-gradient">
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 }
