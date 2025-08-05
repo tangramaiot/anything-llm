@@ -1,5 +1,5 @@
 const mssql = require("mssql");
-const UrlPattern = require("url-pattern");
+const { ConnectionStringParser } = require("./utils");
 
 class MSSQLConnector {
   #connected = false;
@@ -34,18 +34,21 @@ class MSSQLConnector {
   }
 
   #parseDatabase() {
-    const connectionPattern = new UrlPattern(
-      "mssql\\://:username\\::password@*\\::port/:database*"
-    );
-    const match = connectionPattern.match(this.connectionString);
-    this.database_id = match?.database;
+    const connectionParser = new ConnectionStringParser({ scheme: "mssql" });
+    const parsed = connectionParser.parse(this.connectionString);
+
+    this.database_id = parsed?.endpoint;
     this.connectionConfig = {
       ...this.connectionConfig,
-      user: match?.username,
-      password: match?.password,
-      database: match?.database,
-      server: match?._[0],
-      port: match?.port ? Number(match.port) : null,
+      user: parsed?.username,
+      password: parsed?.password,
+      database: parsed?.endpoint,
+      server: parsed?.hosts?.[0]?.host,
+      port: parsed?.hosts?.[0]?.port,
+      options: {
+        ...this.connectionConfig.options,
+        encrypt: parsed?.options?.encrypt === "true",
+      },
     };
   }
 
@@ -58,7 +61,7 @@ class MSSQLConnector {
   /**
    *
    * @param {string} queryString the SQL query to be run
-   * @returns {import(".").QueryResult}
+   * @returns {Promise<import(".").QueryResult>}
    */
   async runQuery(queryString = "") {
     const result = { rows: [], count: 0, error: null };
@@ -72,10 +75,22 @@ class MSSQLConnector {
       console.log(this.constructor.name, err);
       result.error = err.message;
     } finally {
-      await this._client.close();
-      this.#connected = false;
+      // Check client is connected before closing since we use this for validation
+      if (this._client) {
+        await this._client.close();
+        this.#connected = false;
+      }
     }
     return result;
+  }
+
+  async validateConnection() {
+    try {
+      const result = await this.runQuery("SELECT 1");
+      return { success: !result.error, error: result.error };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
   }
 
   getTablesSql() {

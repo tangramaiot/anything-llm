@@ -22,12 +22,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         xdg-utils git build-essential ffmpeg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
+    # Install node and yarn
     apt-get install -yq --no-install-recommends nodejs && \
     curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.22.19_all.deb \
         && dpkg -i yarn_1.22.19_all.deb \
         && rm yarn_1.22.19_all.deb && \
+    # Install uvx (pinned to 0.6.10) for MCP support
+    curl -LsSf https://astral.sh/uv/0.6.10/install.sh | sh && \
+        mv /root/.local/bin/uv /usr/local/bin/uv && \
+        mv /root/.local/bin/uvx /usr/local/bin/uvx && \
+        echo "Installed uvx! $(uv --version)" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -82,12 +88,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         xdg-utils git build-essential ffmpeg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
+    # Install node and yarn
     apt-get install -yq --no-install-recommends nodejs && \
     curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.22.19_all.deb \
         && dpkg -i yarn_1.22.19_all.deb \
         && rm yarn_1.22.19_all.deb && \
+    # Install uvx (pinned to 0.6.10) for MCP support
+    curl -LsSf https://astral.sh/uv/0.6.10/install.sh | sh && \
+        mv /root/.local/bin/uv /usr/local/bin/uv && \
+        mv /root/.local/bin/uvx /usr/local/bin/uvx && \
+        echo "Installed uvx! $(uv --version)" && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -128,25 +140,20 @@ RUN yarn build && \
     rm -rf /tmp/frontend-build
 WORKDIR /app
 
-# Install server layer & build node-llama-cpp
+# Install server layer
 # Also pull and build collector deps (chromium issues prevent bad bindings)
 FROM build AS backend-build
-COPY ./server /app/server/
+COPY --chown=anythingllm:anythingllm ./server /app/server/
 WORKDIR /app/server
 RUN yarn install --production --network-timeout 100000 && yarn cache clean
 WORKDIR /app
 
 # Install collector dependencies
-COPY ./collector/ ./collector/
+COPY --chown=anythingllm:anythingllm ./collector/ ./collector/
 WORKDIR /app/collector
-ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
+ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public
 RUN yarn install --production --network-timeout 100000 && yarn cache clean
 
-# Compile Llama.cpp bindings for node-llama-cpp for this operating system.
-# Creates appropriate bindings for the OS
-USER root
-WORKDIR /app/server
-RUN npx --no node-llama-cpp download
 WORKDIR /app
 USER anythingllm
 
@@ -159,18 +166,10 @@ RUN chown -R anythingllm:anythingllm /app/server && \
     chown -R anythingllm:anythingllm /app/collector
 USER anythingllm
 
-# No longer needed? (deprecated)
-# WORKDIR /app/server
-# RUN npx prisma generate --schema=./prisma/schema.prisma && \
-#     npx prisma migrate deploy --schema=./prisma/schema.prisma
-# WORKDIR /app
-
 # Setup the environment
 ENV NODE_ENV=production
 ENV ANYTHING_LLM_RUNTIME=docker
-
-# Expose the server port
-EXPOSE 3001
+ENV DEPLOYMENT_VERSION=1.8.4
 
 # Setup the healthcheck
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \

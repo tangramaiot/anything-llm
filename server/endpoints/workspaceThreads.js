@@ -18,6 +18,7 @@ const {
 } = require("../utils/middleware/validWorkspace");
 const { WorkspaceChats } = require("../models/workspaceChats");
 const { convertToChatHistory } = require("../utils/helpers/chat/responses");
+const { getModelTag } = require("./utils");
 
 function workspaceThreadEndpoints(app) {
   if (!app) return;
@@ -40,6 +41,8 @@ function workspaceThreadEndpoints(app) {
             LLMSelection: process.env.LLM_PROVIDER || "openai",
             Embedder: process.env.EMBEDDING_ENGINE || "inherit",
             VectorDbSelection: process.env.VECTOR_DB || "lancedb",
+            TTSSelection: process.env.TTS_PROVIDER || "native",
+            LLMModel: getModelTag(),
           },
           user?.id
         );
@@ -137,6 +140,7 @@ function workspaceThreadEndpoints(app) {
             workspaceId: workspace.id,
             user_id: user?.id || null,
             thread_id: thread.id,
+            api_session_id: null, // Do not include API session chats.
             include: true,
           },
           null,

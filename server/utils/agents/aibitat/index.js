@@ -12,6 +12,19 @@ const { Telemetry } = require("../../../models/telemetry.js");
 class AIbitat {
   emitter = new EventEmitter();
 
+  /**
+   * Temporary flag to skip the handleExecution function
+   * This is used to return the result of a flow execution directly to the chat
+   * without going through the handleExecution function (resulting in more LLM processing)
+   *
+   * Setting Skip execution to true will prevent any further tool calls from being executed.
+   * This is useful for flow executions that need to return a result directly to the chat but
+   * can also prevent tool-call chaining.
+   *
+   * @type {boolean}
+   */
+  skipHandleExecution = false;
+
   provider = null;
   defaultProvider = null;
   defaultInterrupt;
@@ -491,9 +504,7 @@ Only return the role.
     // and remove the @ from the response
     const { result } = await provider.complete(messages);
     const name = result?.replace(/^@/g, "");
-    if (this.agents.get(name)) {
-      return name;
-    }
+    if (this.agents.get(name)) return name;
 
     // if the name is not in the nodes, return a random node
     return availableNodes[Math.floor(Math.random() * availableNodes.length)];
@@ -504,9 +515,13 @@ Only return the role.
    * @param {string} pluginName this name of the plugin being called
    * @returns string of the plugin to be called compensating for children denoted by # in the string.
    * eg: sql-agent:list-database-connections
+   * or is a custom plugin
+   * eg: @@custom-plugin-name
    */
   #parseFunctionName(pluginName = "") {
-    if (!pluginName.includes("#")) return pluginName;
+    if (!pluginName.includes("#") && !pluginName.startsWith("@@"))
+      return pluginName;
+    if (pluginName.startsWith("@@")) return pluginName.replace("@@", "");
     return pluginName.split("#")[1];
   }
 
@@ -616,19 +631,35 @@ ${this.getHistory({ to: route.to })
       // Execute the function and return the result to the provider
       fn.caller = byAgent || "agent";
 
-      // For OSS LLMs we really need to keep tabs on what they are calling
-      // so we can log it here.
+      // If provider is verbose, log the tool call to the frontend
       if (provider?.verbose) {
         this?.introspect?.(
           `[debug]: ${fn.caller} is attempting to call \`${name}\` tool`
         );
-        this.handlerProps.log(
-          `[debug]: ${fn.caller} is attempting to call \`${name}\` tool`
-        );
       }
+
+      // Always log the tool call to the console for debugging purposes
+      this.handlerProps?.log?.(
+        `[debug]: ${fn.caller} is attempting to call \`${name}\` tool`
+      );
 
       const result = await fn.handler(args);
       Telemetry.sendTelemetry("agent_tool_call", { tool: name }, null, true);
+
+      // If the tool call has direct output enabled, return the result directly to the chat
+      // without any further processing and no further tool calls will be run.
+      if (this.skipHandleExecution) {
+        this.skipHandleExecution = false; // reset the flag to prevent next tool call from being skipped
+        this?.introspect?.(
+          `The tool call has direct output enabled! The result will be returned directly to the chat without any further processing and no further tool calls will be run.`
+        );
+        this?.introspect?.(`Tool use completed.`);
+        this.handlerProps?.log?.(
+          `${fn.caller} tool call resulted in direct output! Returning raw result as string. NO MORE TOOL CALLS WILL BE EXECUTED.`
+        );
+        return result;
+      }
+
       return await this.handleExecution(
         provider,
         [
@@ -752,7 +783,7 @@ ${this.getHistory({ to: route.to })
       case "anthropic":
         return new Providers.AnthropicProvider({ model: config.model });
       case "lmstudio":
-        return new Providers.LMStudioProvider({});
+        return new Providers.LMStudioProvider({ model: config.model });
       case "ollama":
         return new Providers.OllamaProvider({ model: config.model });
       case "groq":
@@ -777,10 +808,31 @@ ${this.getHistory({ to: route.to })
         return new Providers.TextWebGenUiProvider({});
       case "bedrock":
         return new Providers.AWSBedrockProvider({});
-
+      case "fireworksai":
+        return new Providers.FireworksAIProvider({ model: config.model });
+      case "nvidia-nim":
+        return new Providers.NvidiaNimProvider({ model: config.model });
+      case "moonshotai":
+        return new Providers.MoonshotAiProvider({ model: config.model });
+      case "deepseek":
+        return new Providers.DeepSeekProvider({ model: config.model });
+      case "litellm":
+        return new Providers.LiteLLMProvider({ model: config.model });
+      case "apipie":
+        return new Providers.ApiPieProvider({ model: config.model });
+      case "xai":
+        return new Providers.XAIProvider({ model: config.model });
+      case "novita":
+        return new Providers.NovitaProvider({ model: config.model });
+      case "ppio":
+        return new Providers.PPIOProvider({ model: config.model });
+      case "gemini":
+        return new Providers.GeminiProvider({ model: config.model });
+      case "dpais":
+        return new Providers.DellProAiStudioProvider({ model: config.model });
       default:
         throw new Error(
-          `Unknown provider: ${config.provider}. Please use "openai"`
+          `Unknown provider: ${config.provider}. Please use a valid provider.`
         );
     }
   }

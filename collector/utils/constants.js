@@ -1,5 +1,4 @@
-
-const WATCH_DIRECTORY =
+const WATCH_DIRECTORY = 
   process.env.NODE_ENV === "development"
     ? require("path").resolve(__dirname, "../hotdir")
     : require("path").resolve(process.env.STORAGE_DIR, `../../collector/hotdir`);
@@ -15,6 +14,10 @@ const ACCEPTED_MIMES = {
     ".pptx",
   ],
 
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+    ".xlsx",
+  ],
+
   "application/vnd.oasis.opendocument.text": [".odt"],
   "application/vnd.oasis.opendocument.presentation": [".odp"],
 
@@ -27,6 +30,9 @@ const ACCEPTED_MIMES = {
   "video/mp4": [".mp4"],
   "video/mpeg": [".mpeg"],
   "application/epub+zip": [".epub"],
+  "image/png": [".png"],
+  "image/jpeg": [".jpg"],
+  "image/jpg": [".jpg"],
 };
 
 const SUPPORTED_FILETYPE_CONVERTERS = {
@@ -45,6 +51,8 @@ const SUPPORTED_FILETYPE_CONVERTERS = {
   ".odt": "./convert/asOfficeMime.js",
   ".odp": "./convert/asOfficeMime.js",
 
+  ".xlsx": "./convert/asXlsx.js",
+
   ".mbox": "./convert/asMbox.js",
 
   ".epub": "./convert/asEPub.js",
@@ -53,6 +61,10 @@ const SUPPORTED_FILETYPE_CONVERTERS = {
   ".wav": "./convert/asAudio.js",
   ".mp4": "./convert/asAudio.js",
   ".mpeg": "./convert/asAudio.js",
+
+  ".png": "./convert/asImage.js",
+  ".jpg": "./convert/asImage.js",
+  ".jpeg": "./convert/asImage.js",
 };
 
 module.exports = {

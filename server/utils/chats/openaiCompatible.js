@@ -12,6 +12,7 @@ async function chatSync({
   systemPrompt = null,
   history = [],
   prompt = null,
+  attachments = [],
   temperature = null,
 }) {
   const uuid = uuidv4();
@@ -38,6 +39,7 @@ async function chatSync({
         text: textResponse,
         sources: [],
         type: chatMode,
+        attachments,
       },
       include: false,
     });
@@ -84,11 +86,12 @@ async function chatSync({
     embeddingsCount !== 0
       ? await VectorDb.performSimilaritySearch({
           namespace: workspace.slug,
-          input: prompt,
+          input: String(prompt),
           LLMConnector,
           similarityThreshold: workspace?.similarityThreshold,
           topN: workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
+          rerank: workspace?.vectorSearchMode === "rerank",
         })
       : {
           contextTexts: [],
@@ -124,11 +127,12 @@ async function chatSync({
 
     await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: prompt,
+      prompt: String(prompt),
       response: {
         text: textResponse,
         sources: [],
         type: chatMode,
+        attachments,
       },
       include: false,
     });
@@ -149,17 +153,21 @@ async function chatSync({
   // Compress & Assemble message to ensure prompt passes token limit with room for response
   // and build system messages based on inputs and history.
   const messages = await LLMConnector.compressMessages({
-    systemPrompt: systemPrompt ?? chatPrompt(workspace),
-    userPrompt: prompt,
+    systemPrompt: systemPrompt ?? (await chatPrompt(workspace)),
+    userPrompt: String(prompt),
     contextTexts,
     chatHistory: history,
+    attachments,
   });
 
   // Send the text completion.
-  const textResponse = await LLMConnector.getChatCompletion(messages, {
-    temperature:
-      temperature ?? workspace?.openAiTemp ?? LLMConnector.defaultTemp,
-  });
+  const { textResponse, metrics } = await LLMConnector.getChatCompletion(
+    messages,
+    {
+      temperature:
+        temperature ?? workspace?.openAiTemp ?? LLMConnector.defaultTemp,
+    }
+  );
 
   if (!textResponse) {
     return formatJSON(
@@ -171,14 +179,20 @@ async function chatSync({
         error: "No text completion could be completed with this input.",
         textResponse: null,
       },
-      { model: workspace.slug, finish_reason: "no_content" }
+      { model: workspace.slug, finish_reason: "no_content", usage: metrics }
     );
   }
 
   const { chat } = await WorkspaceChats.new({
     workspaceId: workspace.id,
-    prompt: prompt,
-    response: { text: textResponse, sources, type: chatMode },
+    prompt: String(prompt),
+    response: {
+      text: textResponse,
+      sources,
+      type: chatMode,
+      metrics,
+      attachments,
+    },
   });
 
   return formatJSON(
@@ -191,7 +205,7 @@ async function chatSync({
       textResponse,
       sources,
     },
-    { model: workspace.slug, finish_reason: "stop" }
+    { model: workspace.slug, finish_reason: "stop", usage: metrics }
   );
 }
 
@@ -201,6 +215,7 @@ async function streamChat({
   systemPrompt = null,
   history = [],
   prompt = null,
+  attachments = [],
   temperature = null,
 }) {
   const uuid = uuidv4();
@@ -246,6 +261,7 @@ async function streamChat({
         text: textResponse,
         sources: [],
         type: chatMode,
+        attachments,
       },
       include: false,
     });
@@ -296,11 +312,12 @@ async function streamChat({
     embeddingsCount !== 0
       ? await VectorDb.performSimilaritySearch({
           namespace: workspace.slug,
-          input: prompt,
+          input: String(prompt),
           LLMConnector,
           similarityThreshold: workspace?.similarityThreshold,
           topN: workspace?.topN,
           filterIdentifiers: pinnedDocIdentifiers,
+          rerank: workspace?.vectorSearchMode === "rerank",
         })
       : {
           contextTexts: [],
@@ -340,11 +357,12 @@ async function streamChat({
 
     await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: prompt,
+      prompt: String(prompt),
       response: {
         text: textResponse,
         sources: [],
         type: chatMode,
+        attachments,
       },
       include: false,
     });
@@ -369,10 +387,11 @@ async function streamChat({
   // Compress & Assemble message to ensure prompt passes token limit with room for response
   // and build system messages based on inputs and history.
   const messages = await LLMConnector.compressMessages({
-    systemPrompt: systemPrompt ?? chatPrompt(workspace),
-    userPrompt: prompt,
+    systemPrompt: systemPrompt ?? (await chatPrompt(workspace)),
+    userPrompt: String(prompt),
     contextTexts,
     chatHistory: history,
+    attachments,
   });
 
   if (!LLMConnector.streamingEnabled()) {
@@ -413,8 +432,14 @@ async function streamChat({
   if (completeText?.length > 0) {
     const { chat } = await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: prompt,
-      response: { text: completeText, sources, type: chatMode },
+      prompt: String(prompt),
+      response: {
+        text: completeText,
+        sources,
+        type: chatMode,
+        metrics: stream.metrics,
+        attachments,
+      },
     });
 
     writeResponseChunk(
@@ -428,7 +453,12 @@ async function streamChat({
           chatId: chat.id,
           textResponse: "",
         },
-        { chunked: true, model: workspace.slug, finish_reason: "stop" }
+        {
+          chunked: true,
+          model: workspace.slug,
+          finish_reason: "stop",
+          usage: stream.metrics,
+        }
       )
     );
     return;
@@ -444,20 +474,29 @@ async function streamChat({
         error: false,
         textResponse: "",
       },
-      { chunked: true, model: workspace.slug, finish_reason: "stop" }
+      {
+        chunked: true,
+        model: workspace.slug,
+        finish_reason: "stop",
+        usage: stream.metrics,
+      }
     )
   );
   return;
 }
 
-function formatJSON(chat, { chunked = false, model, finish_reason = null }) {
+function formatJSON(
+  chat,
+  { chunked = false, model, finish_reason = null, usage = {} }
+) {
   const data = {
     id: chat.uuid ?? chat.id,
     object: "chat.completion",
-    created: Number(new Date()),
+    created: Math.floor(Number(new Date()) / 1000),
     model: model,
     choices: [
       {
+        index: 0,
         [chunked ? "delta" : "message"]: {
           role: "assistant",
           content: chat.textResponse,
@@ -466,6 +505,7 @@ function formatJSON(chat, { chunked = false, model, finish_reason = null }) {
         finish_reason: finish_reason,
       },
     ],
+    usage,
   };
 
   return data;

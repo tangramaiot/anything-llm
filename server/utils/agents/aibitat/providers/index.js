@@ -13,6 +13,17 @@ const GenericOpenAiProvider = require("./genericOpenAi.js");
 const PerplexityProvider = require("./perplexity.js");
 const TextWebGenUiProvider = require("./textgenwebui.js");
 const AWSBedrockProvider = require("./bedrock.js");
+const FireworksAIProvider = require("./fireworksai.js");
+const DeepSeekProvider = require("./deepseek.js");
+const LiteLLMProvider = require("./litellm.js");
+const ApiPieProvider = require("./apipie.js");
+const XAIProvider = require("./xai.js");
+const NovitaProvider = require("./novita.js");
+const NvidiaNimProvider = require("./nvidiaNim.js");
+const PPIOProvider = require("./ppio.js");
+const GeminiProvider = require("./gemini.js");
+const DellProAiStudioProvider = require("./dellProAiStudio.js");
+const MoonshotAiProvider = require("./moonshotAi.js");
 
 module.exports = {
   OpenAIProvider,
@@ -27,7 +38,18 @@ module.exports = {
   OpenRouterProvider,
   MistralProvider,
   GenericOpenAiProvider,
+  DeepSeekProvider,
   PerplexityProvider,
   TextWebGenUiProvider,
   AWSBedrockProvider,
+  FireworksAIProvider,
+  LiteLLMProvider,
+  ApiPieProvider,
+  XAIProvider,
+  NovitaProvider,
+  NvidiaNimProvider,
+  PPIOProvider,
+  GeminiProvider,
+  DellProAiStudioProvider,
+  MoonshotAiProvider,
 };

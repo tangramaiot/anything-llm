@@ -1,4 +1,5 @@
 const prisma = require("../utils/prisma");
+const { safeJSONStringify } = require("../utils/helpers/chat/responses");
 
 const WorkspaceChats = {
   new: async function ({
@@ -8,15 +9,17 @@ const WorkspaceChats = {
     user = null,
     threadId = null,
     include = true,
+    apiSessionId = null,
   }) {
     try {
       const chat = await prisma.workspace_chats.create({
         data: {
           workspaceId,
           prompt,
-          response: JSON.stringify(response),
+          response: safeJSONStringify(response),
           user_id: user?.id || null,
           thread_id: threadId,
+          api_session_id: apiSessionId,
           include,
         },
       });
@@ -40,7 +43,33 @@ const WorkspaceChats = {
           workspaceId,
           user_id: userId,
           thread_id: null, // this function is now only used for the default thread on workspaces and users
+          api_session_id: null, // do not include api-session chats in the frontend for anyone.
           include: true,
+        },
+        ...(limit !== null ? { take: limit } : {}),
+        ...(orderBy !== null ? { orderBy } : { orderBy: { id: "asc" } }),
+      });
+      return chats;
+    } catch (error) {
+      console.error(error.message);
+      return [];
+    }
+  },
+
+  forWorkspaceByApiSessionId: async function (
+    workspaceId = null,
+    apiSessionId = null,
+    limit = null,
+    orderBy = null
+  ) {
+    if (!workspaceId || !apiSessionId) return [];
+    try {
+      const chats = await prisma.workspace_chats.findMany({
+        where: {
+          workspaceId,
+          user_id: null,
+          api_session_id: String(apiSessionId),
+          thread_id: null,
         },
         ...(limit !== null ? { take: limit } : {}),
         ...(orderBy !== null ? { orderBy } : { orderBy: { id: "asc" } }),
@@ -63,6 +92,7 @@ const WorkspaceChats = {
         where: {
           workspaceId,
           thread_id: null, // this function is now only used for the default thread on workspaces
+          api_session_id: null, // do not include api-session chats in the frontend for anyone.
           include: true,
         },
         ...(limit !== null ? { take: limit } : {}),
@@ -75,6 +105,9 @@ const WorkspaceChats = {
     }
   },
 
+  /**
+   * @deprecated Use markThreadHistoryInvalidV2 instead.
+   */
   markHistoryInvalid: async function (workspaceId = null, user = null) {
     if (!workspaceId) return;
     try {
@@ -94,6 +127,9 @@ const WorkspaceChats = {
     }
   },
 
+  /**
+   * @deprecated Use markThreadHistoryInvalidV2 instead.
+   */
   markThreadHistoryInvalid: async function (
     workspaceId = null,
     user = null,
@@ -107,6 +143,28 @@ const WorkspaceChats = {
           thread_id: threadId,
           user_id: user?.id,
         },
+        data: {
+          include: false,
+        },
+      });
+      return;
+    } catch (error) {
+      console.error(error.message);
+    }
+  },
+
+  /**
+   * @description This function is used to mark a thread's history as invalid.
+   * and works with an arbitrary where clause.
+   * @param {Object} whereClause - The where clause to update the chats.
+   * @param {Object} data - The data to update the chats with.
+   * @returns {Promise<void>}
+   */
+  markThreadHistoryInvalidV2: async function (whereClause = {}) {
+    if (!whereClause) return;
+    try {
+      await prisma.workspace_chats.updateMany({
+        where: whereClause,
         data: {
           include: false,
         },
@@ -196,7 +254,7 @@ const WorkspaceChats = {
         const user = res.user_id ? await User.get({ id: res.user_id }) : null;
         res.user = user
           ? { username: user.username }
-          : { username: "unknown user" };
+          : { username: res.api_session_id !== null ? "API" : "unknown user" };
       }
 
       return results;

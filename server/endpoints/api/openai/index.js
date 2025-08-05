@@ -12,6 +12,8 @@ const { EventLogs } = require("../../../models/eventLogs");
 const {
   OpenAICompatibleChat,
 } = require("../../../utils/chats/openaiCompatible");
+const { getModelTag } = require("../../utils");
+const { extractTextContent, extractAttachments } = require("./helpers");
 
 function apiOpenAICompatibleEndpoints(app) {
   if (!app) return;
@@ -90,7 +92,6 @@ function apiOpenAICompatibleEndpoints(app) {
       #swagger.requestBody = {
           description: 'Send a prompt to the workspace with full use of documents as if sending a chat in AnythingLLM. Only supports some values of OpenAI API. See example below.',
           required: true,
-          type: 'object',
           content: {
             "application/json": {
               example: {
@@ -145,7 +146,8 @@ function apiOpenAICompatibleEndpoints(app) {
             workspace,
             systemPrompt,
             history,
-            prompt: userMessage.content,
+            prompt: extractTextContent(userMessage.content),
+            attachments: extractAttachments(userMessage.content),
             temperature: Number(temperature),
           });
 
@@ -154,6 +156,7 @@ function apiOpenAICompatibleEndpoints(app) {
               workspace.chatProvider ?? process.env.LLM_PROVIDER ?? "openai",
             Embedder: process.env.EMBEDDING_ENGINE || "inherit",
             VectorDbSelection: process.env.VECTOR_DB || "lancedb",
+            TTSSelection: process.env.TTS_PROVIDER || "native",
           });
           await EventLogs.logEvent("api_sent_chat", {
             workspaceName: workspace?.name,
@@ -172,7 +175,8 @@ function apiOpenAICompatibleEndpoints(app) {
           workspace,
           systemPrompt,
           history,
-          prompt: userMessage.content,
+          prompt: extractTextContent(userMessage.content),
+          attachments: extractAttachments(userMessage.content),
           temperature: Number(temperature),
           response,
         });
@@ -180,6 +184,8 @@ function apiOpenAICompatibleEndpoints(app) {
           LLMSelection: process.env.LLM_PROVIDER || "openai",
           Embedder: process.env.EMBEDDING_ENGINE || "inherit",
           VectorDbSelection: process.env.VECTOR_DB || "lancedb",
+          TTSSelection: process.env.TTS_PROVIDER || "native",
+          LLMModel: getModelTag(),
         });
         await EventLogs.logEvent("api_sent_chat", {
           workspaceName: workspace?.name,
@@ -203,7 +209,6 @@ function apiOpenAICompatibleEndpoints(app) {
       #swagger.requestBody = {
           description: 'The input string(s) to be embedded. If the text is too long for the embedder model context, it will fail to embed. The vector and associated chunk metadata will be returned in the array order provided',
           required: true,
-          type: 'object',
           content: {
             "application/json": {
               example: {
@@ -223,13 +228,23 @@ function apiOpenAICompatibleEndpoints(app) {
       }
       */
       try {
-        const { inputs = [] } = reqBody(request);
-        const validArray = inputs.every((input) => typeof input === "string");
-        if (!validArray)
-          throw new Error("All inputs to be embedded must be strings.");
+        const body = reqBody(request);
+        // Support input or "inputs" (for backwards compatibility) as an array of strings or a single string
+        // TODO: "inputs" key support will eventually be fully removed.
+        let input = body?.input || body?.inputs || [];
+        // if input is not an array, make it an array and force to string content
+        if (!Array.isArray(input)) input = [String(input)];
+
+        if (Array.isArray(input)) {
+          if (input.length === 0)
+            throw new Error("Input array cannot be empty.");
+          const validArray = input.every((text) => typeof text === "string");
+          if (!validArray)
+            throw new Error("All inputs to be embedded must be strings.");
+        }
 
         const Embedder = getEmbeddingEngineSelection();
-        const embeddings = await Embedder.embedChunks(inputs);
+        const embeddings = await Embedder.embedChunks(input);
         const data = [];
         embeddings.forEach((embedding, index) => {
           data.push({

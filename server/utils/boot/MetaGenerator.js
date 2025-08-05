@@ -12,9 +12,9 @@
  * Since we are an SPA, we can just render the primary page and the known entrypoints for the index.{js,css}
  * we can always start at the right place and dynamically load in lazy-loaded as we typically normally would
  * and we dont have any of the overhead that would normally come with having the rewrite the whole app in next or something.
- * Lastly, this class is singleton, so once instantiate the same refernce is shared for as long as the server is alive.
+ * Lastly, this class is singleton, so once instantiate the same reference is shared for as long as the server is alive.
  * the main function is `.generate()` which will return the index HTML. These settings are stored in the #customConfig
- * static property and will not be reloaded until the page is loaded AND #customConfig is explicity null. So anytime a setting
+ * static property and will not be reloaded until the page is loaded AND #customConfig is explicitly null. So anytime a setting
  * for meta-props is updated you should get this singleton class and call `.clearConfig` so the next page load will show the new props.
  */
 class MetaGenerator {
@@ -45,35 +45,42 @@ class MetaGenerator {
       {
         tag: "title",
         props: null,
-        content: "賽亞 (SAI-A) standard",
+        content: "AnythingLLM | Your personal LLM trained on anything",
       },
 
       {
         tag: "meta",
         props: {
           name: "title",
-          content: "賽亞 (SAI-A) standard",
+          content: "AnythingLLM | Your personal LLM trained on anything",
         },
       },
       {
         tag: "meta",
         props: {
           description: "title",
-          content: "賽亞 (SAI-A) standard",
+          content: "AnythingLLM | Your personal LLM trained on anything",
         },
+      },
+
+      // <!-- Facebook -->
+      { tag: "meta", props: { property: "og:type", content: "website" } },
+      {
+        tag: "meta",
+        props: { property: "og:url", content: "https://anythingllm.com" },
       },
       {
         tag: "meta",
         props: {
           property: "og:title",
-          content: "賽亞 (SAI-A) standard",
+          content: "AnythingLLM | Your personal LLM trained on anything",
         },
       },
       {
         tag: "meta",
         props: {
           property: "og:description",
-          content: "賽亞 (SAI-A) standard",
+          content: "AnythingLLM | Your personal LLM trained on anything",
         },
       },
       {
@@ -81,7 +88,39 @@ class MetaGenerator {
         props: {
           property: "og:image",
           content:
-            "https://www.netigate.com/images/logo_t.png",
+            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
+        },
+      },
+
+      // <!-- Twitter -->
+      {
+        tag: "meta",
+        props: { property: "twitter:card", content: "summary_large_image" },
+      },
+      {
+        tag: "meta",
+        props: { property: "twitter:url", content: "https://anythingllm.com" },
+      },
+      {
+        tag: "meta",
+        props: {
+          property: "twitter:title",
+          content: "AnythingLLM | Your personal LLM trained on anything",
+        },
+      },
+      {
+        tag: "meta",
+        props: {
+          property: "twitter:description",
+          content: "AnythingLLM | Your personal LLM trained on anything",
+        },
+      },
+      {
+        tag: "meta",
+        props: {
+          property: "twitter:image",
+          content:
+            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
         },
       },
 
@@ -127,7 +166,7 @@ class MetaGenerator {
   }
 
   async #fetchConfg() {
-    this.#log(`fetching custome meta tag settings...`);
+    this.#log(`fetching custom meta tag settings...`);
     const { SystemSettings } = require("../../models/systemSettings");
     const customTitle = await SystemSettings.getValueOrFallback(
       { label: "meta_page_title" },
@@ -152,7 +191,7 @@ class MetaGenerator {
           props: null,
           content:
             customTitle ??
-            "賽亞 (SAI-A)",
+            "AnythingLLM | Your personal LLM trained on anything",
         },
       ];
     }

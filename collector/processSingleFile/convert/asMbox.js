@@ -53,14 +53,14 @@ async function asMbox({ fullFilePath = "", filename = "" }) {
       published: createdDate(fullFilePath),
       wordCount: content.split(" ").length,
       pageContent: content,
-      token_count_estimate: tokenizeString(content).length,
+      token_count_estimate: tokenizeString(content),
     };
 
     item++;
-    const document = writeToServerDocuments(
+    const document = writeToServerDocuments({
       data,
-      `${slugify(filename)}-${data.id}-msg-${item}`
-    );
+      filename: `${slugify(filename)}-${data.id}-msg-${item}`,
+    });
     documents.push(document);
   }
 

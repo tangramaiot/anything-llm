@@ -1,4 +1,4 @@
-const { toChunks } = require("../../helpers");
+const { toChunks, maximumChunkLength } = require("../../helpers");
 
 class GenericOpenAiEmbedder {
   constructor() {
@@ -13,12 +13,34 @@ class GenericOpenAiEmbedder {
       apiKey: process.env.GENERIC_OPEN_AI_EMBEDDING_API_KEY ?? null,
     });
     this.model = process.env.EMBEDDING_MODEL_PREF ?? null;
+    this.embeddingMaxChunkLength = maximumChunkLength();
 
-    // Limit of how many strings we can process in a single pass to stay with resource or network limits
-    this.maxConcurrentChunks = 500;
-
+    // this.maxConcurrentChunks is delegated to the getter below.
     // Refer to your specific model and provider you use this class with to determine a valid maxChunkLength
-    this.embeddingMaxChunkLength = 8_191;
+    this.log(`Initialized ${this.model}`, {
+      baseURL: this.basePath,
+      maxConcurrentChunks: this.maxConcurrentChunks,
+      embeddingMaxChunkLength: this.embeddingMaxChunkLength,
+    });
+  }
+
+  log(text, ...args) {
+    console.log(`\x1b[36m[GenericOpenAiEmbedder]\x1b[0m ${text}`, ...args);
+  }
+
+  /**
+   * returns the `GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS` env variable as a number
+   * or 500 if the env variable is not set or is not a number.
+   * @returns {number}
+   */
+  get maxConcurrentChunks() {
+    if (!process.env.GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS)
+      return 500;
+    if (
+      isNaN(Number(process.env.GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS))
+    )
+      return 500;
+    return Number(process.env.GENERIC_OPEN_AI_EMBEDDING_MAX_CONCURRENT_CHUNKS);
   }
 
   async embedTextInput(textInput) {

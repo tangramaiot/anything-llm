@@ -56,13 +56,13 @@ async function asAudio({ fullFilePath = "", filename = "", options = {} }) {
     published: createdDate(fullFilePath),
     wordCount: content.split(" ").length,
     pageContent: content,
-    token_count_estimate: tokenizeString(content).length,
+    token_count_estimate: tokenizeString(content),
   };
 
-  const document = writeToServerDocuments(
+  const document = writeToServerDocuments({
     data,
-    `${slugify(filename)}-${data.id}`
-  );
+    filename: `${slugify(filename)}-${data.id}`,
+  });
   trashFile(fullFilePath);
   console.log(
     `[SUCCESS]: ${filename} transcribed, converted & ready for embedding.\n`

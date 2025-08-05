@@ -47,15 +47,14 @@ const QDrant = {
     const namespace = await this.namespace(client, _namespace);
     return namespace?.vectorCount || 0;
   },
-  similarityResponse: async function (
-    _client,
+  similarityResponse: async function ({
+    client,
     namespace,
     queryVector,
     similarityThreshold = 0.25,
     topN = 4,
-    filterIdentifiers = []
-  ) {
-    const { client } = await this.connect();
+    filterIdentifiers = [],
+  }) {
     const result = {
       contextTexts: [],
       sourceDocuments: [],
@@ -124,7 +123,7 @@ const QDrant = {
     }
     if (!dimensions)
       throw new Error(
-        `Qdrant:getOrCreateCollection Unable to infer vector dimension from input. Open an issue on Github for support.`
+        `Qdrant:getOrCreateCollection Unable to infer vector dimension from input. Open an issue on GitHub for support.`
       );
     await client.createCollection(namespace, {
       vectors: {
@@ -147,7 +146,7 @@ const QDrant = {
       if (!pageContent || pageContent.length == 0) return false;
 
       console.log("Adding new vectorized document into namespace", namespace);
-      if (skipCache) {
+      if (!skipCache) {
         const cacheResult = await cachedVectorInformation(fullFilePath);
         if (cacheResult.exists) {
           const { client } = await this.connect();
@@ -222,14 +221,12 @@ const QDrant = {
           { label: "text_splitter_chunk_overlap" },
           20
         ),
-        chunkHeaderMeta: {
-          sourceDocument: metadata?.title,
-          published: metadata?.published || "unknown",
-        },
+        chunkHeaderMeta: TextSplitter.buildHeaderMeta(metadata),
+        chunkPrefix: EmbedderEngine?.embeddingPrefix,
       });
       const textChunks = await textSplitter.splitText(pageContent);
 
-      console.log("Chunks created from document:", textChunks.length);
+      console.log("Snippets created from document:", textChunks.length);
       const documentVectors = [];
       const vectors = [];
       const vectorValues = await EmbedderEngine.embedChunks(textChunks);
@@ -341,14 +338,14 @@ const QDrant = {
     }
 
     const queryVector = await LLMConnector.embedTextInput(input);
-    const { contextTexts, sourceDocuments } = await this.similarityResponse(
+    const { contextTexts, sourceDocuments } = await this.similarityResponse({
       client,
       namespace,
       queryVector,
       similarityThreshold,
       topN,
-      filterIdentifiers
-    );
+      filterIdentifiers,
+    });
 
     const sources = sourceDocuments.map((metadata, i) => {
       return { ...metadata, text: contextTexts[i] };
