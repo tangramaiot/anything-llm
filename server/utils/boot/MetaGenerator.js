@@ -67,10 +67,6 @@ class MetaGenerator {
       { tag: "meta", props: { property: "og:type", content: "website" } },
       {
         tag: "meta",
-        props: { property: "og:url", content: "https://anythingllm.com" },
-      },
-      {
-        tag: "meta",
         props: {
           property: "og:title",
           content: "SAIA-A STD",
@@ -83,23 +79,11 @@ class MetaGenerator {
           content: "SAIA-A STD",
         },
       },
-      {
-        tag: "meta",
-        props: {
-          property: "og:image",
-          content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
-        },
-      },
 
       // <!-- Twitter -->
       {
         tag: "meta",
         props: { property: "twitter:card", content: "summary_large_image" },
-      },
-      {
-        tag: "meta",
-        props: { property: "twitter:url", content: "https://anythingllm.com" },
       },
       {
         tag: "meta",
@@ -113,14 +97,6 @@ class MetaGenerator {
         props: {
           property: "twitter:description",
           content: "SAIA-A STD",
-        },
-      },
-      {
-        tag: "meta",
-        props: {
-          property: "twitter:image",
-          content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
         },
       },
 
