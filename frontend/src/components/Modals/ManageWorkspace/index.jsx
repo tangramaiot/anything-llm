@@ -65,20 +65,22 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
   }
 
   return (
-    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
+    <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99 p-4">
       <div className="backdrop h-full w-full absolute top-0 z-10" />
-      <div className="absolute h-full w-fit transition duration-300 z-20 py-10">
-        <div className="relative bg-main-gradient rounded-[12px] max-h-[80vh] shadow border-2 border-slate-300/10 h-full my-10">
-          <div className="absolute rounded-t border-gray-500/50 right-0 h-full">
+      <div className="relative w-full max-w-7xl h-full max-h-[90vh] transition duration-300 z-20">
+        <div className="relative bg-main-gradient rounded-2xl shadow border-2 border-slate-300/10 h-full flex flex-col overflow-hidden">
+          <div className="absolute top-4 right-4 z-50">
             <button
               onClick={hideModal}
               type="button"
-              className="z-50 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:border-white/60 bg-sidebar-button hover:bg-menu-item-selected-gradient hover:border-slate-100 hover:border-opacity-50 border-transparent border"
+              className="text-gray-400 bg-transparent hover:bg-gray-700/50 rounded-lg text-sm p-2 inline-flex items-center transition-all duration-200"
             >
-              <X className="text-gray-300 text-lg" />
+              <X className="text-gray-300 w-5 h-5" />
             </button>
           </div>
-          <DocumentSettings workspace={workspace} systemSettings={settings} />
+          <div className="flex-1 overflow-hidden">
+            <DocumentSettings workspace={workspace} systemSettings={settings} />
+          </div>
         </div>
       </div>
     </div>

@@ -27,20 +27,20 @@ function WorkspaceDirectory({
 
   if (loading) {
     return (
-      <div className="px-8">
-        <div className="flex items-center justify-start w-[560px]">
-          <h3 className="text-white text-base font-bold">
+      <div className="px-2 sm:px-4 lg:px-6 w-full h-full flex flex-col">
+        <div className="flex items-center justify-start w-full mb-3">
+          <h3 className="text-white text-sm lg:text-base font-bold truncate">
             {workspace.name}
           </h3>
         </div>
-        <div className="relative w-[560px] h-[210px] bg-zinc-900 rounded-2xl mt-5">
-          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8">
+        <div className="relative w-full flex-1 bg-zinc-900 rounded-2xl overflow-hidden">
+          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-4 lg:px-8 border-b border-white/20">
             <p className="col-span-5">Name</p>
             <p className="col-span-2" />
           </div>
-          <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
+          <div className="w-full h-full flex items-center justify-center flex-col gap-y-5 px-4">
             <PreLoader />
-            <p className="text-white/80 text-sm font-semibold animate-pulse text-center w-1/3">
+            <p className="text-white/80 text-xs lg:text-sm font-semibold animate-pulse text-center max-w-xs">
               {loadingMessage}
             </p>
           </div>
@@ -51,23 +51,23 @@ function WorkspaceDirectory({
 
   return (
     <>
-      <div className="flex flex-col px-8">
-        <h3 className="text-white text-base font-bold">
+      <div className="flex flex-col px-2 sm:px-4 lg:px-6 w-full h-full">
+        <h3 className="text-white text-sm lg:text-base font-bold mb-3 truncate">
           {workspace.name}
         </h3>
         <div
-          className={`relative w-[560px] h-[620px] bg-zinc-900 rounded-2xl mt-1 border-4 ${
+          className={`relative w-full flex-1 bg-zinc-900 rounded-2xl border-4 transition-colors duration-200 flex flex-col overflow-hidden ${
             highlightWorkspace ? "border-cyan-300/80" : "border-transparent"
           }`}
         >
-          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 bg-zinc-900 sticky top-0 z-10">
+          <div className="text-white/80 text-xs grid grid-cols-12 py-2 px-4 lg:px-8 border-b border-white/20 bg-zinc-900 flex-shrink-0">
             <p className="col-span-5">{t("workspace-knowledge-management.table.column.name")}</p>
             <p className="col-span-2" />
           </div>
             {Object.values(files.items).some(
               (folder) => folder.items.length > 0
             ) || movedItems.length > 0 ? (
-              <div className="mx-1 my-1 max-h-[560px] overflow-y-auto">
+              <div className="flex-1 overflow-y-auto sidebar-scrollbar p-1">
                 {files.items.map((folder) =>
                   folder.items.map((item, index) => (
                     <WorkspaceFileRow
@@ -85,17 +85,17 @@ function WorkspaceDirectory({
                 )}
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-white text-opacity-40 text-xm font-medium">
+              <div className="flex-1 flex items-center justify-center px-4">
+                <p className="text-white text-opacity-40 text-xs lg:text-sm font-medium text-center">
                   {t("workspace-knowledge-management.table.noDocumentsFound")}
                 </p>
               </div>
             )}
         </div>
         {hasChanges && (
-          <div className="flex items-center justify-between py-2">
-            <div className="text-white/80">
-              <p className="text-sm font-semibold">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 gap-3 border-t border-white/10 mt-2">
+            <div className="text-white/80 flex-1">
+              <p className="text-xs lg:text-sm font-semibold">
                 {embeddingCosts === 0
                   ? ""
                   : `Estimated Cost: ${
@@ -104,14 +104,14 @@ function WorkspaceDirectory({
                         : dollarFormat(embeddingCosts)
                     }`}
               </p>
-              <p className="mt-2 text-xs italic" hidden={embeddingCosts === 0}>
+              <p className="mt-1 text-xs italic" hidden={embeddingCosts === 0}>
                 *One time cost for embeddings
               </p>
             </div>
 
             <button
               onClick={saveChanges}
-              className="border border-slate-200 px-5 py-2.5 rounded-lg text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+              className="border border-slate-200 px-4 lg:px-5 py-2 lg:py-2.5 rounded-lg text-white text-xs lg:text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800 transition-all duration-200 whitespace-nowrap flex-shrink-0"
             >
               Save and Embed
             </button>

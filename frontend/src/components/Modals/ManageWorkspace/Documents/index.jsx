@@ -191,8 +191,8 @@ export default function DocumentSettings({ workspace, systemSettings }) {
   };
 
   return (
-    <div className="flex items-center z-10 h-full py-8">
-      <div className="flex flex-col gap-y-2 h-full justify-stretch items-stretch">
+    <div className="flex flex-col lg:flex-row items-start lg:items-center z-10 h-full p-4 lg:p-6 xl:p-8 gap-4 lg:gap-6">
+      <div className="flex flex-col gap-y-2 h-full lg:h-full w-full lg:flex-1 min-h-0">
         <Directory
         files={availableDocs}
         setFiles={setAvailableDocs}
@@ -210,8 +210,12 @@ export default function DocumentSettings({ workspace, systemSettings }) {
         setLoadingMessage={setLoadingMessage}
         />
       </div>
-      <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 rotate-90" />
-      <div className="flex flex-col gap-y-2 h-full justify-stretch items-stretch">
+      
+      <div className="flex justify-center items-center flex-shrink-0 py-2 lg:py-0">
+        <ArrowsDownUp className="text-white text-base font-bold w-6 h-6 lg:rotate-90 rotate-0" />
+      </div>
+      
+      <div className="flex flex-col gap-y-2 h-full lg:h-full w-full lg:flex-1 min-h-0">
         <WorkspaceDirectory
           workspace={workspace}
           files={workspaceDocs}

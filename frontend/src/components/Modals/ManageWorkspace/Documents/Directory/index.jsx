@@ -174,46 +174,48 @@ function Directory({
 
   const filteredFiles = filterFileSearchResults(files, searchTerm);
   return (
-    <div className="px-8 pb-8 w-full h-full">
-      <div className="flex flex-col gap-y-2">
-        <div className="flex items-center gap-x-4">
-          <h3 className="text-white text-base font-bold">{t("workspace-knowledge-management.sharedKnowledge")}</h3>
-          <MagnifyingGlass
-            size={14}
-            className="text-white"
-            weight="bold"
-          />
-          <input
-            type="search"
-            placeholder="Search for document"
-            onChange={handleSearch}
-            className="search-input bg-zinc-900 text-white placeholder-white/40 text-sm rounded-lg pl-2 pr-2.5 py-2 w-[250px] h-[32px]"
-          />
+    <div className="px-2 sm:px-4 lg:px-6 pb-4 lg:pb-6 w-full h-full flex flex-col">
+      <div className="flex flex-col gap-y-3 lg:gap-y-4 flex-1 min-h-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+          <h3 className="text-white text-sm lg:text-base font-bold flex-shrink-0">{t("workspace-knowledge-management.sharedKnowledge")}</h3>
+          <div className="flex items-center gap-x-2 w-full sm:w-auto">
+            <MagnifyingGlass
+              size={14}
+              className="text-white flex-shrink-0"
+              weight="bold"
+            />
+            <input
+              type="search"
+              placeholder="Search for document"
+              onChange={handleSearch}
+              className="search-input bg-zinc-900 text-white placeholder-white/40 text-xs lg:text-sm rounded-lg pl-2 pr-2.5 py-2 w-full sm:w-48 lg:w-64 h-8"
+            />
+          </div>
           <button
-            className="flex items-center gap-x-2 cursor-pointer py-[7px] -mr-[14px] rounded-lg hover:bg-[#222628]/60 z-20 relative"
+            className="flex items-center gap-x-2 cursor-pointer py-2 px-3 rounded-lg hover:bg-[#222628]/60 z-20 relative transition-colors duration-200 flex-shrink-0"
             onClick={openFolderModal}
           >
-            <Plus size={18} weight="bold" color="#D3D4D4" />
-            <div className="text-[#D3D4D4] text-xs font-bold leading-[18px]">
+            <Plus size={16} weight="bold" color="#D3D4D4" />
+            <div className="text-[#D3D4D4] text-xs font-bold">
               New Folder
             </div>
           </button>
         </div>
-        <div className="relative w-[560px] h-[500px] max-h-[500px] bg-zinc-900 rounded-2xl overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-8 border-b border-white/20 shadow-lg bg-zinc-900">
+        <div className="relative w-full flex-1 bg-zinc-900 rounded-2xl overflow-hidden min-h-0">
+          <div className="absolute top-0 left-0 right-0 z-10 rounded-t-2xl text-white/80 text-xs grid grid-cols-12 py-2 px-4 lg:px-8 border-b border-white/20 shadow-lg bg-zinc-900">
           <p className="col-span-6">{t("workspace-knowledge-management.table.column.name")}</p>
           </div>
           
-          <div className="h-full pt-8">
+          <div className="h-full pt-8 overflow-hidden">
             {loading ? (
-              <div className="w-full h-full flex items-center justify-center flex-col gap-y-5">
+              <div className="w-full h-full flex items-center justify-center flex-col gap-y-5 px-4">
                 <PreLoader />
-                <p className="text-white/80 text-sm font-semibold animate-pulse text-center w-1/3">
+                <p className="text-white/80 text-xs lg:text-sm font-semibold animate-pulse text-center max-w-xs">
                   {loadingMessage}
                 </p>
               </div>
             ) : filteredFiles.length > 0 ? (
-              <div className="overflow-y-auto h-full">
+              <div className="overflow-y-auto h-full sidebar-scrollbar">
                 {filteredFiles.map(
                   (item, index) =>
                     item.type === "folder" && (
@@ -234,22 +236,22 @@ function Directory({
                 }
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-white text-opacity-40 text-sm font-medium">
+              <div className="w-full h-full flex items-center justify-center px-4">
+                <p className="text-white text-opacity-40 text-xs lg:text-sm font-medium text-center">
                   {t("workspace-knowledge-management.table.noDocumentsFound")}
                 </p>
               </div>
             )}
           </div>
           {amountSelected !== 0 && (
-            <div className="absolute bottom-[12px] left-0 right-0 flex justify-center pointer-events-none">
-              <div className="mx-auto bg-white/40 rounded-lg py-1 px-2 pointer-events-auto">
-                <div className="flex flex-row items-center gap-x-2">
+            <div className="absolute bottom-3 left-2 right-2 flex justify-center pointer-events-none">
+              <div className="mx-auto bg-white/40 backdrop-blur-sm rounded-lg py-2 px-3 pointer-events-auto shadow-lg max-w-full">
+                <div className="flex flex-row items-center gap-x-2 flex-wrap justify-center">
                   <button
                     onClick={moveToWorkspace}
                     onMouseEnter={() => setHighlightWorkspace(true)}
                     onMouseLeave={() => setHighlightWorkspace(false)}
-                    className="border-none text-sm font-semibold bg-white h-[30px] px-2.5 rounded-lg hover:text-white hover:bg-neutral-800/80"
+                    className="border-none text-xs lg:text-sm font-semibold bg-white h-8 lg:h-9 px-2 lg:px-3 rounded-lg hover:text-white hover:bg-neutral-800/80 transition-all duration-200 whitespace-nowrap"
                   >
                     Move to Workspace
                   </button>
@@ -258,9 +260,10 @@ function Directory({
                       onClick={() =>
                         setShowFolderSelection(!showFolderSelection)
                       }
-                      className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:bg-neutral-800/80 flex justify-center items-center group"
+                      className="border-none text-sm font-semibold bg-white h-8 w-8 lg:h-9 lg:w-9 rounded-lg text-dark-text hover:bg-neutral-800/80 flex justify-center items-center group transition-all duration-200"
+                      title="Move to folder"
                     >
-                      <MoveToFolderIcon className="text-dark-text group-hover:text-white" />
+                      <MoveToFolderIcon className="text-dark-text group-hover:text-white w-4 h-4 lg:w-5 lg:h-5" />
                     </button>
                     {showFolderSelection && (
                       <FolderSelectionPopup
@@ -274,9 +277,10 @@ function Directory({
                   </div>
                   <button
                     onClick={deleteFiles}
-                    className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:text-white hover:bg-neutral-800/80 flex justify-center items-center"
+                    className="border-none text-sm font-semibold bg-white h-8 w-8 lg:h-9 lg:w-9 rounded-lg text-dark-text hover:text-white hover:bg-neutral-800/80 flex justify-center items-center transition-all duration-200"
+                    title="Delete selected"
                   >
-                    <Trash size={18} weight="bold" />
+                    <Trash size={16} weight="bold" className="lg:w-[18px] lg:h-[18px]" />
                   </button>
                 </div>
               </div>
