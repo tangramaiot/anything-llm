@@ -323,7 +323,7 @@ const Workspace = {
       const results = await prisma.workspaces.findMany({
         where: clause,
         ...(limit !== null ? { take: limit } : {}),
-        ...(orderBy !== null ? { orderBy } : {}),
+        ...(orderBy !== null ? { orderBy } : { orderBy: { createdAt: "desc" } }),
       });
       return results;
     } catch (error) {
@@ -352,7 +352,7 @@ const Workspace = {
           },
         },
         ...(limit !== null ? { take: limit } : {}),
-        ...(orderBy !== null ? { orderBy } : {}),
+        ...(orderBy !== null ? { orderBy } : { orderBy: { createdAt: "asc" } }),
       });
       return workspaces;
     } catch (error) {
