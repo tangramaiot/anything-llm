@@ -46,21 +46,29 @@ export default function Members({ workspace }) {
   }
 
   return (
-    <div className="flex">
-      <div className="flex w-5/6">
-        <table className="w-full text-sm text-left rounded-lg">
+    <div className="flex flex-col gap-4">
+      {/* Mobile-first button placement */}
+      <div className="flex justify-end">
+        <CTAButton onClick={openModal} className="w-full sm:w-auto">
+          Manage Users
+        </CTAButton>
+      </div>
+      
+      {/* Responsive table container */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left rounded-lg min-w-[600px]">
           <thead className="text-white text-opacity-80 text-xs leading-[18px] font-bold uppercase border-white border-b border-opacity-60">
             <tr>
-              <th scope="col" className="px-6 py-3 rounded-tl-lg">
+              <th scope="col" className="px-3 md:px-6 py-3 rounded-tl-lg">
                 Username
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 md:px-6 py-3">
                 Role
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 md:px-6 py-3 hidden sm:table-cell">
                 Date Added
               </th>
-              <th scope="col" className="px-6 py-3 rounded-tr-lg">
+              <th scope="col" className="px-3 md:px-6 py-3 rounded-tr-lg">
                 {" "}
               </th>
             </tr>
@@ -80,18 +88,17 @@ export default function Members({ workspace }) {
           </tbody>
         </table>
       </div>
-      <div className="flex w-1/6">
-        <CTAButton onClick={openModal}>Manage Users</CTAButton>
-        { isOpen && (
-          <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
-            <AddMemberModal
-              closeModal={closeModal}
-              users={users}
-              workspace={adminWorkspace}
-            />
-          </div>
-        )}
-      </div>
+      
+      {/* Modal */}
+      { isOpen && (
+        <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
+          <AddMemberModal
+            closeModal={closeModal}
+            users={users}
+            workspace={adminWorkspace}
+          />
+        </div>
+      )}
     </div>
   );
 }

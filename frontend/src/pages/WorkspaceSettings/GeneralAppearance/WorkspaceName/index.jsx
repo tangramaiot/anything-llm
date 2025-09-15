@@ -15,7 +15,7 @@ export default function WorkspaceName({ workspace, setHasChanges }) {
         minLength={2}
         maxLength={36}
         defaultValue={workspace?.name}
-        className="bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5"
+        className="bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full max-w-md p-2.5 border border-zinc-700"
         placeholder="My Workspace"
         required={true}
         autoComplete="off"

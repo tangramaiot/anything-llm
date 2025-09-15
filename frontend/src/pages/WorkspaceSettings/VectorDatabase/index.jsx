@@ -48,9 +48,9 @@ export default function VectorDatabase({ slug, hideSettings }) {
     <form
       ref={formEl}
       onSubmit={handleUpdate}
-      className="flex flex-col gap-y-6"
+      className="flex flex-col gap-y-4 md:gap-y-6"
     >
-      <div className="flex items-start gap-x-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <VectorDBIdentifier workspace={workspace} />
         <VectorCount reload={true} workspace={workspace} />
       </div>
@@ -61,19 +61,19 @@ export default function VectorDatabase({ slug, hideSettings }) {
       />
       <ResetDatabase workspace={workspace} />
       <div className="border border-slate-300/30"></div>
-      <div className="flex justify-end">
-        <div className="flex gap-x-2">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-end">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-x-2">
           <button
             type="button"
             onClick={hideSettings}
-            className="transition-all w-fit duration-300 px-5 py-2 rounded-3xl text-white text-sm items-center flex gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
+            className="transition-all w-full sm:w-fit duration-300 px-4 md:px-5 py-2 rounded-3xl text-white text-sm items-center flex justify-center gap-x-2 hover:bg-slate-200 hover:text-slate-800 focus:ring-gray-800"
           >
             {t("general.cancel")}
           </button>
           <button
             disabled={!hasChanges}
             type="submit"
-            className="transition-all w-fit duration-300 px-5 py-2 rounded-3xl text-white text-sm items-center flex gap-x-2  hover:text-slate-800 bg-gradient-to-b from-[#7F56D9] to-[#B043F2]"
+            className="transition-all w-full sm:w-fit duration-300 px-4 md:px-5 py-2 rounded-3xl text-white text-sm items-center flex justify-center gap-x-2 hover:text-slate-800 bg-gradient-to-b from-[#7F56D9] to-[#B043F2] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? t("general.saving") : t("general.save")}
           </button>
