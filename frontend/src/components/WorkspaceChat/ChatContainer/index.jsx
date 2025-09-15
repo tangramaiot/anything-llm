@@ -248,9 +248,9 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
   
   return (
     <div
-      className="transition-all duration-500 flex flex-col md:rounded-[16px] w-full h-full"
+      className="transition-all duration-500 flex flex-col md:rounded-[16px] w-full h-full relative"
     >
-      <div className="flex-1 overflow-y-auto mt-14 mb-14">
+      <div className="flex-1 overflow-y-auto pb-16 md:pb-20 lg:pb-24">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
@@ -259,7 +259,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
       </div>
-      <div className="flex-shrink-0"> 
+      <div className="absolute bottom-0 left-0 right-0 z-10"> 
         <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}

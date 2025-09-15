@@ -90,12 +90,12 @@ export default function PromptInput({
   const watchForAt = debounce(checkForAt, 300);
 
   return (
-    <div className="w-full fixed md:absolute bottom-1 left-0 z-10 md:z-0 flex">
+    <div className="w-full bg-gradient-to-t from-gray-900/95 to-transparent backdrop-blur-sm">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full"
       >
-        <div className="flex mx-2 mb-1 md:mx-16 md:mb-2">
+        <div className="flex mx-3 mb-2 md:mx-6 lg:mx-12 xl:mx-16 md:mb-3 lg:mb-4">
           <textarea
             ref={textareaRef}
             onChange={(e) => {
@@ -114,11 +114,12 @@ export default function PromptInput({
               adjustTextArea(e);
             }}
             value={promptInput}
-            className="cursor-text max-h-[50vh] md:max-h-[100px] md:mx-0 p-1 w-full text-[16px] md:text-md text-white bg-gray-700 bg-opacity-80 placeholder:text-white/60 resize-none active:outline-none focus:outline-none rounded-lg"
+            className="cursor-text max-h-[40vh] md:max-h-[120px] lg:max-h-[150px] p-2 md:p-3 w-full text-sm md:text-base text-white bg-gray-700/90 placeholder:text-white/60 resize-none active:outline-none focus:outline-none rounded-lg border border-gray-600/50 focus:border-purple-500/50 transition-colors"
             placeholder={"Send a message"}
+            rows="1"
           />
           
-          <div className="flex self-end my-2 mx-2 md:self-center">
+          <div className="flex self-end ml-2 md:ml-3 mb-1 md:mb-2 lg:mb-3">
             {buttonDisabled ? (
               <StopGenerationButton />
             ) : (
@@ -126,12 +127,13 @@ export default function PromptInput({
                 <button
                   ref={formRef}
                   type="submit"
-                  className="flex items-center justify-around rounded-full cursor-pointer text-white/60 hover:text-white bg-gradient-to-b from-[#7F56D9] to-[#B043F2] px-4 py-[10px]"
+                  className="flex items-center justify-center rounded-full cursor-pointer text-white/60 hover:text-white bg-gradient-to-b from-[#7F56D9] to-[#B043F2] hover:from-[#8B66E3] hover:to-[#B84EF4] p-2.5 md:p-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   data-tooltip-id="send-prompt"
                   data-tooltip-content="Send prompt message to workspace"
                   aria-label="Send prompt message to workspace"
+                  disabled={inputDisabled}
                 >
-                  <PaperPlaneRight className="w-5 h-5" weight="fill" />
+                  <PaperPlaneRight className="w-4 h-4 md:w-5 md:h-5" weight="fill" />
                 </button>
                 <Tooltip
                   id="send-prompt"

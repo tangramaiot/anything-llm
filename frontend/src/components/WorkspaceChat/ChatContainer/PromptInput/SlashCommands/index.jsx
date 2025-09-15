@@ -50,10 +50,10 @@ export function SlashCommands({ showing, setShowing, sendCommand }) {
 
   return (
     <div hidden={!showing}>
-      <div className="w-full flex justify-center absolute bottom-[130px] md:bottom-[150px] left-0 z-10 px-4">
+      <div className="w-full flex justify-center absolute bottom-[100px] md:bottom-[120px] lg:bottom-[140px] left-0 z-20 px-3 md:px-6">
         <div
           ref={cmdRef}
-          className="w-[600px] overflow-auto p-2 bg-zinc-800 rounded-2xl shadow flex-col justify-center items-start gap-2.5 inline-flex"
+          className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl max-h-[60vh] overflow-auto p-3 md:p-4 bg-zinc-800/95 backdrop-blur-sm rounded-2xl shadow-xl border border-zinc-700/50 flex-col justify-center items-start gap-2.5 inline-flex"
         >
           <ResetCommand sendCommand={sendCommand} setShowing={setShowing} />
           <EndAgentSession sendCommand={sendCommand} setShowing={setShowing} />

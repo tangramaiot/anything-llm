@@ -168,8 +168,8 @@ export default function ChatHistory({
 
   if (history.length === 0) {
     return (
-      <div className="flex flex-col h-full md:mt-0 pb-44 md:pb-40 w-full justify-end items-center">
-        <div className="flex flex-col items-center md:items-start md:max-w-[600px] w-full px-4">
+      <div className="flex flex-col h-full w-full justify-end items-center px-3 md:px-6 lg:px-8">
+        <div className="flex flex-col items-center md:items-start max-w-full md:max-w-2xl lg:max-w-4xl w-full mb-4 md:mb-8">
           <WorkspaceChatSuggestions
             suggestions={workspace?.suggestedMessages ?? []}
             sendSuggestion={handleSendSuggestedMessage}
@@ -187,7 +187,7 @@ export default function ChatHistory({
 
   return (
     <div
-      className={`markdown text-white/80 light:text-theme-text-primary font-light ${textSize} h-full pt-6 md:pt-0 md:pb-20 md:mx-0 overflow-y-scroll flex flex-col justify-start ${
+      className={`markdown text-white/80 light:text-theme-text-primary font-light ${textSize} h-full pt-3 md:pt-6 px-3 md:px-6 lg:px-8 overflow-y-scroll flex flex-col justify-start ${
         showScrollbar ? "show-scrollbar" : "no-scroll"
       }`}
       id="chat-history"
@@ -244,16 +244,17 @@ export default function ChatHistory({
         <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
       )}
       {!isAtBottom && (
-        <div className="fixed bottom-20 right-5 md:right-20 z-50 cursor-pointer animate-pulse">
+        <div className="fixed bottom-20 md:bottom-24 lg:bottom-28 right-4 md:right-8 lg:right-12 z-50 cursor-pointer animate-pulse">
           <div className="flex flex-col items-center">
             <div
-              className="p-1 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 hover:text-white"
+              className="p-2 md:p-2.5 rounded-full border border-white/20 bg-gray-800/80 hover:bg-gray-700/90 hover:border-white/30 transition-all duration-200 backdrop-blur-sm shadow-lg"
               onClick={() => {
                 scrollToBottom(true);
                 setIsUserScrolling(false);
               }}
+              aria-label="Scroll to bottom"
             >
-              <ArrowDown weight="bold" className="text-white/60 w-5 h-5" />
+              <ArrowDown weight="bold" className="text-white/70 hover:text-white w-4 h-4 md:w-5 md:h-5" />
             </div>
           </div>
         </div>
@@ -281,15 +282,15 @@ function StatusResponse({ props }) {
 function WorkspaceChatSuggestions({ suggestions = [], sendSuggestion }) {
   if (suggestions.length === 0) return null;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-white/60 text-xs mt-10 w-full justify-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 text-white/60 text-sm mt-6 md:mt-10 w-full">
       {suggestions.map((suggestion, index) => (
         <button
           key={index}
-          className="text-left p-2.5 border rounded-xl border-white/20 bg-sidebar hover:bg-workspace-item-selected-gradient"
+          className="text-left p-3 md:p-4 border rounded-xl border-white/20 bg-gray-800/50 hover:bg-gray-700/60 hover:border-white/30 transition-all duration-200 backdrop-blur-sm shadow-sm hover:shadow-md hover:scale-105"
           onClick={() => sendSuggestion(suggestion.heading, suggestion.message)}
         >
-          <p className="font-semibold">{suggestion.heading}</p>
-          <p>{suggestion.message}</p>
+          <p className="font-semibold text-white/80 mb-1 text-sm md:text-base">{suggestion.heading}</p>
+          <p className="text-xs md:text-sm text-white/60 leading-relaxed">{suggestion.message}</p>
         </button>
       ))}
     </div>
