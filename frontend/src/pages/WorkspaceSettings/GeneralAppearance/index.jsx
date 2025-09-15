@@ -45,19 +45,28 @@ export default function GeneralInfo({ slug, hideSettings }) {
 
   if (!workspace || loading) return null;
   return (
-    <>
-        <form
-          ref={formEl}
-          onSubmit={handleUpdate}
-          className="flex flex-col gap-y-6"
-        >
-          <WorkspacePfp workspace={workspace} slug={slug} />
-          <WorkspaceName
-            key={workspace.slug}
-            workspace={workspace}
-            setHasChanges={setHasChanges}
-          />
-          <div className="border border-slate-300/30"></div>
+    <div className="h-full flex flex-col">
+      <form
+        ref={formEl}
+        onSubmit={handleUpdate}
+        className="h-full flex flex-col"
+      >
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto pr-4 -mr-4 min-h-0">
+          <div className="flex flex-col gap-y-4 md:gap-y-6 pb-4 md:pb-6">
+            <WorkspacePfp workspace={workspace} slug={slug} />
+            <WorkspaceName
+              key={workspace.slug}
+              workspace={workspace}
+              setHasChanges={setHasChanges}
+            />
+            {/* <SuggestedChatMessages slug={workspace.slug} /> */}
+            {/* <DeleteWorkspace workspace={workspace} /> */}
+          </div>
+        </div>
+        
+        {/* Fixed button area at bottom - always visible */}
+        <div className="flex-shrink-0 border-t border-slate-300/30 pt-3 md:pt-4 min-h-[60px]">
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-end">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-x-2">
               <button
@@ -76,9 +85,8 @@ export default function GeneralInfo({ slug, hideSettings }) {
               </button>
             </div>
           </div>
-        </form>
-      {/* <SuggestedChatMessages slug={workspace.slug} /> */}
-      {/* <DeleteWorkspace workspace={workspace} /> */}
-    </>
+        </div>
+      </form>
+    </div>
   );
 }

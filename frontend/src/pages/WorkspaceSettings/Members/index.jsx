@@ -46,52 +46,58 @@ export default function Members({ workspace }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Mobile-first button placement */}
-      <div className="flex justify-end">
-        <CTAButton onClick={openModal} className="w-full sm:w-auto">
-          Manage Users
-        </CTAButton>
+    <div className="h-full flex flex-col">
+      {/* Header with action button */}
+      <div className="flex-shrink-0 pb-4 md:pb-6">
+        <div className="flex justify-end">
+          <CTAButton onClick={openModal} className="w-full sm:w-auto">
+            Manage Users
+          </CTAButton>
+        </div>
       </div>
       
-      {/* Responsive table container */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left rounded-lg min-w-[600px]">
-          <thead className="text-white text-opacity-80 text-xs leading-[18px] font-bold uppercase border-white border-b border-opacity-60">
-            <tr>
-              <th scope="col" className="px-3 md:px-6 py-3 rounded-tl-lg">
-                Username
-              </th>
-              <th scope="col" className="px-3 md:px-6 py-3">
-                Role
-              </th>
-              <th scope="col" className="px-3 md:px-6 py-3 hidden sm:table-cell">
-                Date Added
-              </th>
-              <th scope="col" className="px-3 md:px-6 py-3 rounded-tr-lg">
-                {" "}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {workspaceUsers.length > 0 ? (
-              workspaceUsers.map((user, index) => (
-                <WorkspaceMemberRow key={index} user={user} />
-              ))
-            ) : (
-              <tr>
-                <td className="text-center py-4 text-white/80" colSpan="4">
-                  No workspace members
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      {/* Scrollable table container */}
+      <div className="flex-1 overflow-hidden min-h-0">
+        <div className="h-full overflow-y-auto pr-4 -mr-4">
+          <div className="overflow-x-auto pb-4">
+            <table className="w-full text-sm text-left rounded-lg min-w-[600px]">
+              <thead className="text-white text-opacity-80 text-xs leading-[18px] font-bold uppercase border-white border-b border-opacity-60 sticky top-0 bg-main-gradient z-10">
+                <tr>
+                  <th scope="col" className="px-3 md:px-6 py-3 rounded-tl-lg">
+                    Username
+                  </th>
+                  <th scope="col" className="px-3 md:px-6 py-3">
+                    Role
+                  </th>
+                  <th scope="col" className="px-3 md:px-6 py-3 hidden sm:table-cell">
+                    Date Added
+                  </th>
+                  <th scope="col" className="px-3 md:px-6 py-3 rounded-tr-lg text-center">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {workspaceUsers.length > 0 ? (
+                  workspaceUsers.map((user, index) => (
+                    <WorkspaceMemberRow key={index} user={user} />
+                  ))
+                ) : (
+                  <tr>
+                    <td className="text-center py-8 text-white/60" colSpan="4">
+                      No workspace members
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       
       {/* Modal */}
       { isOpen && (
-        <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30">
+        <div className="bg-black/60 backdrop-blur-sm fixed top-0 left-0 outline-none w-screen h-screen flex items-center justify-center z-30 p-4">
           <AddMemberModal
             closeModal={closeModal}
             users={users}

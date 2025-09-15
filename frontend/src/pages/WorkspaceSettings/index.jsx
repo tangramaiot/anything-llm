@@ -41,8 +41,8 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       
       {/* Modal container with responsive width */}
-      <div className="relative w-full mx-2 sm:mx-4 md:w-4/5 lg:w-3/5 xl:w-1/2 2xl:w-2/5 max-h-[95vh] sm:max-h-[90vh] transition duration-300 z-20">
-        <div className="relative bg-main-gradient rounded-lg md:rounded-xl border border-slate-300/10 shadow-xl overflow-hidden h-full max-h-[95vh] sm:max-h-[90vh]">
+      <div className="relative w-full mx-2 sm:mx-4 md:w-4/5 lg:w-3/5 xl:w-1/2 2xl:w-2/5 h-[95vh] sm:h-[90vh] max-h-[95vh] sm:max-h-[90vh] min-h-[400px] transition duration-300 z-20">
+        <div className="relative bg-main-gradient rounded-lg md:rounded-xl border border-slate-300/10 shadow-xl overflow-hidden h-full flex flex-col">
           
           {/* Modal content */}
           <div className="flex flex-col w-full h-full">
@@ -63,9 +63,9 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
             <div className="border-t border-slate-300/30" />
 
             {/* Main content area */}
-            <div className="flex flex-col lg:flex-row p-3 md:p-4 gap-3 md:gap-4 overflow-hidden">
+            <div className="flex flex-col lg:flex-row gap-3 md:gap-4 flex-1 min-h-0 overflow-hidden">
               {/* Sidebar - horizontal scroll on mobile, vertical on desktop */}
-              <div className="flex lg:flex-col gap-2 md:gap-3 lg:w-1/5 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
+              <div className="flex lg:flex-col gap-2 md:gap-3 lg:w-1/5 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 px-3 md:px-4 pt-3 md:pt-4 lg:pt-0 flex-shrink-0 lg:min-h-0">
                 <TabItem
                   index="general"
                   icon={<Wrench className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />}
@@ -92,11 +92,9 @@ const WorkspaceSettings = ({ hideSettings, slug, workspace }) => {
                 />
               </div>
 
-              {/* Content area with proper scrolling */}
-              <div className="flex-1 lg:w-4/5 overflow-y-auto max-h-[calc(95vh-10rem)] sm:max-h-[calc(90vh-8rem)] px-1">
-                <div className="space-y-4 md:space-y-6">
-                  {tabContent}
-                </div>
+              {/* Content area - let tab pages handle their own layout */}
+              <div className="flex-1 lg:w-4/5 flex flex-col min-h-0 px-3 md:px-4 pb-3 md:pb-4 overflow-hidden">
+                {tabContent}
               </div>
             </div>
           </div>
