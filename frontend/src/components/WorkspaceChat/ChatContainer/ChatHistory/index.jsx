@@ -244,7 +244,7 @@ export default function ChatHistory({
         <ManageWorkspace hideModal={hideModal} providedSlug={workspace.slug} />
       )}
       {!isAtBottom && (
-        <div className="fixed bottom-20 md:bottom-24 lg:bottom-28 right-4 md:right-8 lg:right-12 z-50 cursor-pointer animate-pulse">
+        <div className="fixed bottom-20 md:bottom-24 lg:bottom-28 right-4 md:right-8 lg:right-16 z-50 cursor-pointer animate-pulse">
           <div className="flex flex-col items-center">
             <div
               className="p-2 md:p-2.5 rounded-full border border-white/20 bg-gray-800/80 hover:bg-gray-700/90 hover:border-white/30 transition-all duration-200 backdrop-blur-sm shadow-lg"

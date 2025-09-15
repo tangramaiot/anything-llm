@@ -250,7 +250,7 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
     <div
       className="transition-all duration-500 flex flex-col md:rounded-[16px] w-full h-full relative"
     >
-      <div className="flex-1 overflow-y-auto pb-16 md:pb-20 lg:pb-24">
+      <div className="flex-1 overflow-y-auto pt-16 pb-16 md:pb-20 lg:pb-24">
         <ChatHistory
           history={chatHistory}
           workspace={workspace}
