@@ -25,44 +25,49 @@ export default function Sidebar() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col">
-      <div
-        className="flex shrink-0 items-center justify-start mx-[38px] mt-[18px]"
-      >
+    <div className="flex flex-col w-full max-w-xs xl:max-w-sm h-screen overflow-hidden">
+      {/* Header with responsive logo and title */}
+      <div className="flex shrink-0 items-center justify-start mx-4 lg:mx-6 xl:mx-8 mt-4 lg:mt-6 mb-2">
         <img
           src={logo}
           alt="Logo"
-          className="rounded max-h-[48px] object-contain"
+          className="rounded max-h-8 lg:max-h-10 xl:max-h-12 object-contain flex-shrink-0"
         />
-        <span className="text-2xl font-bold text-sidebar-text ml-2">
+        <span className="text-lg lg:text-xl xl:text-2xl font-bold text-sidebar-text ml-2 truncate">
           賽亞 (SAI-A)
         </span>
       </div>
+      
+      {/* Main sidebar content */}
       <div
         ref={sidebarRef}
-        className="relative m-[16px] rounded-[16px] bg-sidebar border-2 border-outline min-w-[250px] p-[10px] h-[calc(100%-76px)]"
+        className="relative m-3 lg:m-4 mt-0 rounded-2xl bg-sidebar border-2 border-outline w-auto min-w-0 p-2 lg:p-3 flex-1 flex flex-col overflow-hidden"
       >
-        <div className="flex flex-col h-full overflow-x-hidden">
-          <div className="flex-grow flex flex-col min-w-[235px]">
-            <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
-              <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
-                <div className="flex gap-x-2 items-center justify-between">
-                    {(!user || user?.role !== "default") && (
-                      <button
-                        onClick={showNewWsModal}
-                        className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 text-sidebar-text rounded-lg  justify-center items-center hover:bg-purple-600 bg-purple-500/50 transition-all duration-300"
-                      >
-                        <Plus className="h-5 w-5" />
-                        <p className="text-sidebar-text text-sm font-semibold">
-                          {t("new-workspace.title")}
-                        </p>
-                      </button>
-                    )}
-                  </div>
-                <ActiveWorkspaces />
-              </div>
-            </div>
+        {/* New workspace button - fixed at top */}
+        {(!user || user?.role !== "default") && (
+          <div className="flex-shrink-0 mb-3">
+            <button
+              onClick={showNewWsModal}
+              className="flex w-full h-10 lg:h-11 gap-x-2 py-2 px-3 lg:px-4 text-sidebar-text rounded-lg justify-center items-center hover:bg-purple-600 bg-purple-500/50 transition-all duration-300"
+            >
+              <Plus className="h-4 w-4 lg:h-5 lg:w-5 flex-shrink-0" />
+              <p className="text-sidebar-text text-xs lg:text-sm font-semibold truncate">
+                {t("new-workspace.title")}
+              </p>
+            </button>
           </div>
+        )}
+        
+        {/* Scrollable content area */}
+        <div 
+          className="flex-1 sidebar-scrollbar" 
+          style={{
+            overflowY: 'auto', 
+            minHeight: 0,
+            maxHeight: '100%'
+          }}
+        >
+          <ActiveWorkspaces />
         </div>
       </div>
       {showingNewWsModal && <NewWorkspaceModal hideModal={hideNewWsModal} />}
@@ -115,69 +120,81 @@ export function SidebarMobileHeader() {
 
   return (
     <>
+      {/* Mobile header bar with responsive design */}
       <div
         aria-label="Show sidebar"
-        className="fixed top-0 left-0 right-0 flex px-4 py-2 text-sidebar-text shadow-lg h-16 bg-neutral-800"
+        className="fixed top-0 left-0 right-0 flex items-center px-3 sm:px-4 py-3 text-sidebar-text shadow-lg h-14 sm:h-16 bg-neutral-800 z-50"
       >
         <button
           onClick={() => setShowSidebar(true)}
-          className="rounded-md p-2 flex items-center justify-center text-sidebar-text"
+          className="rounded-md p-2 flex items-center justify-center text-sidebar-text hover:bg-neutral-700 transition-colors"
         >
-          <List className="h-6 w-6" />
+          <List className="h-5 w-5 sm:h-6 sm:w-6" />
         </button>
-        <div className="flex items-center justify-center">
+        
+        {/* Centered logo and title */}
+        <div className="flex items-center justify-center flex-1 mx-4">
           <img
             src={logo}
             alt="Logo"
-            className="block mx-auto h-6 w-auto"
-            style={{ maxHeight: "40px", objectFit: "contain" }}
+            className="block h-6 sm:h-8 w-auto object-contain flex-shrink-0"
           />
-          <span className="text-2xl font-bold text-sidebar-text ml-2">
+          <span className="text-lg sm:text-xl font-bold text-sidebar-text ml-2 truncate">
             賽亞 (SAI-A)
           </span>
         </div>
-        <div className="w-12"></div>
+        
+        {/* Spacer to balance the layout */}
+        <div className="w-9 sm:w-12"></div>
       </div>
+      
+      {/* Mobile sidebar overlay */}
       <div
         style={{
-          transform: showSidebar ? `translateX(0vw)` : `translateX(-100vw)`,
+          transform: showSidebar ? `translateX(0)` : `translateX(-100%)`,
         }}
-        className={`z-99 fixed top-0 left-0 transition-all duration-500 w-[100vw] h-[100vh]`}
+        className={`z-[99] fixed top-0 left-0 transition-transform duration-500 ease-in-out w-full h-full`}
       >
+        {/* Background overlay */}
         <div
           className={`${
             showBgOverlay
-              ? "transition-all opacity-1"
-              : "transition-none opacity-0"
-          }  duration-500 fixed top-0 left-0 ${USER_BACKGROUND_COLOR} bg-opacity-75 w-screen h-screen`}
+              ? "opacity-75"
+              : "opacity-0"
+          } transition-opacity duration-500 fixed inset-0 ${USER_BACKGROUND_COLOR} bg-opacity-75`}
           onClick={() => setShowSidebar(false)}
         />
+        
+        {/* Sidebar panel */}
         <div
           ref={sidebarRef}
-          className="relative h-[100vh] top-0 left-0 bg-neutral-800 rounded-r-[26px] w-[80%] p-[18px] "
+          className="relative h-full bg-neutral-800 rounded-r-3xl w-[85%] sm:w-[75%] md:w-[65%] max-w-sm p-4 sm:p-6 flex flex-col"
         >
-            {/* Primary Body */}
-            <div className="flex flex-col h-full overflow-x-hidden">
-            <div className="flex-grow flex flex-col min-w-[235px]">
-              <div className="relative h-[calc(100%-60px)] flex flex-col w-full justify-between pt-[10px] overflow-y-scroll no-scroll">
-                <div className="flex flex-col gap-y-2 pb-[60px] overflow-y-scroll no-scroll">
-                  <div className="flex gap-x-2 items-center justify-between">
-                      {(!user || user?.role !== "default") && (
-                        <button
-                          onClick={showNewWsModal}
-                          className="flex flex-grow w-[75%] h-[44px] gap-x-2 py-[5px] px-4 text-sidebar-text rounded-lg  justify-center items-center hover:bg-purple-600 bg-purple-500/50 transition-all duration-300"
-                        >
-                          <Plus className="h-5 w-5" />
-                          <p className="text-sidebar-text text-sm font-semibold">
-                            {t("new-workspace.title")}
-                          </p>
-                        </button>
-                      )}
-                    </div>
-                  <ActiveWorkspaces />
-                </div>
-              </div>
+          {/* New workspace button for mobile - fixed at top */}
+          {(!user || user?.role !== "default") && (
+            <div className="flex-shrink-0 mb-3">
+              <button
+                onClick={showNewWsModal}
+                className="flex w-full h-11 gap-x-2 py-2 px-4 text-sidebar-text rounded-lg justify-center items-center hover:bg-purple-600 bg-purple-500/50 transition-all duration-300"
+              >
+                <Plus className="h-5 w-5 flex-shrink-0" />
+                <p className="text-sidebar-text text-sm font-semibold truncate">
+                  {t("new-workspace.title")}
+                </p>
+              </button>
             </div>
+          )}
+          
+          {/* Scrollable content area */}
+          <div 
+            className="flex-1 sidebar-scrollbar" 
+            style={{
+              overflowY: 'auto', 
+              minHeight: 0,
+              maxHeight: '100%'
+            }}
+          >
+            <ActiveWorkspaces />
           </div>
         </div>
         {showingNewWsModal && <NewWorkspaceModal hideModal={hideNewWsModal} />}

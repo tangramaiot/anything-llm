@@ -17,21 +17,26 @@ export default function Main() {
   }
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-primary flex">
-      {!isMobile && <Sidebar />} 
-      <div className="absolute top-3 md:top-6 md:right-10 w-full z-99">
-        <div className="relative flex items-center justify-between px-4 ">
-          {isMobile && 
-          <div className="flex-grow flex justify-start">
-            <SidebarMobileHeader />
-          </div>
-          }
-          <div className="flex-grow flex justify-end">
-            <FunctionalMenu />
-          </div>
+    <div className="w-screen h-screen bg-primary flex">
+      {/* Desktop sidebar - hidden on mobile */}
+      {!isMobile && (
+        <div className="flex-shrink-0 w-72 lg:w-80 xl:w-96">
+          <Sidebar />
         </div>
+      )}
+      
+      {/* Mobile header */}
+      {isMobile && <SidebarMobileHeader />}
+      
+      {/* Functional menu positioned appropriately */}
+      <div className={`absolute ${isMobile ? 'top-16 sm:top-18' : 'top-3 md:top-6'} right-4 md:right-10 z-50`}>
+        <FunctionalMenu />
       </div>
-      <Outlet />
+      
+      {/* Main content area with proper spacing */}
+      <div className={`flex-1 ${isMobile ? 'pt-14 sm:pt-16' : ''}`}>
+        <Outlet />
+      </div>
     </div>
   );
 }

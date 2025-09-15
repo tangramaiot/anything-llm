@@ -61,22 +61,22 @@ export default function ThreadItem({
 
   return (
     <div
-      className="w-full relative flex h-[38px] items-center border-none hover:bg-slate-600/20 rounded-lg"
+      className="w-full relative flex h-9 lg:h-10 items-center border-none hover:bg-slate-600/20 rounded-lg"
       role="listitem"
     >
       {(
         <div
           style={{ width: THREAD_CALLOUT_DETAIL_WIDTH / 2 }}
-          className={`border-l border-slate-300 h-[100%] absolute top-0 z-1 left-6`}
+          className={`border-l border-slate-300 h-full absolute top-0 z-1 left-4 lg:left-6`}
         ></div>
       )}
 
-      {/* Curved line inline placeholder for spacing - not visible */}
+      {/* Curved line inline placeholder for spacing - responsive */}
       <div
-        style={{ width: THREAD_CALLOUT_DETAIL_WIDTH + 8 }}
-        className="h-full"
+        style={{ width: THREAD_CALLOUT_DETAIL_WIDTH + 4 }}
+        className="h-full lg:w-[34px]"
       />
-      <div className="flex w-full items-center justify-between pr-2 group relative">
+      <div className="flex w-full items-center justify-between pr-1 lg:pr-2 group relative min-w-0">
         {thread.deleted ? (
           <div className="w-full flex justify-between">
             <div className="w-full ">
@@ -111,11 +111,12 @@ export default function ThreadItem({
             aria-current={isActive ? "page" : ""}
           >
             <p
-              className={`px-3 text-base ${
+              className={`px-2 lg:px-3 text-sm lg:text-base truncate ${
                 isActive ? "font-medium text-white" : "text-slate-400"
               }`}
+              title={thread.name}
             >
-              {truncate(thread.name, 25)}
+              {thread.name}
             </p>
           </a>
         )}

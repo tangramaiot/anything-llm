@@ -126,7 +126,7 @@ export default function ActiveWorkspaces() {
                   aria-current={isActive ? "page" : ""}
                   className={`
                 transition-all duration-[200ms]
-                  flex flex-grow w-[75%] gap-x-2 py-[6px] px-[12px] rounded-[4px] text-white justify-start items-center
+                  flex flex-grow w-full gap-x-2 py-2 px-3 rounded text-white justify-start items-center min-w-0
                   hover:bg-workspace-item-selected-gradient hover:font-bold
                   ${
                     isActive
@@ -209,7 +209,7 @@ export default function ActiveWorkspaces() {
         <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-99">
           <div className="backdrop h-full w-full absolute top-0 z-10" />
           <div className="absolute transition duration-300 z-20">
-            <div className="relative bg-white rounded-lg w-[400px]">
+            <div className="relative bg-white rounded-lg w-full max-w-md mx-4">
               <div
                 className="flex flex-col transition-all duration-500 relative py-5 px-5 gap-10"
               >
