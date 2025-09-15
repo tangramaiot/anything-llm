@@ -125,47 +125,46 @@ export default function ActiveWorkspaces() {
                   onClick={isActive ? null : () => navigate(paths.workspace.chat(workspace.slug))}
                   aria-current={isActive ? "page" : ""}
                   className={`
-                transition-all duration-[200ms]
-                  flex flex-grow w-full gap-x-2 py-2 px-3 rounded text-white justify-start items-center min-w-0
-                  hover:bg-workspace-item-selected-gradient hover:font-bold
+                transition-all duration-200
+                  flex flex-grow w-full gap-x-1 sm:gap-x-2 py-2 sm:py-3 px-2 sm:px-3 rounded text-white justify-start items-center min-w-0
+                  hover:bg-workspace-item-selected-gradient hover:font-medium
                   ${
                     isActive
-                      ? "bg-workspace-item-selected-gradient font-bold"
+                      ? "bg-workspace-item-selected-gradient font-medium"
                       : ""
                   }`}
                 >
-                  <div className="flex flex-row justify-between w-full">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex flex-row justify-between w-full min-w-0">
+                    <div className="flex items-center space-x-1 sm:space-x-2 min-w-0 flex-1">
                       <img
                         src={AgentItem}
                         alt="AgentItem"
-                        className="flex-shrink-0"
+                        className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5"
                       />
                       <p
-                        className={`text-[14px] leading-loose whitespace-nowrap overflow-hidden ${
-                          isActive ? "text-white " : "text-zinc-200"
+                        className={`text-xs sm:text-sm leading-relaxed truncate ${
+                          isActive ? "text-white font-medium" : "text-zinc-200"
                         }`}
+                        title={workspace.name}
                       >
-                        {isActive || isHovered
-                          ? truncate(workspace.name, 15)
-                          : truncate(workspace.name, 20)}
+                        {workspace.name}
                       </p>
                     </div>
                     {(isActive || isHovered || gearHover[workspace.id]) &&
                     user?.role !== "default" ? (
-                      <div>
+                      <div className="relative">
                         <div
-                          className={`flex hover:bg-[#646768] p-[2px] rounded-[4px] text-[#A7A8A9] hover:text-white ${
+                          className={`flex hover:bg-[#646768] p-1 sm:p-[2px] rounded text-[#A7A8A9] hover:text-white transition-colors duration-200 ${
                             uploadHover[workspace.id] ? "bg-[#646768]" : ""
                           }`}
                         >
                           <button
                             type="button"
-                            className="border-none"
+                            className="border-none p-1 flex items-center justify-center"
                             onClick={() => setShowOptions(!showOptions)}
-                            aria-label="Thread options"
+                            aria-label="Workspace options"
                           >
-                            <DotsThree className="text-slate-300" size={25} />
+                            <DotsThree className="text-slate-300 w-5 h-5 sm:w-6 sm:h-6" />
                           </button>
                         </div>
                         {showOptions && (
@@ -314,7 +313,11 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
   return (
     <div
       ref={menuRef}
-      className="absolute w-fit z-[20] right-[10px] bg-white rounded-lg p-1"
+      className="absolute w-auto min-w-48 sm:min-w-52 z-[20] right-2 sm:right-3 top-8 sm:top-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 sm:p-2"
+      style={{
+        transform: 'translateX(0)',
+        maxWidth: 'calc(100vw - 2rem)'
+      }}
     >
       <button
         onClick={() => {
@@ -324,10 +327,10 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           close();
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
+        className="w-full rounded-md flex items-center p-2 sm:p-3 gap-x-2 sm:gap-x-3 hover:bg-slate-500/20 text-black hover:text-purple-500 transition-colors duration-200"
       >
-        <Plus size={18} />
-        <p className="text-sm">{t("workspace-menu.new-chart")}</p>
+        <Plus size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
+        <p className="text-xs sm:text-sm font-medium truncate">{t("workspace-menu.new-chart")}</p>
       </button>
       <button
         onClick={(e) => {
@@ -335,10 +338,10 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           showSettings();
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
+        className="w-full rounded-md flex items-center p-2 sm:p-3 gap-x-2 sm:gap-x-3 hover:bg-slate-500/20 text-black hover:text-purple-500 transition-colors duration-200"
       >
-        <GearSix size={18} />
-        <p className="text-sm">{t("workspace-menu.settings")}</p>
+        <GearSix size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
+        <p className="text-xs sm:text-sm font-medium truncate">{t("workspace-menu.settings")}</p>
       </button>
       <button
         onClick={(e) => {
@@ -348,10 +351,10 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           showModal();
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
+        className="w-full rounded-md flex items-center p-2 sm:p-3 gap-x-2 sm:gap-x-3 hover:bg-slate-500/20 text-black hover:text-purple-500 transition-colors duration-200"
       >
-        <Database size={18} />
-        <p className="text-sm">{t("workspace-menu.upload-documentation")}</p>
+        <Database size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
+        <p className="text-xs sm:text-sm font-medium truncate">{t("workspace-menu.upload-documentation")}</p>
       </button>
       <button
         onClick={(e) => {
@@ -359,10 +362,10 @@ function OptionsMenu({ containerRef, workspace, setSelectedWs, showModal, showSe
           showDelete(true);
         }}
         type="button"
-        className="w-full rounded-md flex items-center p-2 gap-x-2 hover:bg-slate-500/20 text-black hover:text-purple-500"
+        className="w-full rounded-md flex items-center p-2 sm:p-3 gap-x-2 sm:gap-x-3 hover:bg-slate-500/20 text-black hover:text-purple-500 transition-colors duration-200"
       >
-        <Trash size={18} />
-        <p className="text-sm">{t("workspace-menu.delete")}</p>
+        <Trash size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
+        <p className="text-xs sm:text-sm font-medium truncate">{t("workspace-menu.delete")}</p>
       </button>
     </div>
   );
